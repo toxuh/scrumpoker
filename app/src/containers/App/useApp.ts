@@ -14,13 +14,7 @@ const useApp = () => {
     return data;
   }, []);
 
-  const goPostRequest = useCallback(async () => {
-    const response = await axios.post('/api/v1/users/', { name: 'Her123' });
-
-    console.log(response);
-  }, []);
-
-  return { bootstrap, goPostRequest, isLSExists };
+  return { bootstrap, isLSExists };
 };
 
 export default useApp;

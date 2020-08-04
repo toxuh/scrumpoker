@@ -10,7 +10,7 @@ import './App.css';
 function App() {
   const [userName, setUserName] = useState('');
 
-  const { bootstrap, goPostRequest, isLSExists } = useApp();
+  const { bootstrap, isLSExists } = useApp();
 
   useEffect(() => {
     if (isLSExists) {
@@ -24,11 +24,7 @@ function App() {
 
   return (
     <div className="App">
-      {isLSExists ? (
-        <Room name={userName} />
-      ) : (
-        <Login handleCreateUser={goPostRequest} />
-      )}
+      {isLSExists ? <Room name={userName} /> : <Login />}
     </div>
   );
 }

@@ -5,8 +5,6 @@ const Users = require("../models/User");
 router.get("/", async (req, res) => {
   const user = await Users.findOne({ _id: req.query.id });
 
-  console.log(user);
-
   res.send(user);
 });
 

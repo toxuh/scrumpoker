@@ -1,23 +1,13 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-import messages from './messages';
 
-type LoginTypes = {
-  handleCreateUser: () => void;
-};
+import { Login as LoginComponent } from '../../components';
 
-const Login = ({ handleCreateUser }: LoginTypes) => {
-  const intl = useIntl();
+import useLogin from './useLogin';
 
-  return (
-    <>
-      <h4>{intl.formatMessage(messages.typeYourName)}:</h4>
-      <input type="text" />
-      <button type="button" onClick={handleCreateUser}>
-        {intl.formatMessage(messages.submit)}
-      </button>
-    </>
-  );
+const Login = () => {
+  const { regUser } = useLogin();
+
+  return <LoginComponent handleCreateUser={regUser} />;
 };
 
 export default Login;
