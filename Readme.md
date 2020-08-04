@@ -1,5 +1,5 @@
-ZOOM killer app
+Poker app.
 
-It's a joke. I will try to convert it to React SPA with python on backend.
+Server side Nodejs, application - React + typescript
 
-First commits are just for working functionality.
+In deep development

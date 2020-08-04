@@ -1,0 +1,11 @@
+**/.babelrc.js
+**/.storybook
+
+**/node_modules
+
+**/src/serviceWorker.ts
+
+**/coverage
+
+**/build
+**/.storybook/build
