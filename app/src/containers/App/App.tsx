@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
 
 import Login from '../Login/Login';
 import Room from '../Room/Room';
@@ -10,22 +11,22 @@ import './App.css';
 function App() {
   const [userName, setUserName] = useState('');
 
-  const { bootstrap, isLSExists } = useApp();
+  const { getUserName, isLSExists } = useApp(setUserName);
 
   useEffect(() => {
     if (isLSExists) {
-      bootstrap().then((response) => {
-        if (response.name) {
-          setUserName(response.name);
-        }
-      });
+      getUserName();
     }
-  }, [bootstrap, isLSExists]);
+  });
 
   return (
-    <div className="App">
-      {isLSExists ? <Room name={userName} /> : <Login />}
-    </div>
+    <Container className="App" fluid>
+      {isLSExists ? (
+        <Room name={userName} />
+      ) : (
+        <Login handleSetUserName={setUserName} />
+      )}
+    </Container>
   );
 }
 

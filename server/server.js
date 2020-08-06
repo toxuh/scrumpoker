@@ -5,8 +5,7 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
-const userRouter = require("./routes/users");
-const taskRouter = require("./routes/tasks");
+const Users = require("./models/User");
 
 dotenv.config();
 
@@ -18,14 +17,33 @@ mongoose.connect(
 
 app.use(express.json());
 
-app.use(`${process.env.API_URL}/users`, userRouter);
-app.use(`${process.env.API_URL}/tasks`, taskRouter);
-
 io.on("connection", (socket) => {
-  socket.on("join-room", (roomId, userId, userName) => {
-    console.log(userId, userName);
-    socket.join(roomId);
-    socket.to(roomId).broadcast.emit("user-connected", userId);
+  socket.on("create-user", async (userName) => {
+    console.log(userName);
+
+    const user = new Users({
+      name: userName,
+    });
+
+    try {
+      const savedUser = await user.save();
+
+      io.emit("user-saved", savedUser);
+    } catch (e) {
+      io.emit("user-saved", { error: e });
+    }
+  });
+
+  socket.on("get-user-name", async (userId) => {
+    const user = await Users.findOne({ _id: userId });
+
+    io.emit("user-name", user);
+  });
+
+  socket.on("connect-user", async (userId) => {
+    const user = await Users.findOne({ _id: userId });
+
+    socket.broadcast.emit("user-connected", user);
   });
 });
 

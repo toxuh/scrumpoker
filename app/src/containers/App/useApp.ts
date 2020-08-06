@@ -1,20 +1,28 @@
-import { useCallback } from 'react';
-import axios from 'axios';
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
+import io from 'socket.io-client';
 
-const useApp = () => {
-  const LS_KEY = 'poker-user-id';
+import { LS_KEY } from '../../constants';
 
-  const isLSExists = Boolean(localStorage.getItem(LS_KEY));
+type GetUserNameResponseTypes = {
+  _id: string;
+  name: string;
+};
 
-  const bootstrap = useCallback(async () => {
-    const { data } = await axios.get(
-      `/api/v1/users/?id=${localStorage.getItem(LS_KEY)}`,
-    );
+const useApp = (setUserName: Dispatch<SetStateAction<string>>) => {
+  const socket = io.connect('http://localhost:3001');
+  const localUserId = localStorage.getItem(LS_KEY);
 
-    return data;
-  }, []);
+  const getUserName = useCallback(() => {
+    socket.emit('get-user-name', localUserId);
+  }, [localUserId, socket]);
 
-  return { bootstrap, isLSExists };
+  useEffect(() => {
+    socket.on('user-name', (userName: GetUserNameResponseTypes) => {
+      setUserName(userName.name);
+    });
+  });
+
+  return { getUserName, isLSExists: Boolean(localUserId) };
 };
 
 export default useApp;

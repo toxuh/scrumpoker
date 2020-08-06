@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+
 import messages from './messages';
 
 type LoginTypes = {
-  handleCreateUser: (name: string) => Promise<void>;
+  handleCreateUser: (name: string) => void;
 };
 
 const Login = ({ handleCreateUser }: LoginTypes) => {
@@ -11,16 +13,28 @@ const Login = ({ handleCreateUser }: LoginTypes) => {
   const [userName, setUserName] = useState('');
 
   return (
-    <>
-      <h4>{intl.formatMessage(messages.typeYourName)}:</h4>
-      <input
-        type="text"
-        onChange={({ target: { value } }) => setUserName(value)}
-      />
-      <button type="button" onClick={() => handleCreateUser(userName)}>
-        {intl.formatMessage(messages.submit)}
-      </button>
-    </>
+    <Col>
+      <Row>
+        <Form>
+          <Form.Group>
+            <Form.Label>
+              {intl.formatMessage(messages.typeYourName)}:
+            </Form.Label>
+            <Form.Control
+              type="text"
+              onChange={({ target: { value } }) => setUserName(value)}
+            />
+          </Form.Group>
+          <Button
+            variant="primary"
+            type="button"
+            onClick={() => handleCreateUser(userName)}
+          >
+            {intl.formatMessage(messages.submit)}
+          </Button>
+        </Form>
+      </Row>
+    </Col>
   );
 };
 

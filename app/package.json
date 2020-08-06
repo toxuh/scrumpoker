@@ -15,7 +15,8 @@
     "react-helmet": "^6.1.0",
     "react-intl": "^5.4.5",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "socket.io-client": "^2.3.0",
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -49,6 +50,7 @@
     "@types/react": "^16.9.43",
     "@types/react-bootstrap": "^1.0.1",
     "@types/react-dom": "^16.9.8",
+    "@types/socket.io-client": "^1.4.33",
     "@typescript-eslint/eslint-plugin": "^3.7.1",
     "@typescript-eslint/parser": "^3.7.1",
     "babel-plugin-module-resolver": "^4.0.0",
@@ -69,6 +71,5 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "extract-react-intl-messages": "^4.1.1",
     "prettier": "^2.0.5"
-  },
-  "proxy": "http://localhost:3001"
+  }
 }
