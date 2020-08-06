@@ -17,10 +17,8 @@ mongoose.connect(
 
 app.use(express.json());
 
-io.on("connection", (socket) => {
+const onConnect = (socket) => {
   socket.on("create-user", async (userName) => {
-    console.log(userName);
-
     const user = new Users({
       name: userName,
     });
@@ -45,6 +43,8 @@ io.on("connection", (socket) => {
 
     socket.broadcast.emit("user-connected", user);
   });
-});
+};
+
+io.on("connection", onConnect);
 
 server.listen(process.env.APP_PORT, () => console.log("Server started"));

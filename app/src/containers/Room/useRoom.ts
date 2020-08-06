@@ -3,17 +3,14 @@ import io from 'socket.io-client';
 
 import { LS_KEY } from '../../constants';
 
-type UserConnectedResponseTypes = {
-  _id: string;
-  name: string;
-};
+import { UserResponseType } from '../../types';
 
 const useRoom = () => {
   const socket = io.connect('http://localhost:3001');
   const userId = localStorage.getItem(LS_KEY);
 
   useEffect(() => {
-    socket.on('user-connected', (user: UserConnectedResponseTypes) => {
+    socket.on('user-connected', (user: UserResponseType) => {
       alert(user.name + ' connected!');
     });
   });

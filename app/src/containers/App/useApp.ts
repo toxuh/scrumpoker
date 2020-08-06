@@ -3,10 +3,7 @@ import io from 'socket.io-client';
 
 import { LS_KEY } from '../../constants';
 
-type GetUserNameResponseTypes = {
-  _id: string;
-  name: string;
-};
+import { UserResponseType } from '../../types';
 
 const useApp = (setUserName: Dispatch<SetStateAction<string>>) => {
   const socket = io.connect('http://localhost:3001');
@@ -17,7 +14,7 @@ const useApp = (setUserName: Dispatch<SetStateAction<string>>) => {
   }, [localUserId, socket]);
 
   useEffect(() => {
-    socket.on('user-name', (userName: GetUserNameResponseTypes) => {
+    socket.on('user-name', (userName: UserResponseType) => {
       setUserName(userName.name);
     });
   });
