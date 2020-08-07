@@ -1,31 +1,17 @@
-import React, { useEffect } from 'react';
-import { useToasts } from 'react-toast-notifications';
+import React from 'react';
+import { Socket } from 'socket.io-client';
 
-import useRoom from './useRoom';
+import { Room as RoomComponent } from '../../components';
 
 import { UserResponseType } from '../../types';
 
 type RoomTypes = {
-  name: string;
+  user: UserResponseType;
+  socket: typeof Socket;
 };
 
-const Room = ({ name }: RoomTypes) => {
-  const { addToast } = useToasts();
-  const { handleUserConnected, socket } = useRoom();
-
-  useEffect(() => {
-    socket.on('user-connected', (user: UserResponseType) => {
-      addToast(user.name + ' connected!', {
-        appearance: 'info',
-      });
-    });
-
-    if (name) {
-      handleUserConnected();
-    }
-  }, [name]);
-
-  return <>{name && <h1>Hello {name}!!!!</h1>}</>;
+const Room: React.FC<RoomTypes> = ({ user, socket }) => {
+  return <RoomComponent user={user} />;
 };
 
 export default Room;

@@ -5,14 +5,16 @@ import { LS_KEY } from '../../constants';
 
 import { UserResponseType } from '../../types';
 
-const useLogin = (handleSetUserName: Dispatch<SetStateAction<string>>) => {
+const useLogin = (
+  handleSetUserName: Dispatch<SetStateAction<UserResponseType>>,
+) => {
   const socket = io.connect('http://localhost:3001');
 
   useEffect(() => {
     socket.on('user-saved', (user: UserResponseType) => {
       localStorage.setItem(LS_KEY, user._id);
 
-      handleSetUserName(user.name);
+      handleSetUserName(user);
     });
   });
 
