@@ -6,6 +6,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
 const Users = require("./models/User");
+const Tasks = require("./models/Task");
 
 dotenv.config();
 
@@ -42,6 +43,27 @@ const onConnect = (socket) => {
     const user = await Users.findOne({ _id: userId });
 
     socket.broadcast.emit("user-connected", user);
+  });
+
+  socket.on("get-tasks", async () => {
+    const tasks = await Tasks.find();
+
+    io.emit("tasks-list", tasks);
+  });
+
+  socket.on("new-task", async (taskName) => {
+    const task = new Tasks({
+      name: taskName,
+    });
+
+    try {
+      const savedTask = await task.save();
+      const tasks = await Tasks.find();
+
+      io.emit("tasks-list", tasks);
+    } catch (e) {
+      io.emit("new-task-error", e);
+    }
   });
 };
 

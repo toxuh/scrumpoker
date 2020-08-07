@@ -6,9 +6,10 @@ export type UserResponseType = {
 
 export type Task = {
   _id: string;
+  createdAt: Date;
   name: string;
   points: number | null;
-  meta: {};
+  active: boolean;
 };
 
 export type RoomType = {

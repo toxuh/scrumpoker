@@ -6,37 +6,45 @@ import Room from '../Room/Room';
 
 import useApp from './useApp';
 
-import { UserResponseType, RoomType } from '../../types';
+import { Task, UserResponseType, RoomType } from '../../types';
 
 import './App.css';
 
 function App() {
   const [user, setUser] = useState<UserResponseType>({} as UserResponseType);
-  const [room, setRoom] = useState<RoomType>({} as RoomType);
+  // const [room, setRoom] = useState<RoomType>({} as RoomType);
+  const [tasks, setTasks] = useState<Task[]>([] as Task[]);
 
   const { localUserId, socket } = useApp();
 
-  const getUserName = useCallback(() => {
+  const getUser = useCallback(() => {
     socket.emit('get-user-name', localUserId);
   }, [localUserId, socket]);
 
+  const getTasks = useCallback(() => {
+    socket.emit('get-tasks');
+  }, [socket]);
+
   useEffect(() => {
     if (Boolean(localUserId)) {
-      getUserName();
+      getUser();
+      getTasks();
     }
   }, []);
 
   useEffect(() => {
     socket.on('user-name', (user: UserResponseType) => {
-      console.log(user);
       setUser(user);
+    });
+    socket.on('tasks-list', (tasks: Task[]) => {
+      setTasks(tasks);
     });
   }, []);
 
   return (
     <Container className="App" fluid>
       {Boolean(user) ? (
-        <Room socket={socket} user={user} />
+        <Room user={user} tasks={tasks} socket={socket} />
       ) : (
         <Login handleSetUser={setUser} />
       )}
