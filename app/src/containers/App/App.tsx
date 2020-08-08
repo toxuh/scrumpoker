@@ -1,19 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
 
 import Login from '../Login/Login';
 import Room from '../Room/Room';
 
 import useApp from './useApp';
 
-import { Task, UserResponseType, RoomType } from '../../types';
+import { Story, UserResponseType } from '../../types';
 
 import './App.css';
 
 function App() {
   const [user, setUser] = useState<UserResponseType>({} as UserResponseType);
-  // const [room, setRoom] = useState<RoomType>({} as RoomType);
-  const [tasks, setTasks] = useState<Task[]>([] as Task[]);
+  const [stories, setStories] = useState<Story[]>([] as Story[]);
 
   const { localUserId, socket } = useApp();
 
@@ -36,19 +34,19 @@ function App() {
     socket.on('user-name', (user: UserResponseType) => {
       setUser(user);
     });
-    socket.on('tasks-list', (tasks: Task[]) => {
-      setTasks(tasks);
+    socket.on('tasks-list', (stories: Story[]) => {
+      setStories(stories);
     });
   }, []);
 
   return (
-    <Container className="App" fluid>
+    <div className="App">
       {Boolean(user) ? (
-        <Room user={user} tasks={tasks} socket={socket} />
+        <Room user={user} stories={stories} socket={socket} />
       ) : (
         <Login handleSetUser={setUser} />
       )}
-    </Container>
+    </div>
   );
 }
 

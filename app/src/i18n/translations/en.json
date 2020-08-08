@@ -1,4 +1,13 @@
 {
   "Login.submit": "Submit",
-  "Login.typeYourName": "Enter yor name"
+  "Login.typeYourName": "Enter yor name",
+  "Room.TasksList.activeStories": "Active Stories",
+  "Room.TasksList.addStory": "Add story",
+  "Room.TasksList.allStories": "All Stories",
+  "Room.TasksList.closedStories": "Closed Stories",
+  "Room.TasksList.newStory": "New story",
+  "Room.TasksList.noStories": "The're no stories yet",
+  "Room.TasksList.storyDescription": "Story description",
+  "Room.TasksList.storyTitle": "Story title",
+  "Room.UsersList.players": "Players"
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Form, Input, Button, Layout } from 'antd';
 
 import messages from './messages';
 
@@ -8,33 +8,30 @@ type LoginTypes = {
   handleCreateUser: (name: string) => void;
 };
 
+const { Content } = Layout;
+
 const Login = ({ handleCreateUser }: LoginTypes) => {
   const intl = useIntl();
   const [userName, setUserName] = useState('');
 
   return (
-    <Col>
-      <Row>
-        <Form>
-          <Form.Group>
-            <Form.Label>
-              {intl.formatMessage(messages.typeYourName)}:
-            </Form.Label>
-            <Form.Control
-              type="text"
-              onChange={({ target: { value } }) => setUserName(value)}
-            />
-          </Form.Group>
-          <Button
-            variant="primary"
-            type="button"
-            onClick={() => handleCreateUser(userName)}
-          >
-            {intl.formatMessage(messages.submit)}
-          </Button>
-        </Form>
-      </Row>
-    </Col>
+    <Content>
+      <Form>
+        <Form.Item label={`{intl.formatMessage(messages.typeYourName)}:`}>
+          <Input
+            type="text"
+            onChange={({ target: { value } }) => setUserName(value)}
+          />
+        </Form.Item>
+        <Button
+          type="primary"
+          htmlType="button"
+          onClick={() => handleCreateUser(userName)}
+        >
+          {intl.formatMessage(messages.submit)}
+        </Button>
+      </Form>
+    </Content>
   );
 };
 

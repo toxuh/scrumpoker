@@ -4,15 +4,17 @@ export type UserResponseType = {
   role: string;
 };
 
-export type Task = {
+export type Story = {
   _id: string;
   createdAt: Date;
   name: string;
+  description: string;
   points: number | null;
-  active: boolean;
+  isActive: boolean;
+  isDeleted: boolean;
 };
 
 export type RoomType = {
   users: UserResponseType[];
-  tasks: Task[];
+  tasks: Story[];
 };

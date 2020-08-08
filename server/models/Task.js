@@ -8,10 +8,18 @@ const taskSchema = new mongoose.Schema({
     max: 250,
     min: 3,
   },
-  active: {
+  description: {
+    type: String,
+  },
+  isActive: {
     type: Boolean,
     required: true,
     default: true,
+  },
+  isDeleted: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
   points: {
     type: Number,

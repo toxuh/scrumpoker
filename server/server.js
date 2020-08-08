@@ -51,9 +51,10 @@ const onConnect = (socket) => {
     io.emit("tasks-list", tasks);
   });
 
-  socket.on("new-task", async (taskName) => {
+  socket.on("new-task", async ({ name, description }) => {
     const task = new Tasks({
-      name: taskName,
+      name,
+      description,
     });
 
     try {

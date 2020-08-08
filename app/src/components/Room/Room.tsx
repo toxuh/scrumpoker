@@ -1,33 +1,50 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Layout } from 'antd';
 
 import Buttons from './Buttons';
-import Cardboard from './Cardboard';
+import Cardboard from './Cardboard/Cardboard';
 import Header from './Header';
-import TasksList from './TasksList';
-import UsersList from './UsersList';
+import StoriesList from './StoriesList/StoriesList';
+import UsersList from './UsersList/UsersList';
 
-import { Task, UserResponseType } from '../../types';
+import { Story, UserResponseType } from '../../types';
+
+import './Room.css';
 
 type RoomProps = {
   user: UserResponseType;
-  tasks: Task[];
-  handleAddTask: (taskName: string) => void;
+  stories: Story[];
+  handleAddTask: (task: { name: string; description: string }) => void;
+  handleRemoveTask: (taskId: string) => void;
 };
 
-const Room: React.FC<RoomProps> = ({ user, tasks, handleAddTask }) => {
+const { Content, Footer, Sider } = Layout;
+
+const Room: React.FC<RoomProps> = ({
+  user,
+  stories,
+  handleAddTask,
+  handleRemoveTask,
+}) => {
   return (
-    <Row>
-      <Col xs={8}>
-        <Header title="Hello!" />
-        <Cardboard />
-        <TasksList tasks={tasks} handleAddTask={handleAddTask} />
-      </Col>
-      <Col>
-        <UsersList currentUser={user} users={[user]} />
-        <Buttons />
-      </Col>
-    </Row>
+    <Layout>
+      <Header title="Hello!" />
+      <Layout className="Room__Layout">
+        <Content className="Room__Content">
+          <Cardboard />
+          <StoriesList
+            stories={stories}
+            handleAddStory={handleAddTask}
+            handleRemoveStory={handleRemoveTask}
+          />
+        </Content>
+        <Sider theme="light" className="Room__Sidebar" width={350}>
+          <UsersList currentUser={user} users={[user]} />
+          <Buttons />
+        </Sider>
+      </Layout>
+      <Footer style={{ textAlign: 'center' }}>Footer</Footer>
+    </Layout>
   );
 };
 

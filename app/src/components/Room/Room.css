@@ -1,0 +1,15 @@
+.Room__Layout {
+  padding: 20px 0;
+}
+
+.Room__Content {
+  background: #fff;
+  padding: 20px;
+  margin-left: 60px;
+  min-height: 280px
+}
+
+.Room__Sidebar {
+  margin:0 60px 0 40px;
+  padding: 20px;
+}

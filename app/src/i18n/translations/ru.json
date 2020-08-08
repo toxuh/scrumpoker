@@ -1,4 +1,13 @@
 {
   "Login.submit": "Отправить",
-  "Login.typeYourName": "Введите свое имя"
+  "Login.typeYourName": "Введите свое имя",
+  "Room.TasksList.activeStories": "Активные истории",
+  "Room.TasksList.addStory": "Добавить историю",
+  "Room.TasksList.allStories": "Все истории",
+  "Room.TasksList.closedStories": "Закрытые истории",
+  "Room.TasksList.newStory": "Новая история",
+  "Room.TasksList.noStories": "Пока нет ни одной истории",
+  "Room.TasksList.storyDescription": "Описание",
+  "Room.TasksList.storyTitle": "Название",
+  "Room.UsersList.players": "Игроки"
 }
