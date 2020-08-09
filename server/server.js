@@ -12,11 +12,15 @@ dotenv.config();
 
 mongoose.connect(
   process.env.DB_CONNECT,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
   () => console.log("DB connected")
 );
 
 app.use(express.json());
+
+const sendNotDeletedTasks = (tasks) => {
+  return tasks.filter((task) => !task.isDeleted);
+};
 
 const onConnect = (socket) => {
   socket.on("create-user", async (userName) => {
@@ -48,7 +52,7 @@ const onConnect = (socket) => {
   socket.on("get-tasks", async () => {
     const tasks = await Tasks.find();
 
-    io.emit("tasks-list", tasks);
+    io.emit("tasks-list", sendNotDeletedTasks(tasks));
   });
 
   socket.on("new-task", async ({ name, description }) => {
@@ -58,13 +62,26 @@ const onConnect = (socket) => {
     });
 
     try {
-      const savedTask = await task.save();
+      await task.save();
+
       const tasks = await Tasks.find();
 
-      io.emit("tasks-list", tasks);
+      io.emit("tasks-list", sendNotDeletedTasks(tasks));
     } catch (e) {
       io.emit("new-task-error", e);
     }
+  });
+
+  socket.on("remove-task", async (taskId) => {
+    await Tasks.findOneAndUpdate(
+      { _id: taskId },
+      { isDeleted: true },
+      { new: true }
+    );
+
+    const tasks = await Tasks.find();
+
+    io.emit("tasks-list", sendNotDeletedTasks(tasks));
   });
 };
 

@@ -1,17 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import {
-  Badge,
-  Button,
-  Col,
-  Form,
-  Input,
-  List,
-  Menu,
-  Modal,
-  Row,
-  Typography,
-} from 'antd';
+import { Badge, Button, Col, Form, Input, List, Menu, Modal, Row } from 'antd';
 import {
   ClockCircleOutlined,
   DeleteOutlined,
@@ -32,8 +21,6 @@ type StoriesListProps = {
   handleRemoveStory: (storyId: string) => void;
 };
 
-const { Title } = Typography;
-
 const StoriesList: React.FC<StoriesListProps> = ({
   stories,
   handleAddStory,
@@ -52,7 +39,7 @@ const StoriesList: React.FC<StoriesListProps> = ({
     toggleModal(false);
   };
 
-  const onAddTask = () => {
+  const onAddStory = () => {
     if (storyName.length) {
       handleAddStory({
         name: storyName,
@@ -66,11 +53,11 @@ const StoriesList: React.FC<StoriesListProps> = ({
   };
 
   return (
-    <div className="TasksList">
+    <div className="StoriesList">
       <Row>
         <Col span={18}>
           <Menu
-            className="TasksList__Menu"
+            className="StoriesList__Menu"
             mode="horizontal"
             selectedKeys={[activeMenuItem]}
             onClick={(e) => setActiveMenuItem(e.key as string)}
@@ -97,7 +84,7 @@ const StoriesList: React.FC<StoriesListProps> = ({
         </Col>
         <Col span={6}>
           <Button
-            className="TasksList__Button"
+            className="StoriesList__Button"
             type="link"
             icon={<PlusOutlined />}
             onClick={() => toggleModal(true)}
@@ -107,7 +94,7 @@ const StoriesList: React.FC<StoriesListProps> = ({
           <Modal
             visible={showModal}
             title={intl.formatMessage(messages.newStory)}
-            onOk={onAddTask}
+            onOk={onAddStory}
             onCancel={onCancel}
           >
             <Form layout="vertical">
@@ -149,7 +136,9 @@ const StoriesList: React.FC<StoriesListProps> = ({
           )}
         />
       ) : (
-        <Title level={4}>{intl.formatMessage(messages.noStories)}</Title>
+        <p className="StoriesList__NoStories">
+          {intl.formatMessage(messages.noStories)}
+        </p>
       )}
     </div>
   );

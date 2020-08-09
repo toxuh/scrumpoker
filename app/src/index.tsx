@@ -11,13 +11,11 @@ import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <I18nProvider>
-      <ToastProvider autoDismiss autoDismissTimeout={1500}>
-        <App />
-      </ToastProvider>
-    </I18nProvider>
-  </React.StrictMode>,
+  <I18nProvider>
+    <ToastProvider autoDismiss autoDismissTimeout={1500}>
+      <App />
+    </ToastProvider>
+  </I18nProvider>,
   document.getElementById('root'),
 );
 
