@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 
 import Buttons from './Buttons/Buttons';
 import Cardboard from './Cardboard/Cardboard';
-import Header from './Header';
+import Header from './Header/Header';
 import StoriesList from './StoriesList/StoriesList';
 import UsersList from './UsersList/UsersList';
 
