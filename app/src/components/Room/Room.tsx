@@ -19,7 +19,7 @@ type RoomProps = {
   handleRemoveTask: (taskId: string) => void;
 };
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 const Room: React.FC<RoomProps> = ({
   currentUser,
@@ -47,7 +47,6 @@ const Room: React.FC<RoomProps> = ({
           {isUserModerator && <Buttons />}
         </Sider>
       </Layout>
-      <Footer style={{ textAlign: 'center' }}>Footer</Footer>
     </Layout>
   );
 };

@@ -1,0 +1,12 @@
+.Cardboard {
+  background: #f0f2f5;
+  padding: 16px 16px 1px 16px;
+}
+
+.Cardboard .ant-card {
+  align-items: center;
+  display: flex;
+  font-size: 72px;
+  height: 235px;
+  justify-content: center;
+}
