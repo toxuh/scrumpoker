@@ -14,6 +14,8 @@ import './Room.css';
 type RoomProps = {
   currentUser: UserType;
   users: UserType[];
+  votes: string[];
+  handleVote: (points: number) => void;
   stories: StoryType[];
   handleAddTask: (task: { name: string; description: string }) => void;
   handleRemoveTask: (taskId: string) => void;
@@ -24,6 +26,8 @@ const { Content, Sider } = Layout;
 const Room: React.FC<RoomProps> = ({
   currentUser,
   users,
+  votes,
+  handleVote,
   stories,
   handleAddTask,
   handleRemoveTask,
@@ -35,7 +39,7 @@ const Room: React.FC<RoomProps> = ({
       <Header title="Hello!" />
       <Layout className="Room__Layout">
         <Content className="Room__Content">
-          <Cardboard />
+          <Cardboard handleVote={handleVote} />
           <StoriesList
             stories={stories}
             handleAddStory={handleAddTask}
@@ -43,7 +47,11 @@ const Room: React.FC<RoomProps> = ({
           />
         </Content>
         <Sider theme="light" className="Room__Sidebar" width={350}>
-          <UsersList isUserModerator={isUserModerator} users={users} />
+          <UsersList
+            votes={votes}
+            isUserModerator={isUserModerator}
+            users={users}
+          />
           {isUserModerator && <Buttons />}
         </Sider>
       </Layout>

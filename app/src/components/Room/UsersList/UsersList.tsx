@@ -9,11 +9,16 @@ import messages from './messages';
 type UsersListProps = {
   isUserModerator: boolean;
   users: UserType[];
+  votes: string[];
 };
 
 const { Title } = Typography;
 
-const UsersList: React.FC<UsersListProps> = ({ isUserModerator, users }) => {
+const UsersList: React.FC<UsersListProps> = ({
+  isUserModerator,
+  users,
+  votes,
+}) => {
   const intl = useIntl();
 
   return (
@@ -23,7 +28,9 @@ const UsersList: React.FC<UsersListProps> = ({ isUserModerator, users }) => {
         dataSource={users}
         renderItem={(user) => (
           <List.Item key={user._id}>
-            <Badge status="default" />
+            <Badge
+              status={votes.includes(user._id) ? 'processing' : 'default'}
+            />
             {user.name}
           </List.Item>
         )}

@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import Room from '../Room/Room';
 
 import useApp from './useApp';
 import useStories from './useStories';
 import useUsers from './useUsers';
+import useVotes from './useVotes';
 
 import './App.css';
 
@@ -18,6 +19,7 @@ function App() {
     listenUsers,
     users,
   } = useUsers(socket);
+  const { listenVotes, vote, votes } = useVotes(socket);
 
   useEffect(() => {
     if (Boolean(localUserId.length)) {
@@ -40,7 +42,15 @@ function App() {
   useEffect(() => {
     listenUsers(localUserId);
     listenStoriesList();
+    listenVotes();
   }, []);
+
+  const handleVote = useCallback(
+    (points) => {
+      vote({ user: currentUser, points });
+    },
+    [vote],
+  );
 
   return (
     <div className="App">
@@ -48,6 +58,8 @@ function App() {
         <Room
           currentUser={currentUser}
           users={users}
+          votes={votes}
+          handleVote={handleVote}
           stories={stories}
           socket={socket}
         />

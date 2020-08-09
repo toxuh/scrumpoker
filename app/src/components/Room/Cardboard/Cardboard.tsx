@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Card, Col, Row, Typography } from 'antd';
 
@@ -8,12 +8,25 @@ import './Cardboard.css';
 
 type CardboardProps = {
   storyTitle?: string;
+  handleVote: (points: number) => void;
 };
 
 const { Title } = Typography;
 
-const Cardboard: React.FC<CardboardProps> = ({ storyTitle }) => {
+const Cardboard: React.FC<CardboardProps> = ({ storyTitle, handleVote }) => {
   const intl = useIntl();
+
+  const [userVoted, setUserVoted] = useState(false);
+
+  const onCardClick = useCallback(
+    (points) => {
+      if (!userVoted) {
+        handleVote(points);
+        setUserVoted(true);
+      }
+    },
+    [userVoted, handleVote, setUserVoted],
+  );
 
   return (
     <div className="Cardboard">
@@ -23,30 +36,46 @@ const Cardboard: React.FC<CardboardProps> = ({ storyTitle }) => {
       <div className="Cardboard__Holder">
         <Row gutter={[16, 16]}>
           <Col span={6}>
-            <Card hoverable>0</Card>
+            <Card onClick={() => onCardClick(0)} hoverable>
+              0
+            </Card>
           </Col>
           <Col span={6}>
-            <Card hoverable>½</Card>
+            <Card onClick={() => onCardClick(0.5)} hoverable>
+              ½
+            </Card>
           </Col>
           <Col span={6}>
-            <Card hoverable>1</Card>
+            <Card onClick={() => onCardClick(1)} hoverable>
+              1
+            </Card>
           </Col>
           <Col span={6}>
-            <Card hoverable>2</Card>
+            <Card onClick={() => onCardClick(2)} hoverable>
+              2
+            </Card>
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
           <Col span={6}>
-            <Card hoverable>3</Card>
+            <Card onClick={() => onCardClick(3)} hoverable>
+              3
+            </Card>
           </Col>
           <Col span={6}>
-            <Card hoverable>5</Card>
+            <Card onClick={() => onCardClick(4)} hoverable>
+              5
+            </Card>
           </Col>
           <Col span={6}>
-            <Card hoverable>8</Card>
+            <Card onClick={() => onCardClick(5)} hoverable>
+              8
+            </Card>
           </Col>
           <Col span={6}>
-            <Card hoverable>?</Card>
+            <Card onClick={() => onCardClick(1000)} hoverable>
+              ?
+            </Card>
           </Col>
         </Row>
       </div>

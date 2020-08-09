@@ -23,6 +23,8 @@ const sendNotDeletedTasks = (tasks) => {
 };
 
 const connectedUsers = [];
+const usersVoted = [];
+const votes = [];
 
 const onConnect = (socket) => {
   socket.on("create-user", async (userName) => {
@@ -94,6 +96,12 @@ const onConnect = (socket) => {
     const tasks = await Tasks.find();
 
     io.emit("tasks-list", sendNotDeletedTasks(tasks));
+  });
+
+  socket.on("vote", async ({ user }) => {
+    usersVoted.push(user._id);
+
+    io.emit("votes-list", usersVoted);
   });
 };
 

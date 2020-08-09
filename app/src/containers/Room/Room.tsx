@@ -8,11 +8,20 @@ import { StoryType, UserType } from '../../types';
 type RoomTypes = {
   currentUser: UserType;
   users: UserType[];
+  votes: string[];
+  handleVote: (points: number) => void;
   socket: typeof Socket;
   stories: StoryType[];
 };
 
-const Room: React.FC<RoomTypes> = ({ currentUser, users, stories, socket }) => {
+const Room: React.FC<RoomTypes> = ({
+  currentUser,
+  users,
+  votes,
+  handleVote,
+  stories,
+  socket,
+}) => {
   const handleAddTask = useCallback((taskName) => {
     socket.emit('new-task', taskName);
   }, []);
@@ -25,6 +34,8 @@ const Room: React.FC<RoomTypes> = ({ currentUser, users, stories, socket }) => {
     <RoomComponent
       currentUser={currentUser}
       users={users}
+      votes={votes}
+      handleVote={handleVote}
       stories={stories}
       handleAddTask={handleAddTask}
       handleRemoveTask={handleRemoveTask}

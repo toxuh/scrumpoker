@@ -13,3 +13,8 @@ export type StoryType = {
   isActive: boolean;
   isDeleted: boolean;
 };
+
+export type VoteType = {
+  user: UserType;
+  points: number;
+};
