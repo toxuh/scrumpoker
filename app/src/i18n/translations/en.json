@@ -1,6 +1,10 @@
 {
   "Login.submit": "Submit",
   "Login.typeYourName": "Enter yor name",
+  "Room.Buttons.clearVotes": "Clear votes",
+  "Room.Buttons.flipCards": "Flip cards",
+  "Room.Buttons.resetTimer": "Reset timer",
+  "Room.Buttons.skipStory": "Skip story",
   "Room.TasksList.activeStories": "Active Stories",
   "Room.TasksList.addStory": "Add story",
   "Room.TasksList.allStories": "All Stories",

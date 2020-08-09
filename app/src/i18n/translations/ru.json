@@ -1,6 +1,10 @@
 {
   "Login.submit": "Отправить",
   "Login.typeYourName": "Введите свое имя",
+  "Room.Buttons.clearVotes": "Сбросить голоса",
+  "Room.Buttons.flipCards": "Перевернуть карточки",
+  "Room.Buttons.resetTimer": "Сбросить таймер",
+  "Room.Buttons.skipStory": "Пропустить историю",
   "Room.TasksList.activeStories": "Активные истории",
   "Room.TasksList.addStory": "Добавить историю",
   "Room.TasksList.allStories": "Все истории",

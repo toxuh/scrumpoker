@@ -11,7 +11,13 @@ import './App.css';
 function App() {
   const { localUserId, socket } = useApp();
   const { getStories, listenStoriesList, stories } = useStories(socket);
-  const { connectUser, disconnectUser, listenUsers, users } = useUsers(socket);
+  const {
+    connectUser,
+    currentUser,
+    disconnectUser,
+    listenUsers,
+    users,
+  } = useUsers(socket);
 
   useEffect(() => {
     if (Boolean(localUserId.length)) {
@@ -32,13 +38,20 @@ function App() {
   }, []);
 
   useEffect(() => {
-    listenUsers();
+    listenUsers(localUserId);
     listenStoriesList();
   }, []);
 
   return (
     <div className="App">
-      <Room users={users} stories={stories} socket={socket} />
+      {currentUser._id && (
+        <Room
+          currentUser={currentUser}
+          users={users}
+          stories={stories}
+          socket={socket}
+        />
+      )}
     </div>
   );
 }

@@ -1,18 +1,19 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Typography, List } from 'antd';
+import { Badge, Typography, List } from 'antd';
 
 import { UserType } from '../../../types';
 
 import messages from './messages';
 
 type UsersListProps = {
+  isUserModerator: boolean;
   users: UserType[];
 };
 
 const { Title } = Typography;
 
-const UsersList: React.FC<UsersListProps> = ({ users }) => {
+const UsersList: React.FC<UsersListProps> = ({ isUserModerator, users }) => {
   const intl = useIntl();
 
   return (
@@ -20,7 +21,12 @@ const UsersList: React.FC<UsersListProps> = ({ users }) => {
       <Title level={3}>{intl.formatMessage(messages.players)}</Title>
       <List
         dataSource={users}
-        renderItem={(user) => <List.Item key={user._id}>{user.name}</List.Item>}
+        renderItem={(user) => (
+          <List.Item key={user._id}>
+            <Badge status="default" />
+            {user.name}
+          </List.Item>
+        )}
       />
     </>
   );
