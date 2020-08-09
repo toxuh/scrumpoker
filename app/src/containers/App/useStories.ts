@@ -10,7 +10,7 @@ const useStories = (socket: typeof Socket) => {
     socket.on('tasks-list', (stories: StoryType[]) => {
       setStories(stories);
     });
-  }, []);
+  }, [socket]);
 
   const getStories = useCallback(() => {
     socket.emit('get-tasks');

@@ -10,7 +10,7 @@ const useUsers = (socket: typeof Socket) => {
     socket.on('users-connected', (users: UserType[]) => {
       setUser(users);
     });
-  }, []);
+  }, [socket]);
 
   const connectUser = useCallback(
     (localUserId) => {
