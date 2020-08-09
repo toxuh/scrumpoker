@@ -22,6 +22,8 @@ const sendNotDeletedTasks = (tasks) => {
   return tasks.filter((task) => !task.isDeleted);
 };
 
+const connectedUsers = [];
+
 const onConnect = (socket) => {
   socket.on("create-user", async (userName) => {
     const user = new Users({
@@ -46,7 +48,17 @@ const onConnect = (socket) => {
   socket.on("connect-user", async (userId) => {
     const user = await Users.findOne({ _id: userId });
 
-    socket.broadcast.emit("user-connected", user);
+    connectedUsers.push(user);
+
+    io.emit("users-connected", connectedUsers);
+  });
+
+  socket.on("disconnect-user", async (userId) => {
+    const userIndex = connectedUsers.findIndex((user) => user._id == userId);
+
+    connectedUsers.splice(userIndex, 1);
+
+    io.emit("users-connected", connectedUsers);
   });
 
   socket.on("get-tasks", async () => {

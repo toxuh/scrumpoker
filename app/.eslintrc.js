@@ -31,6 +31,8 @@ module.exports = {
     'react/boolean-prop-naming': 'error',
     'react/prop-types': 0,
 
+    'react-hooks/exhaustive-deps': 'off',
+
     'react/sort-prop-types': [
       'error',
       {
@@ -59,50 +61,6 @@ module.exports = {
 
   overrides: [
     {
-      // it is ok to import dev dependencies in `*.dev.js` files
-      files: ['**/*.dev.js?(x)', '**/*.dev.ts?(x)'],
-      rules: {
-        'import/no-extraneous-dependencies': 'off',
-      },
-    },
-    {
-      // it is ok to `require` modules in `*.env.js` files
-      // common use case:
-      //
-      // if (process.env.NODE_ENV === 'production') {
-      //   module.exports = require('./someModule.prod');
-      // } else {
-      //   module.exports = require('./someModule.dev');
-      // }
-      //
-      files: ['**/*.env.js?(x)', '**/*.env.ts?(x)'],
-      rules: {
-        'global-require': 'off',
-      },
-    },
-    {
-      // it is ok to `require` modules in polyfills
-      files: ['**/polyfills/*.js?(x)', '**/polyfills/*.ts?(x)'],
-      rules: {
-        'global-require': 'off',
-      },
-    },
-    {
-      // we use `immer` in our reducers
-      // so it is ok to ignore `default` case in `switch` statements
-      // and it is ok to write to `draft` param
-      files: ['**/reducer.js', '**/reducer.ts'],
-      rules: {
-        'default-case': 'off',
-        'no-param-reassign': [
-          'error',
-          {
-            ignorePropertyModificationsFor: ['draft'],
-          },
-        ],
-      },
-    },
-    {
       // conceptually constants, action types, actions,
       // selectors, typedefs, utils and components
       // are collections of exports
@@ -112,17 +70,8 @@ module.exports = {
         '**/constants.ts',
         '**/types.js',
         '**/types.ts',
-        '**/actions.js',
-        '**/actions.ts',
-        '**/selectors.js',
-        '**/selectors.ts',
-        '**/@typedefs.js',
-        '**/@typedefs.ts',
-        '**/utils/index.js',
         '**/utils/index.ts',
-        '**/components/index.js',
         '**/components/index.ts',
-        '**/containers/index.js',
         '**/containers/index.ts',
       ],
       rules: {
@@ -133,13 +82,7 @@ module.exports = {
       // we don't use our tests in the app source
       // so it is ok to import dev dependencies in `*.test.js?(x)` files
       // and props spreading is sometimes a handy feature in tests
-      files: [
-        '**/*.test.js?(x)',
-        '**/testReducer.js',
-        '**/*.test.ts?(x)',
-        '**/testReducer.ts',
-        '**/utils/tests/*',
-      ],
+      files: ['**/*.test.js?(x)', '**/*.test.ts?(x)', '**/utils/tests/*'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
         'react/jsx-props-no-spreading': 'off',

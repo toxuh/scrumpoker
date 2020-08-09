@@ -6,14 +6,14 @@ import { DeleteOutlined } from '@ant-design/icons';
 import AddStoryModal from './AddStoryModal';
 import Menu from './Menu';
 
-import { Story } from '../../../types';
+import { StoryType } from '../../../types';
 
 import messages from './messages';
 
 import './StoriesList.css';
 
 type StoriesListProps = {
-  stories: Story[];
+  stories: StoryType[];
   handleAddStory: (story: { name: string; description: string }) => void;
   handleRemoveStory: (storyId: string) => void;
 };
@@ -40,6 +40,7 @@ const StoriesList: React.FC<StoriesListProps> = ({
       />
       {Boolean(stories.length) ? (
         <List
+          className="StoriesList__List"
           dataSource={stories}
           renderItem={(story) => (
             <List.Item key={story._id}>

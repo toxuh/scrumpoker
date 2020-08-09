@@ -1,51 +1,44 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import Login from '../Login/Login';
 import Room from '../Room/Room';
 
 import useApp from './useApp';
-
-import { Story, UserResponseType } from '../../types';
+import useStories from './useStories';
+import useUsers from './useUsers';
 
 import './App.css';
 
 function App() {
-  const [user, setUser] = useState<UserResponseType>({} as UserResponseType);
-  const [stories, setStories] = useState<Story[]>([] as Story[]);
-
   const { localUserId, socket } = useApp();
-
-  const getUser = useCallback(() => {
-    socket.emit('get-user-name', localUserId);
-  }, [localUserId, socket]);
-
-  const getTasks = useCallback(() => {
-    socket.emit('get-tasks');
-  }, [socket]);
+  const { getStories, listenStoriesList, stories } = useStories(socket);
+  const { connectUser, disconnectUser, listenUsers, users } = useUsers(socket);
 
   useEffect(() => {
-    if (Boolean(localUserId)) {
-      getUser();
-      getTasks();
+    if (Boolean(localUserId.length)) {
+      connectUser(localUserId);
+      getStories();
+
+      window.addEventListener('beforeunload', () =>
+        disconnectUser(localUserId),
+      );
     }
+    return () => {
+      if (Boolean(localUserId.length)) {
+        window.removeEventListener('beforeunload', () =>
+          disconnectUser(localUserId),
+        );
+      }
+    };
   }, []);
 
   useEffect(() => {
-    socket.on('user-name', (user: UserResponseType) => {
-      setUser(user);
-    });
-    socket.on('tasks-list', (stories: Story[]) => {
-      setStories(stories);
-    });
+    listenUsers();
+    listenStoriesList();
   }, []);
 
   return (
     <div className="App">
-      {Boolean(user) ? (
-        <Room user={user} stories={stories} socket={socket} />
-      ) : (
-        <Login handleSetUser={setUser} />
-      )}
+      <Room users={users} stories={stories} socket={socket} />
     </div>
   );
 }

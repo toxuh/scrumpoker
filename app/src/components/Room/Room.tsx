@@ -7,13 +7,13 @@ import Header from './Header';
 import StoriesList from './StoriesList/StoriesList';
 import UsersList from './UsersList/UsersList';
 
-import { Story, UserResponseType } from '../../types';
+import { StoryType, UserType } from '../../types';
 
 import './Room.css';
 
 type RoomProps = {
-  user: UserResponseType;
-  stories: Story[];
+  users: UserType[];
+  stories: StoryType[];
   handleAddTask: (task: { name: string; description: string }) => void;
   handleRemoveTask: (taskId: string) => void;
 };
@@ -21,7 +21,7 @@ type RoomProps = {
 const { Content, Footer, Sider } = Layout;
 
 const Room: React.FC<RoomProps> = ({
-  user,
+  users,
   stories,
   handleAddTask,
   handleRemoveTask,
@@ -39,7 +39,7 @@ const Room: React.FC<RoomProps> = ({
           />
         </Content>
         <Sider theme="light" className="Room__Sidebar" width={350}>
-          <UsersList currentUser={user} users={[user]} />
+          <UsersList users={users} />
           <Buttons />
         </Sider>
       </Layout>

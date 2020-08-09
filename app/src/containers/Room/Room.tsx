@@ -3,15 +3,15 @@ import { Socket } from 'socket.io-client';
 
 import { Room as RoomComponent } from '../../components';
 
-import { Story, UserResponseType } from '../../types';
+import { StoryType, UserType } from '../../types';
 
 type RoomTypes = {
-  user: UserResponseType;
+  users: UserType[];
   socket: typeof Socket;
-  stories: Story[];
+  stories: StoryType[];
 };
 
-const Room: React.FC<RoomTypes> = ({ user, stories, socket }) => {
+const Room: React.FC<RoomTypes> = ({ users, stories, socket }) => {
   const handleAddTask = useCallback((taskName) => {
     socket.emit('new-task', taskName);
   }, []);
@@ -22,7 +22,7 @@ const Room: React.FC<RoomTypes> = ({ user, stories, socket }) => {
 
   return (
     <RoomComponent
-      user={user}
+      users={users}
       stories={stories}
       handleAddTask={handleAddTask}
       handleRemoveTask={handleRemoveTask}

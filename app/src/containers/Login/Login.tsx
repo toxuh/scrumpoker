@@ -4,10 +4,10 @@ import { Login as LoginComponent } from '../../components';
 
 import useLogin from './useLogin';
 
-import { UserResponseType } from '../../types';
+import { UserType } from '../../types';
 
 type LoginTypes = {
-  handleSetUser: Dispatch<SetStateAction<UserResponseType>>;
+  handleSetUser: Dispatch<SetStateAction<UserType>>;
 };
 
 const Login = ({ handleSetUser }: LoginTypes) => {

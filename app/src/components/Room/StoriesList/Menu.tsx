@@ -10,6 +10,8 @@ import {
 
 import messages from './messages';
 
+import './Menu.css';
+
 type MenuProps = {
   activeMenuItem: string;
   setActiveMenuItem: (key: string) => void;
@@ -33,7 +35,7 @@ const Menu: React.FC<MenuProps> = ({
     <Row>
       <Col span={18}>
         <AntMenu
-          className="StoriesList__Menu"
+          className="Menu"
           mode="horizontal"
           selectedKeys={[activeMenuItem]}
           onClick={(e) => setActiveMenuItem(e.key as string)}
@@ -54,7 +56,7 @@ const Menu: React.FC<MenuProps> = ({
       </Col>
       <Col span={6}>
         <Button
-          className="StoriesList__Button"
+          className="AddStoryButton"
           type="link"
           icon={<PlusOutlined />}
           onClick={() => toggleModal(true)}

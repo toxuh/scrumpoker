@@ -4,7 +4,7 @@ import { LS_KEY } from '../../constants';
 
 const useApp = () => {
   const socket = io.connect('http://localhost:3001');
-  const localUserId = localStorage.getItem(LS_KEY);
+  const localUserId = localStorage.getItem(LS_KEY) || '';
 
   return { localUserId, socket };
 };

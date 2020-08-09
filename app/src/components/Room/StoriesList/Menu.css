@@ -1,0 +1,9 @@
+.Menu {
+  margin-bottom: 10px !important;
+}
+
+.AddStoryButton {
+  position: absolute !important;
+  right: 0;
+  top: 7px;
+}

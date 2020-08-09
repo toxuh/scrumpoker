@@ -1,10 +1,10 @@
-export type UserResponseType = {
+export type UserType = {
   _id: string;
   name: string;
   role: string;
 };
 
-export type Story = {
+export type StoryType = {
   _id: string;
   createdAt: Date;
   name: string;
@@ -12,9 +12,4 @@ export type Story = {
   points: number | null;
   isActive: boolean;
   isDeleted: boolean;
-};
-
-export type RoomType = {
-  users: UserResponseType[];
-  tasks: Story[];
 };

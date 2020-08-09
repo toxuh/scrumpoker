@@ -2,13 +2,12 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { Typography, List } from 'antd';
 
-import { UserResponseType } from '../../../types';
+import { UserType } from '../../../types';
 
 import messages from './messages';
 
 type UsersListProps = {
-  currentUser: UserResponseType;
-  users: UserResponseType[];
+  users: UserType[];
 };
 
 const { Title } = Typography;

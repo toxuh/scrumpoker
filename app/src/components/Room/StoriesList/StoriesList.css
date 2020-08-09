@@ -2,14 +2,8 @@
   border-top: 1px solid rgba(193, 226, 243, 0.75);
 }
 
-.StoriesList__Menu {
-  margin-bottom: 10px !important;
-}
-
-.StoriesList__Button {
-  position: absolute !important;
-  right: 0;
-  top: 7px;
+.StoriesList__List {
+  padding: 0 5px 0 20px !important;
 }
 
 .StoriesList__NoStories {
