@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import { Room as RoomComponent } from '../../components';
@@ -22,6 +22,16 @@ const Room: React.FC<RoomTypes> = ({
   stories,
   socket,
 }) => {
+  const [activeStory, setActiveStory] = useState<StoryType | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    if (Boolean(stories.length)) {
+      setActiveStory(stories[0]);
+    }
+  }, [stories]);
+
   const handleAddTask = useCallback((taskName) => {
     socket.emit('new-task', taskName);
   }, []);
@@ -32,6 +42,7 @@ const Room: React.FC<RoomTypes> = ({
 
   return (
     <RoomComponent
+      activeStory={activeStory}
       currentUser={currentUser}
       users={users}
       votes={votes}

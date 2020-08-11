@@ -12,6 +12,7 @@ import { StoryType, UserType } from '../../types';
 import './Room.css';
 
 type RoomProps = {
+  activeStory?: StoryType;
   currentUser: UserType;
   users: UserType[];
   votes: string[];
@@ -24,6 +25,7 @@ type RoomProps = {
 const { Content, Sider } = Layout;
 
 const Room: React.FC<RoomProps> = ({
+  activeStory,
   currentUser,
   users,
   votes,
@@ -39,7 +41,7 @@ const Room: React.FC<RoomProps> = ({
       <Header title="Hello!" />
       <Layout className="Room__Layout">
         <Content className="Room__Content">
-          <Cardboard handleVote={handleVote} />
+          <Cardboard storyTitle={activeStory?.name} handleVote={handleVote} />
           <StoriesList
             stories={stories}
             handleAddStory={handleAddTask}
