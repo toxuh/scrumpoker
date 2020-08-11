@@ -54,8 +54,6 @@ const onConnect = (socket) => {
       connectedUsers.push(user);
     }
 
-    console.log(connectedUsers);
-
     io.emit("users-connected", connectedUsers);
   });
 
