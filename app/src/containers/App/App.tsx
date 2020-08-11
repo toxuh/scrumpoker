@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
+import Login from '../Login/Login';
 import Room from '../Room/Room';
 
 import useApp from './useApp';
@@ -16,7 +17,9 @@ function App() {
     connectUser,
     currentUser,
     disconnectUser,
+    listenUserRegistered,
     listenUsers,
+    registerUser,
     users,
   } = useUsers(socket);
   const { listenVotes, vote, votes } = useVotes(socket);
@@ -40,10 +43,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    listenUsers(localUserId);
+    listenUserRegistered();
     listenStoriesList();
     listenVotes();
   }, []);
+
+  useEffect(() => {
+    listenUsers(localUserId);
+  });
 
   const handleVote = useCallback(
     (points) => {
@@ -54,15 +61,21 @@ function App() {
 
   return (
     <div className="App">
-      {currentUser._id && (
-        <Room
-          currentUser={currentUser}
-          users={users}
-          votes={votes}
-          handleVote={handleVote}
-          stories={stories}
-          socket={socket}
-        />
+      {Boolean(localUserId) ? (
+        <>
+          {currentUser?._id && (
+            <Room
+              currentUser={currentUser}
+              users={users}
+              votes={votes}
+              handleVote={handleVote}
+              stories={stories}
+              socket={socket}
+            />
+          )}
+        </>
+      ) : (
+        <Login handleCreateUser={registerUser} />
       )}
     </div>
   );

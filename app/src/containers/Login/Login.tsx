@@ -1,19 +1,13 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 
 import { Login as LoginComponent } from '../../components';
 
-import useLogin from './useLogin';
-
-import { UserType } from '../../types';
-
 type LoginTypes = {
-  handleSetUser: Dispatch<SetStateAction<UserType>>;
+  handleCreateUser: (name: string) => void;
 };
 
-const Login = ({ handleSetUser }: LoginTypes) => {
-  const { createUser } = useLogin(handleSetUser);
-
-  return <LoginComponent handleCreateUser={createUser} />;
+const Login = ({ handleCreateUser }: LoginTypes) => {
+  return <LoginComponent handleCreateUser={handleCreateUser} />;
 };
 
 export default Login;

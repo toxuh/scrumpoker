@@ -4,6 +4,8 @@ import { Form, Input, Button, Layout } from 'antd';
 
 import messages from './messages';
 
+import './Login.css';
+
 type LoginTypes = {
   handleCreateUser: (name: string) => void;
 };
@@ -15,9 +17,9 @@ const Login = ({ handleCreateUser }: LoginTypes) => {
   const [userName, setUserName] = useState('');
 
   return (
-    <Content>
-      <Form>
-        <Form.Item label={`{intl.formatMessage(messages.typeYourName)}:`}>
+    <Content className="Login">
+      <Form layout="vertical">
+        <Form.Item label={`${intl.formatMessage(messages.typeYourName)}:`}>
           <Input
             type="text"
             onChange={({ target: { value } }) => setUserName(value)}
