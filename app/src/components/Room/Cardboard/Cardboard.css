@@ -10,3 +10,8 @@
   height: 235px;
   justify-content: center;
 }
+
+.Cardboard .Card.active {
+  color: #fff;
+  background: #62a5d9;
+}
