@@ -35,22 +35,26 @@ const onConnect = (socket) => {
     try {
       const savedUser = await user.save();
 
-      io.emit("user-saved", savedUser);
+      socket.emit("user-saved", savedUser);
     } catch (e) {
-      io.emit("user-saved", { error: e });
+      socket.emit("user-saved", { error: e });
     }
   });
 
   socket.on("get-user-name", async (userId) => {
     const user = await Users.findOne({ _id: userId });
 
-    io.emit("user-name", user);
+    socket.emit("user-name", user);
   });
 
   socket.on("connect-user", async (userId) => {
     const user = await Users.findOne({ _id: userId });
 
-    connectedUsers.push(user);
+    if (!Boolean(connectedUsers.filter((user) => user._id == userId).length)) {
+      connectedUsers.push(user);
+    }
+
+    console.log(connectedUsers);
 
     io.emit("users-connected", connectedUsers);
   });
