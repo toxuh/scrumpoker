@@ -22,10 +22,8 @@ const Cardboard: React.FC<CardboardProps> = ({ storyTitle, handleVote }) => {
 
   const onCardClick = useCallback(
     (points) => {
-      if (!userVote) {
-        handleVote(points);
-        setUserVote(points);
-      }
+      handleVote(points);
+      setUserVote(points);
     },
     [userVote, handleVote, setUserVote],
   );

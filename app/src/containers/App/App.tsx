@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import Login from '../Login/Login';
 import Room from '../Room/Room';
@@ -53,8 +53,8 @@ function App() {
   });
 
   const handleVote = useCallback(
-    (points) => {
-      vote({ user: currentUser, points });
+    ({ storyId, points }) => {
+      vote({ userId: currentUser._id, points, storyId });
     },
     [vote],
   );

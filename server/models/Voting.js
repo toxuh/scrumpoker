@@ -1,12 +1,26 @@
 const mongoose = require("mongoose");
 
 const votingSchema = new mongoose.Schema({
-  story: mongoose.Schema.Types.Mixed,
+  storyId: {
+    type: String,
+    required: true,
+  },
   points: {
     type: Number,
     default: 0,
   },
-  voters: [mongoose.Schema.Types.Mixed],
+  voters: [
+    {
+      userId: {
+        type: String,
+        required: true,
+      },
+      points: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   createdAt: { type: Date, default: Date.now },
 });
 

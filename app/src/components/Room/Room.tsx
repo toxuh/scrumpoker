@@ -16,7 +16,7 @@ type RoomProps = {
   currentUser: UserType;
   users: UserType[];
   votes: string[];
-  handleVote: (points: number) => void;
+  handleVote: ({}) => void;
   stories: StoryType[];
   handleAddTask: (task: { name: string; description: string }) => void;
   handleRemoveTask: (taskId: string) => void;
@@ -41,7 +41,15 @@ const Room: React.FC<RoomProps> = ({
       <Header title="Hello!" />
       <Layout className="Room__Layout">
         <Content className="Room__Content">
-          <Cardboard storyTitle={activeStory?.name} handleVote={handleVote} />
+          <Cardboard
+            storyTitle={activeStory?.name}
+            handleVote={(points) =>
+              handleVote({
+                storyId: activeStory?._id,
+                points,
+              })
+            }
+          />
           <StoriesList
             stories={stories}
             handleAddStory={handleAddTask}

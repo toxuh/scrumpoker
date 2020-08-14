@@ -9,7 +9,7 @@ type RoomTypes = {
   currentUser: UserType;
   users: UserType[];
   votes: string[];
-  handleVote: (points: number) => void;
+  handleVote: ({}) => void;
   socket: typeof Socket;
   stories: StoryType[];
 };

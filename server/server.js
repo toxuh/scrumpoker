@@ -7,6 +7,7 @@ const io = require("socket.io")(server);
 
 const Users = require("./models/User");
 const Tasks = require("./models/Task");
+const Votes = require("./models/Voting");
 
 dotenv.config();
 
@@ -22,9 +23,25 @@ const sendNotDeletedTasks = (tasks) => {
   return tasks.filter((task) => !task.isDeleted);
 };
 
+const editOrPushVote = (array, obj) => {
+  const userIndex = array.findIndex((e) => {
+    return e.userId === obj.userId;
+  });
+
+  if (userIndex !== -1) {
+    array[userIndex].points = obj.points;
+  } else {
+    array.push(obj);
+  }
+
+  return array;
+};
+
+const flattenVotesList = (array) => {
+  return array.map((vote) => vote.userId);
+};
+
 const connectedUsers = [];
-const usersVoted = [];
-const votes = [];
 
 const onConnect = (socket) => {
   socket.on("create-user", async (userName) => {
@@ -100,10 +117,28 @@ const onConnect = (socket) => {
     io.emit("tasks-list", sendNotDeletedTasks(tasks));
   });
 
-  socket.on("vote", async ({ user }) => {
-    usersVoted.push(user._id);
+  socket.on("vote", async ({ storyId, userId, points }) => {
+    await Votes.findOne({ storyId }, async (err, doc) => {
+      if (err) {
+        throw new Error(err);
+      }
 
-    io.emit("votes-list", usersVoted);
+      if (!doc) {
+        const vote = new Votes({
+          storyId,
+          voters: [{ userId, points }],
+        });
+
+        const savedVote = await vote.save();
+
+        io.emit("votes-list", flattenVotesList(savedVote.voters));
+      } else {
+        doc.voters = editOrPushVote(doc.voters, { userId, points });
+        await doc.save();
+
+        io.emit("votes-list", flattenVotesList(doc.voters));
+      }
+    });
   });
 };
 
