@@ -22,8 +22,8 @@ Start application:
 
 ### Roadmap
 
-~~* stop voting when all connected users voted~~
-~~* share results on vote stop~~
+* ~~stop voting when all connected users voted~~
+* ~~share results on vote stop~~
 * get story points based on users votes
 * clear user votes on button press (moderator)
 * close votes on button press (moderator)
