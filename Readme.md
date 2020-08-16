@@ -1,4 +1,4 @@
-Agile Poker app.
+## Agile Poker app.
 
 Server side Nodejs, application - React + typescript.
 
