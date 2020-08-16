@@ -1,8 +1,8 @@
-Poker app.
+Agile Poker app.
 
-Server side Nodejs, application - React + typescript
+Server side Nodejs, application - React + typescript.
 
-In deep development
+Usage of Node.js + Javascript because of development speed. Backend will be ported on Python in future.
 
 ### Start
 
