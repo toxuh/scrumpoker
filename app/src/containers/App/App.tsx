@@ -22,7 +22,9 @@ function App() {
     registerUser,
     users,
   } = useUsers(socket);
-  const { listenVotes, vote, votes } = useVotes(socket);
+  const { listenEndVoting, listenVotes, vote, votes, voteEnded } = useVotes(
+    socket,
+  );
 
   useEffect(() => {
     if (Boolean(localUserId.length)) {
@@ -44,13 +46,11 @@ function App() {
 
   useEffect(() => {
     listenUserRegistered();
+    listenUsers(localUserId);
     listenStoriesList();
     listenVotes();
+    listenEndVoting();
   }, []);
-
-  useEffect(() => {
-    listenUsers(localUserId);
-  });
 
   const handleVote = useCallback(
     ({ storyId, points }) => {
@@ -68,6 +68,7 @@ function App() {
               currentUser={currentUser}
               users={users}
               votes={votes}
+              voteEnded={voteEnded}
               handleVote={handleVote}
               stories={stories}
               socket={socket}

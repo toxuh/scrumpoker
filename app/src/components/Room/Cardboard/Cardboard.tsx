@@ -11,6 +11,7 @@ import './Cardboard.css';
 type CardboardProps = {
   storyTitle?: string;
   isActive: boolean;
+  voteEnded: boolean;
   handleVote: (points: number) => void;
 };
 
@@ -20,6 +21,7 @@ const Cardboard: React.FC<CardboardProps> = ({
   storyTitle,
   handleVote,
   isActive,
+  voteEnded,
 }) => {
   const intl = useIntl();
 
@@ -27,7 +29,7 @@ const Cardboard: React.FC<CardboardProps> = ({
 
   const onCardClick = useCallback(
     (points) => {
-      if (isActive) {
+      if (isActive && !voteEnded) {
         handleVote(points);
         setUserVote(points);
       }

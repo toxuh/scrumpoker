@@ -38,7 +38,7 @@ const editOrPushVote = (array, obj) => {
 };
 
 const flattenVotesList = (array) => {
-  return array.map((vote) => vote.userId);
+  return array.map(({ userId }) => ({ userId }));
 };
 
 const connectedUsers = [];
@@ -131,12 +131,22 @@ const onConnect = (socket) => {
 
         const savedVote = await vote.save();
 
-        io.emit("votes-list", flattenVotesList(savedVote.voters));
+        if (savedVote.voters.length === connectedUsers.length) {
+          io.emit("votes-list", savedVote.voters);
+          io.emit("end-vote", true);
+        } else {
+          io.emit("votes-list", flattenVotesList(savedVote.voters));
+        }
       } else {
         doc.voters = editOrPushVote(doc.voters, { userId, points });
         await doc.save();
 
-        io.emit("votes-list", flattenVotesList(doc.voters));
+        if (doc.voters.length === connectedUsers.length) {
+          io.emit("votes-list", doc.voters);
+          io.emit("end-vote", true);
+        } else {
+          io.emit("votes-list", flattenVotesList(doc.voters));
+        }
       }
     });
   });

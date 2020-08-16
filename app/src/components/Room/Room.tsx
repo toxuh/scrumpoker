@@ -7,7 +7,7 @@ import Header from './Header/Header';
 import StoriesList from './StoriesList/StoriesList';
 import UsersList from './UsersList/UsersList';
 
-import { StoryType, UserType } from '../../types';
+import { StoryType, UserType, VoteType } from '../../types';
 
 import './Room.css';
 
@@ -15,7 +15,8 @@ type RoomProps = {
   activeStory?: StoryType;
   currentUser: UserType;
   users: UserType[];
-  votes: string[];
+  votes: VoteType[];
+  voteEnded: boolean;
   handleVote: ({}) => void;
   stories: StoryType[];
   handleAddTask: (task: { name: string; description: string }) => void;
@@ -29,6 +30,7 @@ const Room: React.FC<RoomProps> = ({
   currentUser,
   users,
   votes,
+  voteEnded,
   handleVote,
   stories,
   handleAddTask,
@@ -37,35 +39,36 @@ const Room: React.FC<RoomProps> = ({
   const isUserModerator = currentUser.role === 'moderator';
 
   return (
-    <Layout>
-      <Header title="Hello!" />
-      <Layout className="Room__Layout">
-        <Content className="Room__Content">
-          <Cardboard
-            storyTitle={activeStory?.name}
-            isActive={Boolean(activeStory)}
-            handleVote={(points) =>
-              handleVote({
-                storyId: activeStory?._id,
-                points,
-              })
-            }
-          />
-          <StoriesList
-            stories={stories}
-            handleAddStory={handleAddTask}
-            handleRemoveStory={handleRemoveTask}
-          />
-        </Content>
-        <Sider theme="light" className="Room__Sidebar" width={350}>
-          <UsersList
-            votes={votes}
-            isUserModerator={isUserModerator}
-            users={users}
-          />
-          {isUserModerator && <Buttons />}
-        </Sider>
-      </Layout>
+    <Layout className="Room__Layout">
+      <Content className="Room__Content">
+        <Cardboard
+          storyTitle={activeStory?.name}
+          isActive={Boolean(activeStory)}
+          voteEnded={voteEnded}
+          handleVote={(points) =>
+            handleVote({
+              storyId: activeStory?._id,
+              points,
+            })
+          }
+        />
+        <StoriesList
+          stories={stories}
+          handleAddStory={handleAddTask}
+          handleRemoveStory={handleRemoveTask}
+        />
+      </Content>
+      <Sider theme="light" className="Room__Sidebar" width={350}>
+        <UsersList
+          votes={votes}
+          voteEnded={voteEnded}
+          isUserModerator={isUserModerator}
+          users={users}
+        />
+        {isUserModerator && (
+          <Buttons voteEnded={voteEnded} noVotes={Boolean(votes.length)} />
+        )}
+      </Sider>
     </Layout>
   );
 };

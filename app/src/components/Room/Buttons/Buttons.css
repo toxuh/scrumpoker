@@ -2,6 +2,7 @@
   margin-top: 15px;
 }
 
-.Buttons__Col {
-  text-align: center;
+.Buttons button {
+  margin-bottom: 10px;
+  width: 100%;
 }

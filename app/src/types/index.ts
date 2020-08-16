@@ -15,6 +15,6 @@ export type StoryType = {
 };
 
 export type VoteType = {
-  user: UserType;
-  points: number;
+  userId: string;
+  points?: number;
 };

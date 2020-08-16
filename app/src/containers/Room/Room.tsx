@@ -3,12 +3,13 @@ import { Socket } from 'socket.io-client';
 
 import { Room as RoomComponent } from '../../components';
 
-import { StoryType, UserType } from '../../types';
+import { StoryType, UserType, VoteType } from '../../types';
 
 type RoomTypes = {
   currentUser: UserType;
   users: UserType[];
-  votes: string[];
+  votes: VoteType[];
+  voteEnded: boolean;
   handleVote: ({}) => void;
   socket: typeof Socket;
   stories: StoryType[];
@@ -18,6 +19,7 @@ const Room: React.FC<RoomTypes> = ({
   currentUser,
   users,
   votes,
+  voteEnded,
   handleVote,
   stories,
   socket,
@@ -46,6 +48,7 @@ const Room: React.FC<RoomTypes> = ({
       currentUser={currentUser}
       users={users}
       votes={votes}
+      voteEnded={voteEnded}
       handleVote={handleVote}
       stories={stories}
       handleAddTask={handleAddTask}

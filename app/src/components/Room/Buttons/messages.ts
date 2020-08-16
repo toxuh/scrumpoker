@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'Room.Buttons.flipCards',
     defaultMessage: 'Flip cards',
   },
+  stopVoting: {
+    id: 'Room.Buttons.stopVoting',
+    defaultMessage: 'Next story',
+  },
 });

@@ -1,0 +1,13 @@
+.UsersList {
+  border: 1px solid #d0d0d0;
+}
+
+.UsersList .ant-list-item {
+  padding-left: 10px;
+  position: relative;
+}
+
+.UsersList .ant-tag {
+  position: absolute;
+  right: 0;
+}
