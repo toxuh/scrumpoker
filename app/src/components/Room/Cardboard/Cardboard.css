@@ -1,6 +1,17 @@
 .Cardboard__Holder {
   background: #f0f2f5;
   padding: 16px 16px 1px 16px;
+  position: relative;
+}
+
+.Cardboard__Blocker {
+  background: rgba(255,255,255,.7);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
 }
 
 .Cardboard .ant-card {

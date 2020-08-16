@@ -10,20 +10,27 @@ import './Cardboard.css';
 
 type CardboardProps = {
   storyTitle?: string;
+  isActive: boolean;
   handleVote: (points: number) => void;
 };
 
 const { Title } = Typography;
 
-const Cardboard: React.FC<CardboardProps> = ({ storyTitle, handleVote }) => {
+const Cardboard: React.FC<CardboardProps> = ({
+  storyTitle,
+  handleVote,
+  isActive,
+}) => {
   const intl = useIntl();
 
   const [userVote, setUserVote] = useState<number | boolean>(false);
 
   const onCardClick = useCallback(
     (points) => {
-      handleVote(points);
-      setUserVote(points);
+      if (isActive) {
+        handleVote(points);
+        setUserVote(points);
+      }
     },
     [userVote, handleVote, setUserVote],
   );
@@ -34,6 +41,7 @@ const Cardboard: React.FC<CardboardProps> = ({ storyTitle, handleVote }) => {
         {storyTitle || intl.formatMessage(messages.noActiveStory)}
       </Title>
       <div className="Cardboard__Holder">
+        {!isActive && <div className="Cardboard__Blocker" />}
         <Row gutter={[16, 16]}>
           {CARDS_VALUES.map((point) => (
             <Col span={6} key={point}>

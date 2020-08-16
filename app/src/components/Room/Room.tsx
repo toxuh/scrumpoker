@@ -43,6 +43,7 @@ const Room: React.FC<RoomProps> = ({
         <Content className="Room__Content">
           <Cardboard
             storyTitle={activeStory?.name}
+            isActive={Boolean(activeStory)}
             handleVote={(points) =>
               handleVote({
                 storyId: activeStory?._id,
