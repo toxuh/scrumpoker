@@ -9,10 +9,11 @@ type RoomTypes = {
   currentUser: UserType;
   users: UserType[];
   votes: VoteType[];
+  stories: StoryType[];
   voteEnded: boolean;
   handleVote: ({}) => void;
+  clearVotes: ({}) => void;
   socket: typeof Socket;
-  stories: StoryType[];
 };
 
 const Room: React.FC<RoomTypes> = ({
@@ -21,6 +22,7 @@ const Room: React.FC<RoomTypes> = ({
   votes,
   voteEnded,
   handleVote,
+  clearVotes,
   stories,
   socket,
 }) => {
@@ -53,6 +55,7 @@ const Room: React.FC<RoomTypes> = ({
       stories={stories}
       handleAddTask={handleAddTask}
       handleRemoveTask={handleRemoveTask}
+      handleClearVotes={clearVotes}
     />
   );
 };

@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Layout } from 'antd';
 
 import Buttons from './Buttons/Buttons';
 import Cardboard from './Cardboard/Cardboard';
-import Header from './Header/Header';
 import StoriesList from './StoriesList/StoriesList';
 import UsersList from './UsersList/UsersList';
 
@@ -21,6 +20,7 @@ type RoomProps = {
   stories: StoryType[];
   handleAddTask: (task: { name: string; description: string }) => void;
   handleRemoveTask: (taskId: string) => void;
+  handleClearVotes: ({}) => void;
 };
 
 const { Content, Sider } = Layout;
@@ -35,8 +35,26 @@ const Room: React.FC<RoomProps> = ({
   stories,
   handleAddTask,
   handleRemoveTask,
+  handleClearVotes,
 }) => {
   const isUserModerator = currentUser.role === 'moderator';
+
+  const [userVote, setUserVote] = useState<string | boolean>(false);
+
+  const onCardClick = useCallback(
+    (vote) => {
+      if (Boolean(activeStory) && !voteEnded) {
+        handleVote(vote);
+        setUserVote(vote.points);
+      }
+    },
+    [userVote, handleVote, setUserVote, activeStory],
+  );
+
+  const onClearVotes = () => {
+    handleClearVotes({ storyId: activeStory?._id });
+    setUserVote(false);
+  };
 
   return (
     <Layout className="Room__Layout">
@@ -44,11 +62,11 @@ const Room: React.FC<RoomProps> = ({
         <Cardboard
           storyTitle={activeStory?.name}
           isActive={Boolean(activeStory)}
-          voteEnded={voteEnded}
-          handleVote={(points) =>
-            handleVote({
+          userVote={userVote}
+          onCardClick={(point) =>
+            onCardClick({
               storyId: activeStory?._id,
-              points,
+              points: point,
             })
           }
         />
@@ -66,7 +84,11 @@ const Room: React.FC<RoomProps> = ({
           users={users}
         />
         {isUserModerator && (
-          <Buttons voteEnded={voteEnded} noVotes={Boolean(votes.length)} />
+          <Buttons
+            voteEnded={voteEnded}
+            noVotes={Boolean(votes.length)}
+            handleClearVotes={onClearVotes}
+          />
         )}
       </Sider>
     </Layout>

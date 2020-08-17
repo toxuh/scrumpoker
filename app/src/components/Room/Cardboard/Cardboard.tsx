@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
 import { Card, Col, Row, Typography } from 'antd';
 
@@ -11,31 +11,19 @@ import './Cardboard.css';
 type CardboardProps = {
   storyTitle?: string;
   isActive: boolean;
-  voteEnded: boolean;
-  handleVote: (points: number) => void;
+  userVote: string | boolean;
+  onCardClick: (point: string) => void;
 };
 
 const { Title } = Typography;
 
 const Cardboard: React.FC<CardboardProps> = ({
   storyTitle,
-  handleVote,
   isActive,
-  voteEnded,
+  userVote,
+  onCardClick,
 }) => {
   const intl = useIntl();
-
-  const [userVote, setUserVote] = useState<number | boolean>(false);
-
-  const onCardClick = useCallback(
-    (points) => {
-      if (isActive && !voteEnded) {
-        handleVote(points);
-        setUserVote(points);
-      }
-    },
-    [userVote, handleVote, setUserVote],
-  );
 
   return (
     <div className="Cardboard">
@@ -48,11 +36,13 @@ const Cardboard: React.FC<CardboardProps> = ({
           {CARDS_VALUES.map((point) => (
             <Col span={6} key={point}>
               <Card
-                className={`Card${userVote === point ? ' active' : ''}`}
+                className={`Card${
+                  userVote.toString() === point.toString() ? ' active' : ''
+                }`}
                 onClick={() => onCardClick(point)}
                 hoverable
               >
-                {point === 0.5 ? '½' : point}
+                {point === '0.5' ? '½' : point}
               </Card>
             </Col>
           ))}

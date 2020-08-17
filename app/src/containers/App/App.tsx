@@ -22,9 +22,14 @@ function App() {
     registerUser,
     users,
   } = useUsers(socket);
-  const { listenEndVoting, listenVotes, vote, votes, voteEnded } = useVotes(
-    socket,
-  );
+  const {
+    clearVotes,
+    listenEndVoting,
+    listenVotes,
+    vote,
+    votes,
+    voteEnded,
+  } = useVotes(socket);
 
   useEffect(() => {
     if (Boolean(localUserId.length)) {
@@ -68,9 +73,10 @@ function App() {
               currentUser={currentUser}
               users={users}
               votes={votes}
+              stories={stories}
               voteEnded={voteEnded}
               handleVote={handleVote}
-              stories={stories}
+              clearVotes={clearVotes}
               socket={socket}
             />
           )}

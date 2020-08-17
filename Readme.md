@@ -25,7 +25,7 @@ Start application:
 * ~~stop voting when all connected users voted~~
 * ~~share results on vote stop~~
 * get story points based on users votes
-* clear user votes on button press (moderator)
+* ~~clear user votes on button press (moderator)~~
 * close votes on button press (moderator)
 * go to next story on button press (moderator)
 * timer of vote in app

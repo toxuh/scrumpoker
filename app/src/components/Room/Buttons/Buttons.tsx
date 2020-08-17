@@ -16,9 +16,14 @@ type ButtonsProps = {
   noVotes: boolean;
   storyPoints?: string;
   voteEnded: boolean;
+  handleClearVotes: ({}) => void;
 };
 
-const Buttons: React.FC<ButtonsProps> = ({ noVotes, voteEnded }) => {
+const Buttons: React.FC<ButtonsProps> = ({
+  noVotes,
+  voteEnded,
+  handleClearVotes,
+}) => {
   const intl = useIntl();
 
   return (
@@ -47,6 +52,7 @@ const Buttons: React.FC<ButtonsProps> = ({ noVotes, voteEnded }) => {
           title={intl.formatMessage(messages.clearVotes)}
           icon={<ClearOutlined />}
           disabled={!noVotes}
+          onClick={handleClearVotes}
         >
           {intl.formatMessage(messages.clearVotes)}
         </Button>

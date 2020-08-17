@@ -14,8 +14,8 @@ const useVotes = (socket: typeof Socket) => {
   }, [socket]);
 
   const listenEndVoting = useCallback(() => {
-    socket.on('end-vote', () => {
-      setVoteEnded(true);
+    socket.on('end-vote', (condition: boolean) => {
+      setVoteEnded(condition);
     });
   }, [socket]);
 
@@ -26,7 +26,14 @@ const useVotes = (socket: typeof Socket) => {
     [socket],
   );
 
-  return { listenEndVoting, listenVotes, vote, votes, voteEnded };
+  const clearVotes = useCallback(
+    (payload) => {
+      socket.emit('clear-votes', payload);
+    },
+    [socket],
+  );
+
+  return { clearVotes, listenEndVoting, listenVotes, vote, votes, voteEnded };
 };
 
 export default useVotes;

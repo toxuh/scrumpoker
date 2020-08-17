@@ -150,6 +150,21 @@ const onConnect = (socket) => {
       }
     });
   });
+
+  socket.on("clear-votes", async ({ storyId }) => {
+    await Votes.findOne({ storyId }, async (err, doc) => {
+      if (err) {
+        throw new Error(err);
+      }
+
+      doc.voters = [];
+
+      await doc.save();
+
+      io.emit("votes-list", doc.voters);
+      io.emit("end-vote", false);
+    });
+  });
 };
 
 io.on("connection", onConnect);
