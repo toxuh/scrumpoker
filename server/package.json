@@ -1,20 +1,29 @@
 {
-  "name": "webzoom",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon server.js"
-  },
+  "name": "agile-poker",
+  "version": "0.0.1a",
+  "description": "Agile poker application",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/toxuh/webzoom.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "poker",
+    "agile",
+    "application",
+    "frontend",
+    "react",
+    "typescript"
+  ],
   "bugs": {
-    "url": "https://github.com/toxuh/webzoom/issues"
+    "url": "https://github.com/toxuh/webzoom/issues",
+    "email": "zakharov.toxa@gmail.com"
+  },
+  "license": "MIT",
+  "author": "Anton Zakharov <zakharov.toxa@gmail.com> (https://github.com/toxuh)",
+  "private": false,
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
   },
   "homepage": "https://github.com/toxuh/webzoom#readme",
   "dependencies": {
