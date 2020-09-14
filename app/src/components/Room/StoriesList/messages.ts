@@ -33,4 +33,16 @@ export default defineMessages({
     id: 'Room.TasksList.allStories',
     defaultMessage: 'All Stories',
   },
+  addManyStories: {
+    id: 'Room.TasksList.addManyStories',
+    defaultMessage: 'Save and add new',
+  },
+  addOneStory: {
+    id: 'Room.TasksList.addOneStory',
+    defaultMessage: 'Save and close',
+  },
+  cancel: {
+    id: 'Room.TasksList.cancel',
+    defaultMessage: 'Cancel',
+  },
 });

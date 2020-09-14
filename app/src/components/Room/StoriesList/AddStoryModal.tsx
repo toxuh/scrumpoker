@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal } from 'antd';
 
 import messages from './messages';
 
@@ -26,14 +26,17 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
     toggleModal(false);
   };
 
-  const onAddStory = () => {
+  const onAddStory = (multiple: boolean) => {
     if (storyName.length) {
       handleAddStory({
         name: storyName,
         description: storyDescription,
       });
       setStoryName('');
-      toggleModal(false);
+      setStoryDescription('');
+      if (!multiple) {
+        toggleModal(false);
+      }
     } else {
       onCancel();
     }
@@ -43,8 +46,26 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
     <Modal
       visible={showModal}
       title={intl.formatMessage(messages.newStory)}
-      onOk={onAddStory}
-      onCancel={onCancel}
+      footer={[
+        <Button
+          key="submitOne"
+          type="primary"
+          onClick={() => onAddStory(false)}
+        >
+          {intl.formatMessage(messages.addOneStory)}
+        </Button>,
+        <Button
+          key="submitMany"
+          type="primary"
+          onClick={() => onAddStory(true)}
+        >
+          {intl.formatMessage(messages.addManyStories)}
+        </Button>,
+
+        <Button key="cancel" onClick={onCancel}>
+          {intl.formatMessage(messages.cancel)}
+        </Button>,
+      ]}
     >
       <Form layout="vertical">
         <Form.Item>

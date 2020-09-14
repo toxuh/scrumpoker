@@ -30,5 +30,5 @@ Start application:
 * go to next story on button press (moderator)
 * timer of vote in app
 * vote time in Voting model
-* multiple add stories
+* ~~multiple add stories~~
 * Jira api use
