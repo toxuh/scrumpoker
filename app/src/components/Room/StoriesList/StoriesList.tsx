@@ -28,26 +28,44 @@ const StoriesList: React.FC<StoriesListProps> = ({
   const [showModal, toggleModal] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('active');
 
+  const activeStories = stories.filter((story) => story.isActive);
+  const closedStories = stories.filter((story) => !story.isActive);
+
+  const getStoriesList = () => {
+    if (activeMenuItem === 'active') {
+      return activeStories;
+    } else if (activeMenuItem === 'closed') {
+      return closedStories;
+    } else if (activeMenuItem === 'all') {
+      return stories;
+    }
+  };
+
   return (
     <div className="StoriesList">
       <Menu
         activeMenuItem={activeMenuItem}
         setActiveMenuItem={setActiveMenuItem}
         toggleModal={toggleModal}
-        activeStoriesLength={stories.filter((story) => story.isActive).length}
-        closedStoriesLength={stories.filter((story) => !story.isActive).length}
+        activeStoriesLength={activeStories.length}
+        closedStoriesLength={closedStories.length}
         allStoriesLength={stories.length}
       />
       {Boolean(stories.length) ? (
         <List
           className="StoriesList__List"
-          dataSource={stories}
+          dataSource={getStoriesList()}
           renderItem={(story) => (
             <List.Item key={story._id}>
               <List.Item.Meta
                 title={story.name}
                 description={story.description}
               />
+              {!story.isActive && (
+                <span>
+                  {story.points || intl.formatMessage(messages.skipped)}
+                </span>
+              )}
               <Button
                 icon={<DeleteOutlined />}
                 type="link"

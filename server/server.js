@@ -165,6 +165,18 @@ const onConnect = (socket) => {
       io.emit("end-vote", false);
     });
   });
+
+  socket.on("skip-story", async (taskId) => {
+    await Tasks.findOneAndUpdate(
+      { _id: taskId },
+      { isActive: false, points: null },
+      { new: true }
+    );
+
+    const tasks = await Tasks.find();
+
+    io.emit("tasks-list", sendNotDeletedTasks(tasks));
+  });
 };
 
 io.on("connection", onConnect);

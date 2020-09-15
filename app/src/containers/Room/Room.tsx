@@ -32,7 +32,7 @@ const Room: React.FC<RoomTypes> = ({
 
   useEffect(() => {
     if (Boolean(stories.length)) {
-      setActiveStory(stories[0]);
+      setActiveStory(stories.filter((story) => story.isActive)[0]);
     }
   }, [stories]);
 
@@ -42,6 +42,10 @@ const Room: React.FC<RoomTypes> = ({
 
   const handleRemoveTask = useCallback((taskId) => {
     socket.emit('remove-task', taskId);
+  }, []);
+
+  const handleSkipStory = useCallback((taskId) => {
+    socket.emit('skip-story', taskId);
   }, []);
 
   return (
@@ -56,6 +60,7 @@ const Room: React.FC<RoomTypes> = ({
       handleAddTask={handleAddTask}
       handleRemoveTask={handleRemoveTask}
       handleClearVotes={clearVotes}
+      handleSkipStory={handleSkipStory}
     />
   );
 };

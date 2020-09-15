@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'Room.Buttons.skipStory',
     defaultMessage: 'Skip story',
   },
+  skipStoryConfirmHeader: {
+    id: 'Room.Buttons.skipStoryConfirmHeader',
+    defaultMessage: 'Do you really want to skip story?',
+  },
   resetTimer: {
     id: 'Room.Buttons.resetTimer',
     defaultMessage: 'Reset timer',
@@ -20,5 +24,13 @@ export default defineMessages({
   stopVoting: {
     id: 'Room.Buttons.stopVoting',
     defaultMessage: 'Next story',
+  },
+  yes: {
+    id: 'Room.Buttons.yes',
+    defaultMessage: 'Yes',
+  },
+  no: {
+    id: 'Room.Buttons.no',
+    defaultMessage: 'No',
   },
 });

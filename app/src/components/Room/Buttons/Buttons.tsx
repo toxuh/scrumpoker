@@ -1,30 +1,50 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Modal, Row } from 'antd';
 import {
   CheckOutlined,
   ClearOutlined,
+  ExclamationCircleOutlined,
   ForwardOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
+
+import { StoryType } from '../../../types';
 
 import messages from './messages';
 
 import './Buttons.css';
 
 type ButtonsProps = {
+  activeStory?: StoryType;
   noVotes: boolean;
   storyPoints?: string;
   voteEnded: boolean;
-  handleClearVotes: ({}) => void;
+  handleClearVotes: () => void;
+  handleSkipStory: (taskId: string | undefined) => void;
 };
 
+const { confirm } = Modal;
+
 const Buttons: React.FC<ButtonsProps> = ({
+  activeStory,
   noVotes,
   voteEnded,
   handleClearVotes,
+  handleSkipStory,
 }) => {
   const intl = useIntl();
+
+  const confirmConfig = {
+    icon: <ExclamationCircleOutlined />,
+    content: intl.formatMessage(messages.skipStoryConfirmHeader),
+    okText: intl.formatMessage(messages.yes),
+    cancelText: intl.formatMessage(messages.no),
+    onOk() {
+      handleSkipStory(activeStory?._id);
+      handleClearVotes();
+    },
+  };
 
   return (
     <Row className="Buttons">
@@ -61,6 +81,7 @@ const Buttons: React.FC<ButtonsProps> = ({
           size="large"
           title={intl.formatMessage(messages.skipStory)}
           icon={<ForwardOutlined />}
+          onClick={() => confirm(confirmConfig)}
         >
           {intl.formatMessage(messages.skipStory)}
         </Button>

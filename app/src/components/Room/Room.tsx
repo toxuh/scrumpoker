@@ -20,6 +20,7 @@ type RoomProps = {
   stories: StoryType[];
   handleAddTask: (task: { name: string; description: string }) => void;
   handleRemoveTask: (taskId: string) => void;
+  handleSkipStory: (taskId: string | undefined) => void;
   handleClearVotes: ({}) => void;
 };
 
@@ -36,6 +37,7 @@ const Room: React.FC<RoomProps> = ({
   handleAddTask,
   handleRemoveTask,
   handleClearVotes,
+  handleSkipStory,
 }) => {
   const isUserModerator = currentUser.role === 'moderator';
 
@@ -85,9 +87,11 @@ const Room: React.FC<RoomProps> = ({
         />
         {isUserModerator && (
           <Buttons
+            activeStory={activeStory}
             voteEnded={voteEnded}
             noVotes={Boolean(votes.length)}
             handleClearVotes={onClearVotes}
+            handleSkipStory={handleSkipStory}
           />
         )}
       </Sider>

@@ -45,4 +45,8 @@ export default defineMessages({
     id: 'Room.TasksList.cancel',
     defaultMessage: 'Cancel',
   },
+  skipped: {
+    id: 'Room.TasksList.skipped',
+    defaultMessage: 'Skipped',
+  },
 });
