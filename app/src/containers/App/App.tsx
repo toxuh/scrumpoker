@@ -12,7 +12,7 @@ import useVotes from './useVotes';
 import './App.css';
 
 function App() {
-  const { localUserId, socket } = useApp();
+  const { listenReload, localUserId, socket } = useApp();
   const { getStories, listenStoriesList, stories } = useStories(socket);
   const {
     connectUser,
@@ -26,8 +26,10 @@ function App() {
   } = useUsers(socket);
   const {
     clearVotes,
+    endVoting,
     listenEndVoting,
     listenVotes,
+    summary,
     vote,
     votes,
     voteEnded,
@@ -52,6 +54,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    listenReload();
     listenUserRegistered();
     listenUsers(localUserId);
     listenStoriesList();
@@ -84,8 +87,10 @@ function App() {
               stories={stories}
               voteEnded={voteEnded}
               handleVote={handleVote}
+              handleEndVoting={endVoting}
               clearVotes={clearVotes}
               socket={socket}
+              summary={summary}
             />
           )}
         </>

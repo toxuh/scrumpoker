@@ -6,3 +6,12 @@
   margin-bottom: 10px;
   width: 100%;
 }
+
+.Buttons .ant-input-number.ant-input-number-lg {
+  margin-right: 10px;
+  width: 65px;
+}
+
+.Buttons .ant-form-item {
+  margin: 0 !important;
+}

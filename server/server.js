@@ -191,6 +191,16 @@ const onConnect = (socket) => {
 
     io.emit("tasks-list", sendNotDeletedTasks(tasks));
   });
+
+  socket.on("end-voting", async ({ taskId, points }) => {
+    await Tasks.findOneAndUpdate(
+      { _id: taskId },
+      { points, isActive: false },
+      { new: true }
+    );
+
+    io.emit("reload");
+  });
 };
 
 io.on("connection", onConnect);

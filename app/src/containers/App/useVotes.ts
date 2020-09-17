@@ -5,10 +5,17 @@ import { VoteType } from '../../types';
 
 const useVotes = (socket: typeof Socket) => {
   const [votes, setVotes] = useState<VoteType[]>([] as VoteType[]);
+  const [summary, setSummary] = useState(0);
   const [voteEnded, setVoteEnded] = useState(false);
 
   const listenVotes = useCallback(() => {
     socket.on('votes-list', (votes: VoteType[]) => {
+      const points = votes.map((vote) => Number(vote.points) || 0);
+      const rawVoteResult = points.reduce((acc, a): number => {
+        return acc + a;
+      }, 0);
+
+      setSummary(Number(rawVoteResult.toFixed(1)));
       setVotes(votes);
     });
   }, [socket]);
@@ -29,11 +36,28 @@ const useVotes = (socket: typeof Socket) => {
   const clearVotes = useCallback(
     (payload) => {
       socket.emit('clear-votes', payload);
+      setVoteEnded(false);
     },
     [socket],
   );
 
-  return { clearVotes, listenEndVoting, listenVotes, vote, votes, voteEnded };
+  const endVoting = useCallback(
+    ({ taskId, points }) => {
+      socket.emit('end-voting', { taskId, points });
+    },
+    [socket],
+  );
+
+  return {
+    clearVotes,
+    endVoting,
+    listenEndVoting,
+    listenVotes,
+    summary,
+    vote,
+    votes,
+    voteEnded,
+  };
 };
 
 export default useVotes;

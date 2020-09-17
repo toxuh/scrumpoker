@@ -12,8 +12,10 @@ type RoomTypes = {
   stories: StoryType[];
   voteEnded: boolean;
   handleVote: ({}) => void;
+  handleEndVoting: (sum: { taskId: string; points: number }) => void;
   clearVotes: ({}) => void;
   socket: typeof Socket;
+  summary: number;
 };
 
 const Room: React.FC<RoomTypes> = ({
@@ -22,9 +24,11 @@ const Room: React.FC<RoomTypes> = ({
   votes,
   voteEnded,
   handleVote,
+  handleEndVoting,
   clearVotes,
   stories,
   socket,
+  summary,
 }) => {
   const [activeStory, setActiveStory] = useState<StoryType | undefined>(
     undefined,
@@ -56,7 +60,9 @@ const Room: React.FC<RoomTypes> = ({
       votes={votes}
       voteEnded={voteEnded}
       handleVote={handleVote}
+      handleEndVoting={handleEndVoting}
       stories={stories}
+      summary={summary}
       handleAddTask={handleAddTask}
       handleRemoveTask={handleRemoveTask}
       handleClearVotes={clearVotes}

@@ -18,10 +18,12 @@ type RoomProps = {
   voteEnded: boolean;
   handleVote: ({}) => void;
   stories: StoryType[];
+  summary: number;
   handleAddTask: (task: { name: string; description: string }) => void;
   handleRemoveTask: (taskId: string) => void;
   handleSkipStory: (taskId: string | undefined) => void;
   handleClearVotes: ({}) => void;
+  handleEndVoting: (sum: { taskId: string; points: number }) => void;
 };
 
 const { Content, Sider } = Layout;
@@ -34,10 +36,12 @@ const Room: React.FC<RoomProps> = ({
   voteEnded,
   handleVote,
   stories,
+  summary,
   handleAddTask,
   handleRemoveTask,
   handleClearVotes,
   handleSkipStory,
+  handleEndVoting,
 }) => {
   const isUserModerator = currentUser.role === 'moderator';
 
@@ -92,6 +96,8 @@ const Room: React.FC<RoomProps> = ({
             noVotes={Boolean(votes.length)}
             handleClearVotes={onClearVotes}
             handleSkipStory={handleSkipStory}
+            handleEndVoting={handleEndVoting}
+            summary={summary}
           />
         )}
       </Sider>

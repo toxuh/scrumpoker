@@ -24,10 +24,9 @@ Start application:
 
 * ~~stop voting when all connected users voted~~
 * ~~share results on vote stop~~
-* get story points based on users votes
+* ~~get story points based on users votes~~
 * ~~clear user votes on button press (moderator)~~
-* close votes on button press (moderator)
-* go to next story on button press (moderator)
+* ~~close votes on button press (moderator)~~
 * flip cards on button press (moderator)
 * ~~skip story on button press (moderator)~~
 * timer of vote in app
@@ -35,4 +34,5 @@ Start application:
 * ~~multiple add stories~~
 * ~~give moderator role to self~~
 * give moderator role to user
+* fix: reset on voting end (now page reloads, this is bad)
 * Jira api use

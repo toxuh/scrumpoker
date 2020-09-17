@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Col, Modal, Row } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Row } from 'antd';
 import {
   CheckOutlined,
   ClearOutlined,
@@ -22,6 +22,8 @@ type ButtonsProps = {
   voteEnded: boolean;
   handleClearVotes: () => void;
   handleSkipStory: (taskId: string | undefined) => void;
+  handleEndVoting: (sum: { taskId: string; points: number }) => void;
+  summary: number;
 };
 
 const { confirm } = Modal;
@@ -32,8 +34,18 @@ const Buttons: React.FC<ButtonsProps> = ({
   voteEnded,
   handleClearVotes,
   handleSkipStory,
+  handleEndVoting,
+  summary,
 }) => {
   const intl = useIntl();
+
+  const [numInput, setNumInput] = useState(summary);
+
+  useEffect(() => {
+    if (summary && voteEnded) {
+      setNumInput(summary);
+    }
+  }, [summary, voteEnded]);
 
   const confirmConfig = {
     icon: <ExclamationCircleOutlined />,
@@ -46,18 +58,40 @@ const Buttons: React.FC<ButtonsProps> = ({
     },
   };
 
+  console.log(activeStory);
+
   return (
     <Row className="Buttons">
       <Col className="Buttons__Col">
-        <Button
-          type="primary"
-          size="large"
-          title={intl.formatMessage(messages.flipCards)}
-          icon={<CheckOutlined />}
-          disabled={!voteEnded}
-        >
-          {intl.formatMessage(messages.stopVoting)}
-        </Button>
+        <Form layout="inline">
+          <Form.Item>
+            <InputNumber
+              value={voteEnded ? numInput : 0}
+              size="large"
+              disabled={!voteEnded}
+              onChange={(e) => setNumInput(Number(e))}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              size="large"
+              title={intl.formatMessage(messages.stopVoting)}
+              icon={<CheckOutlined />}
+              disabled={!voteEnded}
+              onClick={() => {
+                if (activeStory?._id) {
+                  handleEndVoting({
+                    taskId: activeStory?._id,
+                    points: numInput,
+                  });
+                }
+              }}
+            >
+              {intl.formatMessage(messages.stopVoting)}
+            </Button>
+          </Form.Item>
+        </Form>
         <Button
           type="primary"
           size="large"
