@@ -74,6 +74,20 @@ const onConnect = (socket) => {
     io.emit("users-connected", connectedUsers);
   });
 
+  socket.on("moderator-role", async (userId) => {
+    const user = await Users.findOneAndUpdate(
+      { _id: userId },
+      { role: "moderator" },
+      { new: true }
+    );
+
+    const userIndex = connectedUsers.findIndex((user) => user.id == userId);
+
+    connectedUsers[userIndex].role = "moderator";
+
+    io.emit("users-connected", connectedUsers);
+  });
+
   socket.on("disconnect-user", async (userId) => {
     const userIndex = connectedUsers.findIndex((user) => user._id == userId);
 

@@ -49,12 +49,20 @@ const useUsers = (socket: typeof Socket) => {
     [socket],
   );
 
+  const moderatorRole = useCallback(
+    (localUserId) => {
+      socket.emit('moderator-role', localUserId);
+    },
+    [socket],
+  );
+
   return {
     connectUser,
     currentUser,
     disconnectUser,
     listenUserRegistered,
     listenUsers,
+    moderatorRole,
     registerUser,
     users,
   };

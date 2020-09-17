@@ -18,6 +18,7 @@
     "url": "https://github.com/toxuh/webzoom/issues",
     "email": "zakharov.toxa@gmail.com"
   },
+  "homepage": "http://scrumpoker.website",
   "license": "MIT",
   "author": "Anton Zakharov <zakharov.toxa@gmail.com> (https://github.com/toxuh)",
   "private": false,
@@ -32,6 +33,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
+    "react-hotkeys-hook": "^2.3.1",
     "react-intl": "^5.4.5",
     "react-scripts": "3.4.1",
     "react-toast-notifications": "^2.4.0",

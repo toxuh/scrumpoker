@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import Login from '../Login/Login';
 import Room from '../Room/Room';
@@ -19,6 +20,7 @@ function App() {
     disconnectUser,
     listenUserRegistered,
     listenUsers,
+    moderatorRole,
     registerUser,
     users,
   } = useUsers(socket);
@@ -56,6 +58,12 @@ function App() {
     listenVotes();
     listenEndVoting();
   }, []);
+
+  useHotkeys('ctrl+m', () => {
+    if (Boolean(localUserId.length)) {
+      moderatorRole(localUserId);
+    }
+  });
 
   const handleVote = useCallback(
     ({ storyId, points }) => {
