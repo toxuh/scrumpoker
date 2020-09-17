@@ -1,6 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Badge, Typography, List, Tag } from 'antd';
+import { CrownTwoTone } from '@ant-design/icons';
 
 import { UserType, VoteType } from '../../../types';
 
@@ -41,6 +42,7 @@ const UsersList: React.FC<UsersListProps> = ({
               }
             />
             {user.name}
+            {isUserModerator && <CrownTwoTone twoToneColor="#daac50" />}
             {voteEnded &&
               votes.map((vote) => {
                 if (vote.userId === user._id) {

@@ -33,6 +33,6 @@ Start application:
 * timer of vote in app
 * vote time in Voting model
 * ~~multiple add stories~~
-* give moderator role to self
+* ~~give moderator role to self~~
 * give moderator role to user
 * Jira api use

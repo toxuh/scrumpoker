@@ -11,3 +11,7 @@
   position: absolute;
   right: 0;
 }
+
+.UsersList .anticon.anticon-crown {
+  margin-left: 4px;
+}
