@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Badge, Typography, List, Tag } from 'antd';
+import { Badge, Typography, List, Progress, Tag } from 'antd';
 import { CrownTwoTone } from '@ant-design/icons';
 
 import { UserType, VoteType } from '../../../types';
@@ -25,6 +25,8 @@ const UsersList: React.FC<UsersListProps> = ({
   voteEnded,
 }) => {
   const intl = useIntl();
+
+  const voteProgress = (votes.length / users.length) * 100;
 
   return (
     <>
@@ -56,6 +58,7 @@ const UsersList: React.FC<UsersListProps> = ({
           </List.Item>
         )}
       />
+      <Progress percent={voteProgress} showInfo={false} />
     </>
   );
 };
