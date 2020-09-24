@@ -1,13 +1,18 @@
-/* eslint-disable */
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
+
+import { setUsersList } from './actions';
+import { currentUserSelector, usersListSelector } from './selectors';
 
 import { UserType } from '../../types';
 import { LS_KEY } from '../../constants';
 
 const useUsers = (socket: typeof Socket) => {
-  const [users, setUser] = useState<UserType[]>([]);
-  const [currentUser, setCurrentUser] = useState<UserType>({} as UserType);
+  const dispatch = useDispatch();
+
+  const users = useSelector(usersListSelector);
+  const currentUser = useSelector(currentUserSelector);
 
   const connectUser = useCallback(
     (localUserId) => {
@@ -19,21 +24,15 @@ const useUsers = (socket: typeof Socket) => {
   const listenUserRegistered = useCallback(() => {
     socket.on('user-saved', (user: UserType) => {
       localStorage.setItem(LS_KEY, user._id);
-      location.reload();
+      window.location.reload();
     });
   }, [socket]);
 
-  const listenUsers = useCallback(
-    (localUserId) => {
-      socket.on('users-connected', (users: UserType[]) => {
-        setUser(users);
-        setCurrentUser(
-          users.find((user) => user._id === localUserId) as UserType,
-        );
-      });
-    },
-    [socket],
-  );
+  const listenUsers = useCallback(() => {
+    socket.on('users-connected', (users: UserType[]) => {
+      dispatch(setUsersList(users));
+    });
+  }, [socket]);
 
   const registerUser = useCallback(
     (name: string) => {

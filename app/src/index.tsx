@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { ToastProvider } from 'react-toast-notifications';
 
 import I18nProvider from './i18n/I18nProvider';
+
+import store from './store';
 
 import App from './containers/App/App';
 
@@ -12,11 +15,13 @@ import 'antd/dist/antd.css';
 import './index.css';
 
 ReactDOM.render(
-  <I18nProvider>
-    <ToastProvider autoDismiss autoDismissTimeout={1500}>
-      <App />
-    </ToastProvider>
-  </I18nProvider>,
+  <Provider store={store}>
+    <I18nProvider>
+      <ToastProvider autoDismiss autoDismissTimeout={1500}>
+        <App />
+      </ToastProvider>
+    </I18nProvider>
+  </Provider>,
   document.getElementById('root'),
 );
 
