@@ -1,10 +1,13 @@
 import * as types from './types';
 
 import { StoryType, UserType } from '../../types';
-import { successType } from '../../utils/types';
 
-export const bootstrapSuccess = () => ({
-  type: successType(types.BOOTSTRAP),
+export const loading = () => ({
+  type: types.LOADING,
+});
+
+export const bootstrapDone = () => ({
+  type: types.BOOTSTRAP_DONE,
 });
 
 export const resetApp = () => ({
@@ -18,5 +21,10 @@ export const setStoriesList = (payload: StoryType[]) => ({
 
 export const setUsersList = (payload: UserType[]) => ({
   type: types.SET_USERS_LIST,
+  payload,
+});
+
+export const setCurrentUser = (payload: UserType) => ({
+  type: types.SET_CURRENT_USER,
   payload,
 });

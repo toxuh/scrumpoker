@@ -2,17 +2,15 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
 
-import { setUsersList } from './actions';
-import { currentUserSelector, usersListSelector } from './selectors';
+import { bootstrapDone, setCurrentUser, setUsersList } from './actions';
+import { localUserId, usersListSelector } from './selectors';
 
 import { UserType } from '../../types';
-import { LS_KEY } from '../../constants';
 
 const useUsers = (socket: typeof Socket) => {
   const dispatch = useDispatch();
 
   const users = useSelector(usersListSelector);
-  const currentUser = useSelector(currentUserSelector);
 
   const connectUser = useCallback(
     (localUserId) => {
@@ -21,25 +19,16 @@ const useUsers = (socket: typeof Socket) => {
     [socket],
   );
 
-  const listenUserRegistered = useCallback(() => {
-    socket.on('user-saved', (user: UserType) => {
-      localStorage.setItem(LS_KEY, user._id);
-      window.location.reload();
-    });
-  }, [socket]);
-
   const listenUsers = useCallback(() => {
     socket.on('users-connected', (users: UserType[]) => {
+      const currentUser = users.find(
+        (user) => user._id === localUserId,
+      ) as UserType;
+
       dispatch(setUsersList(users));
+      dispatch(setCurrentUser(currentUser));
     });
   }, [socket]);
-
-  const registerUser = useCallback(
-    (name: string) => {
-      socket.emit('create-user', name);
-    },
-    [socket],
-  );
 
   const disconnectUser = useCallback(
     (localUserId) => {
@@ -57,12 +46,9 @@ const useUsers = (socket: typeof Socket) => {
 
   return {
     connectUser,
-    currentUser,
     disconnectUser,
-    listenUserRegistered,
     listenUsers,
     moderatorRole,
-    registerUser,
     users,
   };
 };

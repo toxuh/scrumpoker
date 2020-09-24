@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 
+import { Loading } from '../../components';
 import Login from '../Login/Login';
 import Room from '../Room/Room';
 
 import useApp from './useApp';
+import useAuth from './useAuth';
 import useStories from './useStories';
 import useUsers from './useUsers';
 import useVotes from './useVotes';
@@ -12,16 +14,14 @@ import useVotes from './useVotes';
 import './App.css';
 
 function App() {
-  const { listenReload, localUserId, socket } = useApp();
+  const { isLoading, listenReload, localUserId, setLoading, socket } = useApp();
+  const { currentUser, listenUserRegistered, registerUser } = useAuth(socket);
   const { getStories, listenStoriesList, stories } = useStories(socket);
   const {
     connectUser,
-    currentUser,
     disconnectUser,
-    listenUserRegistered,
     listenUsers,
     moderatorRole,
-    registerUser,
     users,
   } = useUsers(socket);
   const {
@@ -36,19 +36,21 @@ function App() {
   } = useVotes(socket);
 
   useEffect(() => {
-    if (Boolean(localUserId.length)) {
+    if (localUserId) {
       connectUser(localUserId);
       getStories();
 
-      window.addEventListener('beforeunload', () =>
-        disconnectUser(localUserId),
-      );
+      window.addEventListener('beforeunload', () => {
+        setLoading();
+        disconnectUser(localUserId);
+      });
     }
     return () => {
-      if (Boolean(localUserId.length)) {
-        window.removeEventListener('beforeunload', () =>
-          disconnectUser(localUserId),
-        );
+      if (localUserId) {
+        window.removeEventListener('beforeunload', () => {
+          setLoading();
+          disconnectUser(localUserId);
+        });
       }
     };
   }, []);
@@ -63,7 +65,7 @@ function App() {
   }, []);
 
   useHotkeys('ctrl+m', () => {
-    if (Boolean(localUserId.length)) {
+    if (localUserId) {
       moderatorRole(localUserId);
     }
   });
@@ -75,28 +77,28 @@ function App() {
     [vote],
   );
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!currentUser) {
+    return <Login handleCreateUser={registerUser} />;
+  }
+
   return (
     <div className="App">
-      {Boolean(localUserId) ? (
-        <>
-          {currentUser?._id && (
-            <Room
-              currentUser={currentUser}
-              users={users}
-              votes={votes}
-              stories={stories}
-              voteEnded={voteEnded}
-              handleVote={handleVote}
-              handleEndVoting={endVoting}
-              clearVotes={clearVotes}
-              socket={socket}
-              summary={summary}
-            />
-          )}
-        </>
-      ) : (
-        <Login handleCreateUser={registerUser} />
-      )}
+      <Room
+        currentUser={currentUser}
+        users={users}
+        votes={votes}
+        stories={stories}
+        voteEnded={voteEnded}
+        handleVote={handleVote}
+        handleEndVoting={endVoting}
+        clearVotes={clearVotes}
+        socket={socket}
+        summary={summary}
+      />
     </div>
   );
 }

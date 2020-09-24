@@ -1,15 +1,14 @@
 import { produce } from 'immer';
 
-import { AppStateType, ReduxActionType } from '../../types';
-import { successType } from '../../utils/types';
+import { AppStateType, ReduxActionType, UserType } from '../../types';
 
 import * as types from './types';
 
 const initialState: AppStateType = {
+  currentUser: false,
   loading: true,
-  authenticated: false,
-  usersList: [],
   storiesList: [],
+  usersList: [],
   userVote: false,
 };
 
@@ -18,7 +17,12 @@ const appReducer = (state = initialState, action: ReduxActionType) =>
     const { type, payload } = action;
 
     switch (type) {
-      case successType(types.BOOTSTRAP): {
+      case types.LOADING: {
+        draft.loading = true;
+        break;
+      }
+
+      case types.BOOTSTRAP_DONE: {
         draft.loading = false;
         break;
       }
@@ -30,6 +34,11 @@ const appReducer = (state = initialState, action: ReduxActionType) =>
 
       case types.SET_USERS_LIST: {
         draft.usersList = payload as [];
+        break;
+      }
+
+      case types.SET_CURRENT_USER: {
+        draft.currentUser = payload as UserType;
         break;
       }
 

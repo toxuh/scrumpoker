@@ -36,5 +36,6 @@ Start application:
 * give moderator role to user
 * ~~use react-redux~~
 * all state management to Redux
+* localUserId to redux
 * fix: reset on voting end (now page reloads, this is bad)
 * Jira api use

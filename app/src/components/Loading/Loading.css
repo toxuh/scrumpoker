@@ -1,0 +1,17 @@
+.Loading {
+  align-items: center;
+  background: #fff;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 9999;
+}
+
+.Loading .ant-spin-text {
+  font-size: 24px !important;
+  margin-top: 10px;
+}

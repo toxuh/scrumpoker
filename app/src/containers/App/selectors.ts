@@ -7,6 +7,11 @@ export const localUserId = localStorage.getItem(LS_KEY);
 
 export const appSelector = (state: GlobalStateType): AppStateType => state.app;
 
+export const loadingSelector = createSelector(
+  appSelector,
+  (app: AppStateType) => app.loading,
+);
+
 export const storiesListSelector = createSelector(
   appSelector,
   (app: AppStateType) => app.storiesList,
@@ -18,7 +23,6 @@ export const usersListSelector = createSelector(
 );
 
 export const currentUserSelector = createSelector(
-  usersListSelector,
-  (users: UserType[]) =>
-    users.find((user) => user._id === localUserId) as UserType,
+  appSelector,
+  (app: AppStateType) => app.currentUser as UserType,
 );

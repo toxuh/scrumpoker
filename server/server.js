@@ -199,7 +199,7 @@ const onConnect = (socket) => {
       { new: true }
     );
 
-    io.emit("reload");
+    io.emit("reset");
   });
 };
 

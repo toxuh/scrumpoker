@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
 
-import { setStoriesList } from './actions';
+import { bootstrapDone, setStoriesList } from './actions';
 import { storiesListSelector } from './selectors';
 
 import { StoryType } from '../../types';
@@ -15,6 +15,7 @@ const useStories = (socket: typeof Socket) => {
   const listenStoriesList = useCallback(() => {
     socket.on('tasks-list', (stories: StoryType[]) => {
       dispatch(setStoriesList(stories));
+      dispatch(bootstrapDone());
     });
   }, [socket]);
 

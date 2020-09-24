@@ -26,7 +26,7 @@ export type ReduxActionType = {
 
 export type AppStateType = {
   loading: boolean;
-  authenticated: boolean;
+  currentUser: UserType | boolean;
   usersList: UserType[];
   storiesList: StoryType[];
   userVote: boolean | string;
