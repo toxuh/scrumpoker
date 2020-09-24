@@ -34,5 +34,7 @@ Start application:
 * ~~multiple add stories~~
 * ~~give moderator role to self~~
 * give moderator role to user
+* ~~use react-redux~~
+* all state management to Redux
 * fix: reset on voting end (now page reloads, this is bad)
 * Jira api use

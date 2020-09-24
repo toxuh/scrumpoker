@@ -56,7 +56,7 @@ function App() {
   useEffect(() => {
     listenReload();
     listenUserRegistered();
-    listenUsers(localUserId);
+    listenUsers();
     listenStoriesList();
     listenVotes();
     listenEndVoting();

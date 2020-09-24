@@ -1,14 +1,20 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
+
+import { setStoriesList } from './actions';
+import { storiesListSelector } from './selectors';
 
 import { StoryType } from '../../types';
 
 const useStories = (socket: typeof Socket) => {
-  const [stories, setStories] = useState<StoryType[]>([] as StoryType[]);
+  const dispatch = useDispatch();
+
+  const stories = useSelector(storiesListSelector);
 
   const listenStoriesList = useCallback(() => {
     socket.on('tasks-list', (stories: StoryType[]) => {
-      setStories(stories);
+      dispatch(setStoriesList(stories));
     });
   }, [socket]);
 
