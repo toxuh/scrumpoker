@@ -35,22 +35,22 @@ function App() {
     voteEnded,
   } = useVotes(socket);
 
+  const onCloseApp = () => {
+    setLoading();
+    disconnectUser(localUserId);
+    socket.disconnect();
+  };
+
   useEffect(() => {
     if (localUserId) {
       connectUser(localUserId);
       getStories();
 
-      window.addEventListener('beforeunload', () => {
-        setLoading();
-        disconnectUser(localUserId);
-      });
+      window.addEventListener('beforeunload', onCloseApp);
     }
     return () => {
       if (localUserId) {
-        window.removeEventListener('beforeunload', () => {
-          setLoading();
-          disconnectUser(localUserId);
-        });
+        window.removeEventListener('beforeunload', onCloseApp);
       }
     };
   }, []);
