@@ -26,7 +26,6 @@ function App() {
   } = useUsers(socket);
   const {
     clearVotes,
-    endVoting,
     listenEndVoting,
     listenVotes,
     summary,
@@ -70,16 +69,9 @@ function App() {
     }
   });
 
-  const handleVote = useCallback(
-    ({ storyId, points }) => {
-      vote({ userId: currentUser._id, points, storyId });
-    },
-    [vote],
-  );
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   if (!currentUser) {
     return <Login handleCreateUser={registerUser} />;
@@ -90,14 +82,9 @@ function App() {
       <Room
         currentUser={currentUser}
         users={users}
-        votes={votes}
         stories={stories}
-        voteEnded={voteEnded}
-        handleVote={handleVote}
-        handleEndVoting={endVoting}
         clearVotes={clearVotes}
         socket={socket}
-        summary={summary}
       />
     </div>
   );
