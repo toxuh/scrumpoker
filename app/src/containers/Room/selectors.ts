@@ -23,3 +23,8 @@ export const currentStorySelector = createSelector(
   activeStoriesListSelector,
   (stories) => stories[0] || undefined,
 );
+
+export const usersListSelector = createSelector(
+  appSelector,
+  (app) => app.usersList,
+);

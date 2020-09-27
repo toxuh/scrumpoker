@@ -1,12 +1,16 @@
 import { useSelector } from 'react-redux';
 
-import { currentUserSelector, usersListSelector } from '../App/selectors';
+import { usersListSelector } from './selectors';
+
+import { currentUserSelector } from '../App/selectors';
 
 const useUsers = () => {
   const currentUser = useSelector(currentUserSelector);
   const users = useSelector(usersListSelector);
 
-  return { currentUser, users };
+  const isCurrentUserModerator = currentUser.role === 'moderator';
+
+  return { currentUser, isCurrentUserModerator, users };
 };
 
 export default useUsers;

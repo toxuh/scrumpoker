@@ -71,7 +71,7 @@ function App() {
 
   return (
     <div className="App">
-      <Room clearVotes={clearVotes} />
+      <Room />
     </div>
   );
 }

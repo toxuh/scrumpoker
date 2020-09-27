@@ -12,11 +12,6 @@ export const loadingSelector = createSelector(
   (app) => app.loading,
 );
 
-export const usersListSelector = createSelector(
-  appSelector,
-  (app) => app.usersList,
-);
-
 export const currentUserSelector = createSelector(
   appSelector,
   (app) => app.currentUser as UserType,
