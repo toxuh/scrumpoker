@@ -49,6 +49,11 @@ const appReducer = (state = initialState, action: ReduxActionType) =>
         break;
       }
 
+      case types.SET_VOTING_ENDED: {
+        draft.votingEnded = payload as boolean;
+        break;
+      }
+
       case types.RESET_APP: {
         return initialState;
       }
