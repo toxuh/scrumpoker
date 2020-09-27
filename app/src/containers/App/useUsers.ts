@@ -12,15 +12,12 @@ const useUsers = () => {
 
   const users = useSelector(usersListSelector);
 
-  const connectUser = useCallback(
-    (localUserId) => {
-      handleSocketRequest({
-        type: 'connect-user',
-        payload: localUserId,
-      });
-    },
-    [handleSocketRequest],
-  );
+  const connectUser = useCallback((localUserId) => {
+    handleSocketRequest({
+      type: 'connect-user',
+      payload: localUserId,
+    });
+  }, []);
 
   const listenUsers = useCallback(() => {
     handleSocketListener({
@@ -34,21 +31,15 @@ const useUsers = () => {
         dispatch(setCurrentUser(currentUser));
       },
     });
-  }, [dispatch, handleSocketListener]);
+  }, [dispatch]);
 
-  const disconnectUser = useCallback(
-    (localUserId) => {
-      handleSocketRequest({ type: 'disconnect-user', payload: localUserId });
-    },
-    [handleSocketRequest],
-  );
+  const disconnectUser = useCallback((localUserId) => {
+    handleSocketRequest({ type: 'disconnect-user', payload: localUserId });
+  }, []);
 
-  const moderatorRole = useCallback(
-    (localUserId) => {
-      handleSocketRequest({ type: 'moderator-role', payload: localUserId });
-    },
-    [handleSocketRequest],
-  );
+  const moderatorRole = useCallback((localUserId) => {
+    handleSocketRequest({ type: 'moderator-role', payload: localUserId });
+  }, []);
 
   return {
     connectUser,

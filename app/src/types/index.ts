@@ -30,6 +30,8 @@ export type AppStateType = {
   usersList: UserType[];
   storiesList: StoryType[];
   userVote: boolean | string;
+  votesList: VoteType[];
+  votingEnded: boolean;
 };
 
 export type GlobalStateType = {

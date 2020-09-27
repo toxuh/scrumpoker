@@ -1,6 +1,6 @@
 import * as types from './types';
 
-import { StoryType, UserType } from '../../types';
+import { StoryType, UserType, VoteType } from '../../types';
 
 export const loading = () => ({
   type: types.LOADING,
@@ -26,5 +26,15 @@ export const setUsersList = (payload: UserType[]) => ({
 
 export const setCurrentUser = (payload: UserType) => ({
   type: types.SET_CURRENT_USER,
+  payload,
+});
+
+export const setVotesList = (payload: VoteType[]) => ({
+  type: types.SET_VOTES_LIST,
+  payload,
+});
+
+export const setVotingEnded = (payload: boolean) => ({
+  type: types.SET_VOTING_ENDED,
   payload,
 });

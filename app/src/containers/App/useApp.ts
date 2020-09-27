@@ -18,7 +18,7 @@ const useApp = () => {
         dispatch(resetApp());
       },
     });
-  }, [dispatch, handleSocketListener, resetApp]);
+  }, [dispatch]);
 
   const setLoading = useCallback(() => {
     dispatch(loading());

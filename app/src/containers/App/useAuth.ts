@@ -13,15 +13,12 @@ const useAuth = () => {
 
   const currentUser = useSelector(currentUserSelector);
 
-  const registerUser = useCallback(
-    (name: string) => {
-      handleSocketRequest({
-        type: 'create-user',
-        payload: name,
-      });
-    },
-    [handleSocketRequest],
-  );
+  const registerUser = useCallback((name: string) => {
+    handleSocketRequest({
+      type: 'create-user',
+      payload: name,
+    });
+  }, []);
 
   const listenUserRegistered = useCallback(() => {
     handleSocketListener({
@@ -31,7 +28,7 @@ const useAuth = () => {
         dispatch(setCurrentUser(user));
       },
     });
-  }, [handleSocketListener]);
+  }, [dispatch]);
 
   return { currentUser, listenUserRegistered, registerUser };
 };

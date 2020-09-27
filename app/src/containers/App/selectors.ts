@@ -9,20 +9,30 @@ export const appSelector = (state: GlobalStateType): AppStateType => state.app;
 
 export const loadingSelector = createSelector(
   appSelector,
-  (app: AppStateType) => app.loading,
+  (app) => app.loading,
 );
 
 export const storiesListSelector = createSelector(
   appSelector,
-  (app: AppStateType) => app.storiesList,
+  (app) => app.storiesList,
 );
 
 export const usersListSelector = createSelector(
   appSelector,
-  (app: AppStateType) => app.usersList,
+  (app) => app.usersList,
 );
 
 export const currentUserSelector = createSelector(
   appSelector,
-  (app: AppStateType) => app.currentUser as UserType,
+  (app) => app.currentUser as UserType,
+);
+
+export const votesListSelector = createSelector(
+  appSelector,
+  (app) => app.votesList,
+);
+
+export const votingEndedSelector = createSelector(
+  appSelector,
+  (app) => app.votingEnded,
 );

@@ -1,12 +1,19 @@
 import { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setVotesList, setVotingEnded } from './actions';
+import { votesListSelector, votingEndedSelector } from './selectors';
 
 import { handleSocketListener, handleSocketRequest } from '../../api';
 import { VoteType } from '../../types';
 
 const useVotes = () => {
-  const [votes, setVotes] = useState<VoteType[]>([] as VoteType[]);
+  const dispatch = useDispatch();
+
+  const votes = useSelector(votesListSelector);
+  const votingEnded = useSelector(votingEndedSelector);
+
   const [summary, setSummary] = useState(0);
-  const [voteEnded, setVoteEnded] = useState(false);
 
   const listenVotes = useCallback(() => {
     handleSocketListener({
@@ -18,29 +25,26 @@ const useVotes = () => {
         }, 0);
 
         setSummary(Number(rawVoteResult.toFixed(1)));
-        setVotes(votes);
+        dispatch(setVotesList(votes));
       },
     });
-  }, [handleSocketListener]);
+  }, [dispatch]);
 
   const listenEndVoting = useCallback(() => {
     handleSocketListener({
       type: 'end-vote',
       callback: (condition: boolean) => {
-        setVoteEnded(condition);
+        dispatch(setVotingEnded(condition));
       },
     });
-  }, [handleSocketListener]);
+  }, [dispatch]);
 
-  const vote = useCallback(
-    (payload) => {
-      handleSocketRequest({
-        type: 'vote',
-        payload,
-      });
-    },
-    [handleSocketRequest],
-  );
+  const vote = useCallback((payload) => {
+    handleSocketRequest({
+      type: 'vote',
+      payload,
+    });
+  }, []);
 
   const clearVotes = useCallback(
     (payload) => {
@@ -48,20 +52,17 @@ const useVotes = () => {
         type: 'clear-votes',
         payload,
       });
-      setVoteEnded(false);
+      dispatch(setVotingEnded(false));
     },
-    [handleSocketRequest],
+    [dispatch],
   );
 
-  const endVoting = useCallback(
-    (payload) => {
-      handleSocketRequest({
-        type: 'end-voting',
-        payload,
-      });
-    },
-    [handleSocketRequest],
-  );
+  const endVoting = useCallback((payload) => {
+    handleSocketRequest({
+      type: 'end-voting',
+      payload,
+    });
+  }, []);
 
   return {
     clearVotes,
@@ -71,7 +72,7 @@ const useVotes = () => {
     summary,
     vote,
     votes,
-    voteEnded,
+    votingEnded,
   };
 };
 

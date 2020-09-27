@@ -10,6 +10,8 @@ const initialState: AppStateType = {
   storiesList: [],
   usersList: [],
   userVote: false,
+  votesList: [],
+  votingEnded: false,
 };
 
 const appReducer = (state = initialState, action: ReduxActionType) =>
@@ -39,6 +41,11 @@ const appReducer = (state = initialState, action: ReduxActionType) =>
 
       case types.SET_CURRENT_USER: {
         draft.currentUser = payload as UserType;
+        break;
+      }
+
+      case types.SET_VOTES_LIST: {
+        draft.votesList = payload as [];
         break;
       }
 

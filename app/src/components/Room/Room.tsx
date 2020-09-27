@@ -29,7 +29,14 @@ const Room: React.FC<RoomProps> = ({
   stories,
 }) => {
   const { addStory, removeStory, skipStory } = useStories();
-  const { clearVotes, endVoting, summary, vote, votes, voteEnded } = useVotes();
+  const {
+    clearVotes,
+    endVoting,
+    summary,
+    vote,
+    votes,
+    votingEnded,
+  } = useVotes();
 
   const isUserModerator = currentUser.role === 'moderator';
 
@@ -39,17 +46,17 @@ const Room: React.FC<RoomProps> = ({
     ({ storyId, points }) => {
       vote({ userId: currentUser._id, points, storyId });
     },
-    [vote],
+    [currentUser._id, vote],
   );
 
   const onCardClick = useCallback(
     (vote) => {
-      if (Boolean(activeStory) && !voteEnded) {
+      if (Boolean(activeStory) && !votingEnded) {
         handleVote(vote);
         setUserVote(vote.points);
       }
     },
-    [userVote, handleVote, setUserVote, activeStory],
+    [handleVote, setUserVote, activeStory, votingEnded],
   );
 
   const onClearVotes = () => {
@@ -80,14 +87,14 @@ const Room: React.FC<RoomProps> = ({
       <Sider theme="light" className="Room__Sidebar" width={350}>
         <UsersList
           votes={votes}
-          voteEnded={voteEnded}
+          voteEnded={votingEnded}
           isUserModerator={isUserModerator}
           users={users}
         />
         {isUserModerator && (
           <Buttons
             activeStory={activeStory}
-            voteEnded={voteEnded}
+            voteEnded={votingEnded}
             noVotes={Boolean(votes.length)}
             handleClearVotes={onClearVotes}
             handleSkipStory={skipStory}

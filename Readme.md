@@ -29,7 +29,7 @@ Start application:
 * give moderator role to user
 * all state management to Redux
 * localUserId to redux
-* some kind of api
+* ~~some kind of api~~
 * fix: reset on voting end (now page reloads, this is bad)
 * ~~stop voting when all connected users voted~~
 * ~~share results on vote stop~~

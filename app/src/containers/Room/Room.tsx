@@ -8,7 +8,7 @@ type RoomTypes = {
   currentUser: UserType;
   users: UserType[];
   stories: StoryType[];
-  clearVotes: ({}) => void;
+  clearVotes: (payload: {}) => void;
 };
 
 const Room: React.FC<RoomTypes> = ({ currentUser, users, stories }) => {
