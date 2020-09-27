@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { Badge, Typography, List, Progress, Tag } from 'antd';
 import { CrownTwoTone } from '@ant-design/icons';
 
-import { UserType, VoteType } from '../../../types';
+import { UserType, VoteType } from '../../types';
 
 import messages from './messages';
 

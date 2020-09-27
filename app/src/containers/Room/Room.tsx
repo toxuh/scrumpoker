@@ -1,33 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
+import useStories from './useStories';
+import useUsers from './useUsers';
 
 import { Room as RoomComponent } from '../../components';
 
-import { StoryType, UserType } from '../../types';
-
 type RoomTypes = {
-  currentUser: UserType;
-  users: UserType[];
-  stories: StoryType[];
   clearVotes: (payload: {}) => void;
 };
 
-const Room: React.FC<RoomTypes> = ({ currentUser, users, stories }) => {
-  const [activeStory, setActiveStory] = useState<StoryType | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    if (Boolean(stories.length)) {
-      setActiveStory(stories.filter((story) => story.isActive)[0]);
-    }
-  }, [stories]);
+const Room: React.FC<RoomTypes> = ({ clearVotes }) => {
+  const {
+    allStories,
+    activeStories,
+    closedStories,
+    currentStory,
+  } = useStories();
+  const { currentUser, users } = useUsers();
 
   return (
     <RoomComponent
-      activeStory={activeStory}
+      allStories={allStories}
+      activeStories={activeStories}
+      closedStories={closedStories}
+      currentStory={currentStory}
       currentUser={currentUser}
       users={users}
-      stories={stories}
     />
   );
 };

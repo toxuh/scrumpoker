@@ -1,16 +1,14 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { setCurrentUser, setUsersList } from './actions';
-import { localUserId, usersListSelector } from './selectors';
+import { localUserId } from './selectors';
 
 import { handleSocketListener, handleSocketRequest } from '../../api';
 import { UserType } from '../../types';
 
 const useUsers = () => {
   const dispatch = useDispatch();
-
-  const users = useSelector(usersListSelector);
 
   const connectUser = useCallback((localUserId) => {
     handleSocketRequest({
@@ -46,7 +44,6 @@ const useUsers = () => {
     disconnectUser,
     listenUsers,
     moderatorRole,
-    users,
   };
 };
 

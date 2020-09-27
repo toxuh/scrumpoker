@@ -6,20 +6,24 @@ import { DeleteOutlined } from '@ant-design/icons';
 import AddStoryModal from './AddStoryModal';
 import Menu from './Menu';
 
-import { StoryType } from '../../../types';
+import { StoryType } from '../../types';
 
 import messages from './messages';
 
 import './StoriesList.css';
 
 type StoriesListProps = {
-  stories: StoryType[];
+  allStories: StoryType[];
+  activeStories: StoryType[];
+  closedStories: StoryType[];
   handleAddStory: (story: { name: string; description: string }) => void;
   handleRemoveStory: (storyId: string) => void;
 };
 
 const StoriesList: React.FC<StoriesListProps> = ({
-  stories,
+  allStories,
+  activeStories,
+  closedStories,
   handleAddStory,
   handleRemoveStory,
 }) => {
@@ -28,16 +32,13 @@ const StoriesList: React.FC<StoriesListProps> = ({
   const [showModal, toggleModal] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('active');
 
-  const activeStories = stories.filter((story) => story.isActive);
-  const closedStories = stories.filter((story) => !story.isActive);
-
   const getStoriesList = () => {
     if (activeMenuItem === 'active') {
       return activeStories;
     } else if (activeMenuItem === 'closed') {
       return closedStories;
     } else if (activeMenuItem === 'all') {
-      return stories;
+      return allStories;
     }
   };
 
@@ -49,9 +50,9 @@ const StoriesList: React.FC<StoriesListProps> = ({
         toggleModal={toggleModal}
         activeStoriesLength={activeStories.length}
         closedStoriesLength={closedStories.length}
-        allStoriesLength={stories.length}
+        allStoriesLength={allStories.length}
       />
-      {Boolean(stories.length) ? (
+      {Boolean(allStories.length) ? (
         <List
           className="StoriesList__List"
           dataSource={getStoriesList()}

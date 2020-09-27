@@ -9,7 +9,7 @@ import {
   SyncOutlined,
 } from '@ant-design/icons';
 
-import { StoryType } from '../../../types';
+import { StoryType } from '../../types';
 
 import messages from './messages';
 

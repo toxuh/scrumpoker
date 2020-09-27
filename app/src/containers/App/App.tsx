@@ -17,13 +17,12 @@ import './App.css';
 function App() {
   const { listenReload, localUserId, setLoading } = useApp();
   const { currentUser, listenUserRegistered, registerUser } = useAuth();
-  const { getStories, listenStoriesList, stories } = useStories();
+  const { getStories, listenStoriesList } = useStories();
   const {
     connectUser,
     disconnectUser,
     listenUsers,
     moderatorRole,
-    users,
   } = useUsers();
   const { clearVotes, listenEndVoting, listenVotes } = useVotes();
 
@@ -72,12 +71,7 @@ function App() {
 
   return (
     <div className="App">
-      <Room
-        currentUser={currentUser}
-        users={users}
-        stories={stories}
-        clearVotes={clearVotes}
-      />
+      <Room clearVotes={clearVotes} />
     </div>
   );
 }

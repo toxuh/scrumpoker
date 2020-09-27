@@ -2,7 +2,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { Card, Col, Row, Typography } from 'antd';
 
-import { CARDS_VALUES } from '../../../constants';
+import { CARDS_VALUES } from '../../constants';
 
 import messages from './messages';
 

@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { Layout } from 'antd';
 
-import Buttons from './Buttons/Buttons';
-import Cardboard from './Cardboard/Cardboard';
-import StoriesList from './StoriesList/StoriesList';
-import UsersList from './UsersList/UsersList';
+import Buttons from '../Buttons/Buttons';
+import Cardboard from '../Cardboard/Cardboard';
+import StoriesList from '../StoriesList/StoriesList';
+import UsersList from '../UsersList/UsersList';
 
-import useStories from '../../containers/App/useStories';
+import useStories from '../../containers/Room/useStories';
 import useVotes from '../../containers/App/useVotes';
 
 import { StoryType, UserType } from '../../types';
@@ -14,19 +14,23 @@ import { StoryType, UserType } from '../../types';
 import './Room.css';
 
 type RoomProps = {
-  activeStory?: StoryType;
+  currentStory?: StoryType;
   currentUser: UserType;
   users: UserType[];
-  stories: StoryType[];
+  allStories: StoryType[];
+  activeStories: StoryType[];
+  closedStories: StoryType[];
 };
 
 const { Content, Sider } = Layout;
 
 const Room: React.FC<RoomProps> = ({
-  activeStory,
+  currentStory,
   currentUser,
   users,
-  stories,
+  allStories,
+  activeStories,
+  closedStories,
 }) => {
   const { addStory, removeStory, skipStory } = useStories();
   const {
@@ -51,16 +55,16 @@ const Room: React.FC<RoomProps> = ({
 
   const onCardClick = useCallback(
     (vote) => {
-      if (Boolean(activeStory) && !votingEnded) {
+      if (Boolean(currentStory) && !votingEnded) {
         handleVote(vote);
         setUserVote(vote.points);
       }
     },
-    [handleVote, setUserVote, activeStory, votingEnded],
+    [handleVote, setUserVote, currentStory, votingEnded],
   );
 
   const onClearVotes = () => {
-    clearVotes({ storyId: activeStory?._id });
+    clearVotes({ storyId: currentStory?._id });
     setUserVote(false);
   };
 
@@ -68,18 +72,20 @@ const Room: React.FC<RoomProps> = ({
     <Layout className="Room__Layout">
       <Content className="Room__Content">
         <Cardboard
-          storyTitle={activeStory?.name}
-          isActive={Boolean(activeStory)}
+          storyTitle={currentStory?.name}
+          isActive={Boolean(currentStory)}
           userVote={userVote}
           onCardClick={(point) =>
             onCardClick({
-              storyId: activeStory?._id,
+              storyId: currentStory?._id,
               points: point,
             })
           }
         />
         <StoriesList
-          stories={stories}
+          allStories={allStories}
+          activeStories={activeStories}
+          closedStories={closedStories}
           handleAddStory={addStory}
           handleRemoveStory={removeStory}
         />
@@ -93,7 +99,7 @@ const Room: React.FC<RoomProps> = ({
         />
         {isUserModerator && (
           <Buttons
-            activeStory={activeStory}
+            activeStory={currentStory}
             voteEnded={votingEnded}
             noVotes={Boolean(votes.length)}
             handleClearVotes={onClearVotes}
