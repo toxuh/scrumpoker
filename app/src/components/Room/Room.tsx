@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { Layout } from 'antd';
-import { Socket } from 'socket.io-client';
 
 import Buttons from './Buttons/Buttons';
 import Cardboard from './Cardboard/Cardboard';
 import StoriesList from './StoriesList/StoriesList';
 import UsersList from './UsersList/UsersList';
 
+import useStories from '../../containers/App/useStories';
 import useVotes from '../../containers/App/useVotes';
 
 import { StoryType, UserType } from '../../types';
@@ -18,7 +18,6 @@ type RoomProps = {
   currentUser: UserType;
   users: UserType[];
   stories: StoryType[];
-  socket: typeof Socket;
 };
 
 const { Content, Sider } = Layout;
@@ -28,11 +27,9 @@ const Room: React.FC<RoomProps> = ({
   currentUser,
   users,
   stories,
-  socket,
 }) => {
-  const { clearVotes, endVoting, summary, vote, votes, voteEnded } = useVotes(
-    socket,
-  );
+  const { addStory, removeStory, skipStory } = useStories();
+  const { clearVotes, endVoting, summary, vote, votes, voteEnded } = useVotes();
 
   const isUserModerator = currentUser.role === 'moderator';
 
@@ -60,18 +57,6 @@ const Room: React.FC<RoomProps> = ({
     setUserVote(false);
   };
 
-  const handleAddTask = useCallback((taskName) => {
-    socket.emit('new-task', taskName);
-  }, []);
-
-  const handleRemoveTask = useCallback((taskId) => {
-    socket.emit('remove-task', taskId);
-  }, []);
-
-  const handleSkipStory = useCallback((taskId) => {
-    socket.emit('skip-story', taskId);
-  }, []);
-
   return (
     <Layout className="Room__Layout">
       <Content className="Room__Content">
@@ -88,8 +73,8 @@ const Room: React.FC<RoomProps> = ({
         />
         <StoriesList
           stories={stories}
-          handleAddStory={handleAddTask}
-          handleRemoveStory={handleRemoveTask}
+          handleAddStory={addStory}
+          handleRemoveStory={removeStory}
         />
       </Content>
       <Sider theme="light" className="Room__Sidebar" width={350}>
@@ -105,7 +90,7 @@ const Room: React.FC<RoomProps> = ({
             voteEnded={voteEnded}
             noVotes={Boolean(votes.length)}
             handleClearVotes={onClearVotes}
-            handleSkipStory={handleSkipStory}
+            handleSkipStory={skipStory}
             handleEndVoting={endVoting}
             summary={summary}
           />

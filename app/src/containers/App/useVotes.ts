@@ -1,51 +1,66 @@
 import { useCallback, useState } from 'react';
-import { Socket } from 'socket.io-client';
 
+import { handleSocketListener, handleSocketRequest } from '../../api';
 import { VoteType } from '../../types';
 
-const useVotes = (socket: typeof Socket) => {
+const useVotes = () => {
   const [votes, setVotes] = useState<VoteType[]>([] as VoteType[]);
   const [summary, setSummary] = useState(0);
   const [voteEnded, setVoteEnded] = useState(false);
 
   const listenVotes = useCallback(() => {
-    socket.on('votes-list', (votes: VoteType[]) => {
-      const points = votes.map((vote) => Number(vote.points) || 0);
-      const rawVoteResult = points.reduce((acc, a): number => {
-        return acc + a;
-      }, 0);
+    handleSocketListener({
+      type: 'votes-list',
+      callback: (votes: VoteType[]) => {
+        const points = votes.map((vote) => Number(vote.points) || 0);
+        const rawVoteResult = points.reduce((acc, a): number => {
+          return acc + a;
+        }, 0);
 
-      setSummary(Number(rawVoteResult.toFixed(1)));
-      setVotes(votes);
+        setSummary(Number(rawVoteResult.toFixed(1)));
+        setVotes(votes);
+      },
     });
-  }, [socket]);
+  }, [handleSocketListener]);
 
   const listenEndVoting = useCallback(() => {
-    socket.on('end-vote', (condition: boolean) => {
-      setVoteEnded(condition);
+    handleSocketListener({
+      type: 'end-vote',
+      callback: (condition: boolean) => {
+        setVoteEnded(condition);
+      },
     });
-  }, [socket]);
+  }, [handleSocketListener]);
 
   const vote = useCallback(
     (payload) => {
-      socket.emit('vote', payload);
+      handleSocketRequest({
+        type: 'vote',
+        payload,
+      });
     },
-    [socket],
+    [handleSocketRequest],
   );
 
   const clearVotes = useCallback(
     (payload) => {
-      socket.emit('clear-votes', payload);
+      handleSocketRequest({
+        type: 'clear-votes',
+        payload,
+      });
       setVoteEnded(false);
     },
-    [socket],
+    [handleSocketRequest],
   );
 
   const endVoting = useCallback(
-    ({ taskId, points }) => {
-      socket.emit('end-voting', { taskId, points });
+    (payload) => {
+      handleSocketRequest({
+        type: 'end-voting',
+        payload,
+      });
     },
-    [socket],
+    [handleSocketRequest],
   );
 
   return {

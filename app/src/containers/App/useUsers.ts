@@ -1,47 +1,53 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Socket } from 'socket.io-client';
 
-import { bootstrapDone, setCurrentUser, setUsersList } from './actions';
+import { setCurrentUser, setUsersList } from './actions';
 import { localUserId, usersListSelector } from './selectors';
 
+import { handleSocketListener, handleSocketRequest } from '../../api';
 import { UserType } from '../../types';
 
-const useUsers = (socket: typeof Socket) => {
+const useUsers = () => {
   const dispatch = useDispatch();
 
   const users = useSelector(usersListSelector);
 
   const connectUser = useCallback(
     (localUserId) => {
-      socket.emit('connect-user', localUserId);
+      handleSocketRequest({
+        type: 'connect-user',
+        payload: localUserId,
+      });
     },
-    [socket],
+    [handleSocketRequest],
   );
 
   const listenUsers = useCallback(() => {
-    socket.on('users-connected', (users: UserType[]) => {
-      const currentUser = users.find(
-        (user) => user._id === localUserId,
-      ) as UserType;
+    handleSocketListener({
+      type: 'users-connected',
+      callback: (users: UserType[]) => {
+        const currentUser = users.find(
+          (user) => user._id === localUserId,
+        ) as UserType;
 
-      dispatch(setUsersList(users));
-      dispatch(setCurrentUser(currentUser));
+        dispatch(setUsersList(users));
+        dispatch(setCurrentUser(currentUser));
+      },
     });
-  }, [socket]);
+  }, [dispatch, handleSocketListener]);
 
   const disconnectUser = useCallback(
     (localUserId) => {
-      socket.emit('disconnect-user', localUserId);
+      handleSocketRequest({ type: 'disconnect-user', payload: localUserId });
     },
-    [socket],
+    [handleSocketRequest],
   );
 
   const moderatorRole = useCallback(
     (localUserId) => {
-      socket.emit('moderator-role', localUserId);
+      handleSocketRequest({ type: 'moderator-role', payload: localUserId });
     },
-    [socket],
+    [handleSocketRequest],
   );
 
   return {

@@ -1,31 +1,37 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Socket } from 'socket.io-client';
 
 import { setCurrentUser } from './actions';
 import { currentUserSelector } from './selectors';
 
+import { handleSocketListener, handleSocketRequest } from '../../api';
 import { UserType } from '../../types';
 import { LS_KEY } from '../../constants';
 
-const useAuth = (socket: typeof Socket) => {
+const useAuth = () => {
   const dispatch = useDispatch();
 
   const currentUser = useSelector(currentUserSelector);
 
   const registerUser = useCallback(
     (name: string) => {
-      socket.emit('create-user', name);
+      handleSocketRequest({
+        type: 'create-user',
+        payload: name,
+      });
     },
-    [socket],
+    [handleSocketRequest],
   );
 
   const listenUserRegistered = useCallback(() => {
-    socket.on('user-saved', (user: UserType) => {
-      localStorage.setItem(LS_KEY, user._id);
-      dispatch(setCurrentUser(user));
+    handleSocketListener({
+      type: 'user-saved',
+      callback: (user: UserType) => {
+        localStorage.setItem(LS_KEY, user._id);
+        dispatch(setCurrentUser(user));
+      },
     });
-  }, [socket]);
+  }, [handleSocketListener]);
 
   return { currentUser, listenUserRegistered, registerUser };
 };

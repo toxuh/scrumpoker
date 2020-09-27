@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 
-import { Loading } from '../../components';
 import Login from '../Login/Login';
 import Room from '../Room/Room';
 
@@ -11,33 +10,27 @@ import useStories from './useStories';
 import useUsers from './useUsers';
 import useVotes from './useVotes';
 
+import { handleSocketDisconnect } from '../../api';
+
 import './App.css';
 
 function App() {
-  const { isLoading, listenReload, localUserId, setLoading, socket } = useApp();
-  const { currentUser, listenUserRegistered, registerUser } = useAuth(socket);
-  const { getStories, listenStoriesList, stories } = useStories(socket);
+  const { listenReload, localUserId, setLoading } = useApp();
+  const { currentUser, listenUserRegistered, registerUser } = useAuth();
+  const { getStories, listenStoriesList, stories } = useStories();
   const {
     connectUser,
     disconnectUser,
     listenUsers,
     moderatorRole,
     users,
-  } = useUsers(socket);
-  const {
-    clearVotes,
-    listenEndVoting,
-    listenVotes,
-    summary,
-    vote,
-    votes,
-    voteEnded,
-  } = useVotes(socket);
+  } = useUsers();
+  const { clearVotes, listenEndVoting, listenVotes } = useVotes();
 
   const onCloseApp = () => {
     setLoading();
     disconnectUser(localUserId);
-    socket.disconnect();
+    handleSocketDisconnect();
   };
 
   useEffect(() => {
@@ -84,7 +77,6 @@ function App() {
         users={users}
         stories={stories}
         clearVotes={clearVotes}
-        socket={socket}
       />
     </div>
   );

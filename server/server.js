@@ -96,13 +96,13 @@ const onConnect = (socket) => {
     io.emit("users-connected", connectedUsers);
   });
 
-  socket.on("get-tasks", async () => {
+  socket.on("get-stories", async () => {
     const tasks = await Tasks.find();
 
     io.emit("tasks-list", sendNotDeletedTasks(tasks));
   });
 
-  socket.on("new-task", async ({ name, description }) => {
+  socket.on("new-story", async ({ name, description }) => {
     const task = new Tasks({
       name,
       description,
@@ -119,7 +119,7 @@ const onConnect = (socket) => {
     }
   });
 
-  socket.on("remove-task", async (taskId) => {
+  socket.on("remove-story", async (taskId) => {
     await Tasks.findOneAndUpdate(
       { _id: taskId },
       { isDeleted: true },

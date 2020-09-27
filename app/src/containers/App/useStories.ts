@@ -1,29 +1,71 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Socket } from 'socket.io-client';
 
 import { bootstrapDone, setStoriesList } from './actions';
 import { storiesListSelector } from './selectors';
 
+import { handleSocketListener, handleSocketRequest } from '../../api';
 import { StoryType } from '../../types';
 
-const useStories = (socket: typeof Socket) => {
+const useStories = () => {
   const dispatch = useDispatch();
 
   const stories = useSelector(storiesListSelector);
 
   const listenStoriesList = useCallback(() => {
-    socket.on('tasks-list', (stories: StoryType[]) => {
-      dispatch(setStoriesList(stories));
-      dispatch(bootstrapDone());
+    handleSocketListener({
+      type: 'tasks-list',
+      callback: (stories: StoryType[]) => {
+        dispatch(setStoriesList(stories));
+        dispatch(bootstrapDone());
+      },
     });
-  }, [socket]);
+  }, [dispatch, handleSocketListener]);
 
   const getStories = useCallback(() => {
-    socket.emit('get-tasks');
-  }, [socket]);
+    handleSocketRequest({
+      type: 'get-stories',
+    });
+  }, [handleSocketRequest]);
 
-  return { getStories, listenStoriesList, stories };
+  const addStory = useCallback(
+    (payload) => {
+      handleSocketRequest({
+        type: 'new-story',
+        payload,
+      });
+    },
+    [handleSocketRequest],
+  );
+
+  const removeStory = useCallback(
+    (payload) => {
+      handleSocketRequest({
+        type: 'remove-story',
+        payload,
+      });
+    },
+    [handleSocketRequest],
+  );
+
+  const skipStory = useCallback(
+    (payload) => {
+      handleSocketRequest({
+        type: 'skip-story',
+        payload,
+      });
+    },
+    [handleSocketRequest],
+  );
+
+  return {
+    addStory,
+    getStories,
+    listenStoriesList,
+    removeStory,
+    skipStory,
+    stories,
+  };
 };
 
 export default useStories;

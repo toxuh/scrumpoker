@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 import { Badge, Typography, List, Progress, Tag } from 'antd';
 import { CrownTwoTone } from '@ant-design/icons';
@@ -46,15 +46,19 @@ const UsersList: React.FC<UsersListProps> = ({
             {user.name}
             {isUserModerator && <CrownTwoTone twoToneColor="#daac50" />}
             {voteEnded &&
-              votes.map((vote) => {
-                if (vote.userId === user._id) {
-                  return (
-                    <Tag color="#87d068" key={vote.userId}>
-                      {vote.points}
-                    </Tag>
-                  );
-                }
-              })}
+              votes.map(
+                (vote): ReactNode => {
+                  if (vote.userId === user._id) {
+                    return (
+                      <Tag color="#87d068" key={vote.userId}>
+                        {vote.points}
+                      </Tag>
+                    );
+                  }
+
+                  return null;
+                },
+              )}
           </List.Item>
         )}
       />

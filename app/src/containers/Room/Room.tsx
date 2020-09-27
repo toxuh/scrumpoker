@@ -1,19 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Socket } from 'socket.io-client';
+import React, { useEffect, useState } from 'react';
 
 import { Room as RoomComponent } from '../../components';
 
-import { StoryType, UserType, VoteType } from '../../types';
+import { StoryType, UserType } from '../../types';
 
 type RoomTypes = {
   currentUser: UserType;
   users: UserType[];
   stories: StoryType[];
   clearVotes: ({}) => void;
-  socket: typeof Socket;
 };
 
-const Room: React.FC<RoomTypes> = ({ currentUser, users, stories, socket }) => {
+const Room: React.FC<RoomTypes> = ({ currentUser, users, stories }) => {
   const [activeStory, setActiveStory] = useState<StoryType | undefined>(
     undefined,
   );
@@ -30,7 +28,6 @@ const Room: React.FC<RoomTypes> = ({ currentUser, users, stories, socket }) => {
       currentUser={currentUser}
       users={users}
       stories={stories}
-      socket={socket}
     />
   );
 };

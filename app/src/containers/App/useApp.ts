@@ -1,28 +1,30 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import io from 'socket.io-client';
 
 import { loading, resetApp } from './actions';
 import { loadingSelector, localUserId } from './selectors';
+
+import { handleSocketListener } from '../../api';
 
 const useApp = () => {
   const dispatch = useDispatch();
 
   const isLoading = useSelector(loadingSelector);
 
-  const socket = io.connect('http://localhost:3011');
-
   const listenReload = useCallback(() => {
-    socket.on('reset', () => {
-      dispatch(resetApp());
+    handleSocketListener({
+      type: 'reset',
+      callback: () => {
+        dispatch(resetApp());
+      },
     });
-  }, [socket]);
+  }, [dispatch, handleSocketListener, resetApp]);
 
   const setLoading = useCallback(() => {
     dispatch(loading());
   }, [dispatch]);
 
-  return { isLoading, listenReload, localUserId, setLoading, socket };
+  return { isLoading, listenReload, localUserId, setLoading };
 };
 
 export default useApp;
