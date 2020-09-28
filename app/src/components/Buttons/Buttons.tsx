@@ -58,6 +58,8 @@ const Buttons: React.FC<ButtonsProps> = ({
     },
   };
 
+  console.log(123);
+
   return (
     <Row className="Buttons">
       <Col className="Buttons__Col">

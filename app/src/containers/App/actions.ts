@@ -34,7 +34,17 @@ export const setVotesList = (payload: VoteType[]) => ({
   payload,
 });
 
+export const setUserVote = (payload: string) => ({
+  type: types.SET_USER_VOTE,
+  payload,
+});
+
 export const setVotingEnded = (payload: boolean) => ({
   type: types.SET_VOTING_ENDED,
+  payload,
+});
+
+export const setSummary = (payload: number) => ({
+  type: types.SET_SUMMARY,
   payload,
 });

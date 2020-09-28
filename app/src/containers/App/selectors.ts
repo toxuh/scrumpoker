@@ -22,7 +22,17 @@ export const votesListSelector = createSelector(
   (app) => app.votesList,
 );
 
+export const userVoteSelector = createSelector(
+  appSelector,
+  (app) => app.userVote,
+);
+
 export const votingEndedSelector = createSelector(
   appSelector,
   (app) => app.votingEnded,
+);
+
+export const summarySelector = createSelector(
+  appSelector,
+  (app) => app.summary,
 );

@@ -1,27 +1,33 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Layout } from 'antd';
 
 import useStories from './useStories';
 import useUsers from './useUsers';
-
-import useVotes from '../../containers/App/useVotes';
+import useVotes from './useVotes';
 
 import { Buttons, Cardboard, StoriesList, UsersList } from '../../components';
 
+import { UserType } from '../../types';
+
 import './Room.css';
+
+type RoomTypes = {
+  currentUser: UserType;
+  summary: number;
+};
 
 const { Content, Sider } = Layout;
 
-const Room: React.FC = () => {
+const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
   const {
     clearVotes,
     endVoting,
-    summary,
+    setUserVote,
+    userVote,
     vote,
     votes,
     votingEnded,
   } = useVotes();
-
   const {
     allStories,
     activeStories,
@@ -31,9 +37,7 @@ const Room: React.FC = () => {
     removeStory,
     skipStory,
   } = useStories();
-  const { currentUser, isCurrentUserModerator, users } = useUsers();
-
-  const [userVote, setUserVote] = useState<string | boolean>(false);
+  const { isCurrentUserModerator, users } = useUsers(currentUser);
 
   const handleVote = useCallback(
     ({ storyId, points }) => {

@@ -1,19 +1,16 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setVotesList, setVotingEnded } from './actions';
-import { votesListSelector, votingEndedSelector } from './selectors';
+import { setVotesList, setVotingEnded, setSummary } from './actions';
+import { summarySelector } from './selectors';
 
-import { handleSocketListener, handleSocketRequest } from '../../api';
+import { handleSocketListener } from '../../api';
 import { VoteType } from '../../types';
 
 const useVotes = () => {
   const dispatch = useDispatch();
 
-  const votes = useSelector(votesListSelector);
-  const votingEnded = useSelector(votingEndedSelector);
-
-  const [summary, setSummary] = useState(0);
+  const summary = useSelector(summarySelector);
 
   const listenVotes = useCallback(() => {
     handleSocketListener({
@@ -24,7 +21,7 @@ const useVotes = () => {
           return acc + a;
         }, 0);
 
-        setSummary(Number(rawVoteResult.toFixed(1)));
+        dispatch(setSummary(Number(rawVoteResult.toFixed(1))));
         dispatch(setVotesList(votes));
       },
     });
@@ -39,40 +36,10 @@ const useVotes = () => {
     });
   }, [dispatch]);
 
-  const vote = useCallback((payload) => {
-    handleSocketRequest({
-      type: 'vote',
-      payload,
-    });
-  }, []);
-
-  const clearVotes = useCallback(
-    (payload) => {
-      handleSocketRequest({
-        type: 'clear-votes',
-        payload,
-      });
-      dispatch(setVotingEnded(false));
-    },
-    [dispatch],
-  );
-
-  const endVoting = useCallback((payload) => {
-    handleSocketRequest({
-      type: 'end-voting',
-      payload,
-    });
-  }, []);
-
   return {
-    clearVotes,
-    endVoting,
     listenEndVoting,
     listenVotes,
     summary,
-    vote,
-    votes,
-    votingEnded,
   };
 };
 

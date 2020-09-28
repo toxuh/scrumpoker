@@ -15,7 +15,7 @@ import { handleSocketDisconnect } from '../../api';
 import './App.css';
 
 function App() {
-  const { listenReload, localUserId, setLoading } = useApp();
+  const { listenReload, localUserId } = useApp();
   const { currentUser, listenUserRegistered, registerUser } = useAuth();
   const { getStories, listenStoriesList } = useStories();
   const {
@@ -24,27 +24,27 @@ function App() {
     listenUsers,
     moderatorRole,
   } = useUsers();
-  const { clearVotes, listenEndVoting, listenVotes } = useVotes();
-
-  const onCloseApp = () => {
-    setLoading();
-    disconnectUser(localUserId);
-    handleSocketDisconnect();
-  };
+  const { listenEndVoting, listenVotes, summary } = useVotes();
 
   useEffect(() => {
     if (localUserId) {
       connectUser(localUserId);
       getStories();
 
-      window.addEventListener('beforeunload', onCloseApp);
+      window.addEventListener('beforeunload', () => {
+        disconnectUser(localUserId);
+        handleSocketDisconnect();
+      });
     }
     return () => {
       if (localUserId) {
-        window.removeEventListener('beforeunload', onCloseApp);
+        window.removeEventListener('beforeunload', () => {
+          disconnectUser(localUserId);
+          handleSocketDisconnect();
+        });
       }
     };
-  }, []);
+  }, [connectUser, getStories, localUserId, disconnectUser]);
 
   useEffect(() => {
     listenReload();
@@ -53,7 +53,7 @@ function App() {
     listenStoriesList();
     listenVotes();
     listenEndVoting();
-  }, []);
+  });
 
   useHotkeys('ctrl+m', () => {
     if (localUserId) {
@@ -71,7 +71,7 @@ function App() {
 
   return (
     <div className="App">
-      <Room />
+      <Room currentUser={currentUser} summary={summary} />
     </div>
   );
 }

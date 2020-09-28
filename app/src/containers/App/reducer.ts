@@ -12,6 +12,7 @@ const initialState: AppStateType = {
   userVote: false,
   votesList: [],
   votingEnded: false,
+  summary: 0,
 };
 
 const appReducer = (state = initialState, action: ReduxActionType) =>
@@ -44,6 +45,11 @@ const appReducer = (state = initialState, action: ReduxActionType) =>
         break;
       }
 
+      case types.SET_USER_VOTE: {
+        draft.userVote = payload as string | boolean;
+        break;
+      }
+
       case types.SET_VOTES_LIST: {
         draft.votesList = payload as [];
         break;
@@ -51,6 +57,11 @@ const appReducer = (state = initialState, action: ReduxActionType) =>
 
       case types.SET_VOTING_ENDED: {
         draft.votingEnded = payload as boolean;
+        break;
+      }
+
+      case types.SET_SUMMARY: {
+        draft.summary = payload as number;
         break;
       }
 

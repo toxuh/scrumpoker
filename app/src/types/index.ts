@@ -32,6 +32,7 @@ export type AppStateType = {
   userVote: boolean | string;
   votesList: VoteType[];
   votingEnded: boolean;
+  summary: number;
 };
 
 export type GlobalStateType = {
