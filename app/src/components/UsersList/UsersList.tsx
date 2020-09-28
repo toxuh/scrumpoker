@@ -44,7 +44,9 @@ const UsersList: React.FC<UsersListProps> = ({
               }
             />
             {user.name}
-            {isUserModerator && <CrownTwoTone twoToneColor="#daac50" />}
+            {user.role === 'moderator' && (
+              <CrownTwoTone twoToneColor="#daac50" />
+            )}
             {voteEnded &&
               votes.map(
                 (vote): ReactNode => {

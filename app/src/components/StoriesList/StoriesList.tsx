@@ -18,6 +18,7 @@ type StoriesListProps = {
   closedStories: StoryType[];
   handleAddStory: (story: { name: string; description: string }) => void;
   handleRemoveStory: (storyId: string) => void;
+  isUserModerator: boolean;
 };
 
 const StoriesList: React.FC<StoriesListProps> = ({
@@ -26,6 +27,7 @@ const StoriesList: React.FC<StoriesListProps> = ({
   closedStories,
   handleAddStory,
   handleRemoveStory,
+  isUserModerator,
 }) => {
   const intl = useIntl();
 
@@ -51,6 +53,7 @@ const StoriesList: React.FC<StoriesListProps> = ({
         activeStoriesLength={activeStories.length}
         closedStoriesLength={closedStories.length}
         allStoriesLength={allStories.length}
+        isUserModerator={isUserModerator}
       />
       {Boolean(allStories.length) ? (
         <List
@@ -67,11 +70,13 @@ const StoriesList: React.FC<StoriesListProps> = ({
                   {story.points || intl.formatMessage(messages.skipped)}
                 </span>
               )}
-              <Button
-                icon={<DeleteOutlined />}
-                type="link"
-                onClick={() => handleRemoveStory(story._id)}
-              />
+              {isUserModerator && (
+                <Button
+                  icon={<DeleteOutlined />}
+                  type="link"
+                  onClick={() => handleRemoveStory(story._id)}
+                />
+              )}
             </List.Item>
           )}
         />

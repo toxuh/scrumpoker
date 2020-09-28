@@ -19,6 +19,7 @@ type MenuProps = {
   activeStoriesLength: number;
   closedStoriesLength: number;
   allStoriesLength: number;
+  isUserModerator: boolean;
 };
 
 const Menu: React.FC<MenuProps> = ({
@@ -28,6 +29,7 @@ const Menu: React.FC<MenuProps> = ({
   closedStoriesLength,
   allStoriesLength,
   toggleModal,
+  isUserModerator,
 }) => {
   const intl = useIntl();
 
@@ -55,14 +57,16 @@ const Menu: React.FC<MenuProps> = ({
         </AntMenu>
       </Col>
       <Col span={6}>
-        <Button
-          className="AddStoryButton"
-          type="link"
-          icon={<PlusOutlined />}
-          onClick={() => toggleModal(true)}
-        >
-          {intl.formatMessage(messages.addStory)}
-        </Button>
+        {isUserModerator && (
+          <Button
+            className="AddStoryButton"
+            type="link"
+            icon={<PlusOutlined />}
+            onClick={() => toggleModal(true)}
+          >
+            {intl.formatMessage(messages.addStory)}
+          </Button>
+        )}
       </Col>
     </Row>
   );

@@ -81,6 +81,7 @@ const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
           closedStories={closedStories}
           handleAddStory={addStory}
           handleRemoveStory={removeStory}
+          isUserModerator={isCurrentUserModerator}
         />
       </Content>
       <Sider theme="light" className="Room__Sidebar" width={350}>
