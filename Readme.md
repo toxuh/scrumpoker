@@ -41,11 +41,14 @@ Start application:
 * ~~give moderator role to self~~
 * ~~use react-redux~~
 
-### Version 2. Multiuser
+### Version 2. Jira integration
+* ~~get epics list~~
+* ~~check epics to import~~
+* ~~import epic issues to your db~~
+* set storypoints to jira issue after voting ended
+
+### Version 3. Multiuser
 * Register screen
 * Registered users are moderators by default
 * Rooms with unique ids
 * Users have free access to rooms by link, need only name
-
-### Version 3. Jira integration
-* Jira api use
