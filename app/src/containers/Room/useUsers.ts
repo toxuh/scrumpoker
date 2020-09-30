@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import { usersListSelector } from './selectors';
+import { usersListSelector } from '../App/selectors';
 
 import { UserType } from '../../types';
 

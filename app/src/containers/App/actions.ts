@@ -48,3 +48,7 @@ export const setSummary = (payload: number) => ({
   type: types.SET_SUMMARY,
   payload,
 });
+
+export const getJiraEpics = () => ({
+  type: types.GET_JIRA_EPICS,
+});

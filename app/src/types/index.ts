@@ -19,6 +19,12 @@ export type VoteType = {
   points?: number;
 };
 
+export type JiraEpicType = {
+  id: string;
+  key: string;
+  name: string;
+};
+
 export type ReduxActionType = {
   type: string;
   payload?: string | {} | [] | number;
@@ -35,6 +41,11 @@ export type AppStateType = {
   summary: number;
 };
 
+export type JiraStateType = {
+  epicsList: JiraEpicType[];
+};
+
 export type GlobalStateType = {
   app: AppStateType;
+  jira: JiraStateType;
 };

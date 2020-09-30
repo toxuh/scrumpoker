@@ -6,7 +6,7 @@ import {
   activeStoriesListSelector,
   closedStoriesListSelector,
   currentStorySelector,
-} from './selectors';
+} from '../App/selectors';
 
 import { handleSocketRequest } from '../../api';
 

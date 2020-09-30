@@ -36,3 +36,28 @@ export const summarySelector = createSelector(
   appSelector,
   (app) => app.summary,
 );
+
+export const allStoriesListSelector = createSelector(
+  appSelector,
+  (app) => app.storiesList,
+);
+
+export const activeStoriesListSelector = createSelector(
+  allStoriesListSelector,
+  (stories) => stories.filter((story) => story.isActive),
+);
+
+export const closedStoriesListSelector = createSelector(
+  allStoriesListSelector,
+  (stories) => stories.filter((story) => !story.isActive),
+);
+
+export const currentStorySelector = createSelector(
+  activeStoriesListSelector,
+  (stories) => stories[0] || undefined,
+);
+
+export const usersListSelector = createSelector(
+  appSelector,
+  (app) => app.usersList,
+);

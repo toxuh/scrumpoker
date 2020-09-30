@@ -24,6 +24,12 @@ const taskSchema = new mongoose.Schema({
   points: {
     type: Number,
   },
+  jiraKey: {
+    type: String,
+  },
+  jiraId: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Tasks", taskSchema);

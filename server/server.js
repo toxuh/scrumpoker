@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const axios = require("axios");
 const dotenv = require("dotenv");
 const app = express();
 const server = require("http").Server(app);
@@ -18,6 +19,20 @@ mongoose.connect(
 );
 
 app.use(express.json());
+
+const makeRequest = async ({ type, query }) => {
+  const endpoint = type === "search" ? "/search?jql=" : "/issue/";
+
+  try {
+    return await axios.get(`${process.env.JIRA_API_URL}${endpoint}${query}`, {
+      headers: {
+        Authorization: `Basic ${process.env.JIRA_AUTH_TOKEN}`,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const sendNotDeletedTasks = (tasks) => {
   return tasks.filter((task) => !task.isDeleted);
@@ -200,6 +215,67 @@ const onConnect = (socket) => {
     );
 
     io.emit("reset");
+  });
+
+  socket.on("jira-get-epics", async () => {
+    const epics = await makeRequest({
+      type: "search",
+      query:
+        "project%3D%22Marfa%20CAT%22%20AND%20issuetype%3D%22Epic%22&fields=summary",
+    });
+
+    socket.emit(
+      "jira-epics-list",
+      epics.data.issues.map((epic) => ({
+        id: epic.id,
+        key: epic.key,
+        name: epic.fields.summary,
+      }))
+    );
+  });
+
+  socket.on("jira-get-stories", async (list) => {
+    const issuesRaw = await Promise.all(
+      list.map(async (epic) => {
+        const epicDetails = await makeRequest({
+          type: "search",
+          query: `%22Epic%20Link%22%3D${epic}&fields=summary,description`,
+        });
+
+        return epicDetails.data.issues.map((issue) => {
+          const obj = {
+            id: issue.id,
+            key: issue.key,
+            link: issue.self,
+            name: issue.fields.summary,
+            description: issue.fields.description,
+          };
+
+          return obj;
+        });
+      })
+    );
+
+    const issues = issuesRaw.flat();
+
+    issues.forEach(async ({ name, description, id, key }) => {
+      const task = new Tasks({
+        name,
+        description,
+        jiraKey: key,
+        jiraId: id,
+      });
+
+      try {
+        await task.save();
+
+        const tasks = await Tasks.find();
+
+        io.emit("tasks-list", sendNotDeletedTasks(tasks));
+      } catch (e) {
+        io.emit("new-task-error", e);
+      }
+    });
   });
 };
 

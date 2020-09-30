@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Layout } from 'antd';
 
+import useJira from './useJira';
 import useStories from './useStories';
 import useUsers from './useUsers';
 import useVotes from './useVotes';
@@ -19,6 +20,13 @@ type RoomTypes = {
 const { Content, Sider } = Layout;
 
 const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
+  const {
+    epicsList,
+    getJiraEpics,
+    getJiraStories,
+    listenJiraEpics,
+    listenJiraStories,
+  } = useJira();
   const {
     clearVotes,
     endVoting,
@@ -61,6 +69,11 @@ const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
     setUserVote(false);
   };
 
+  useEffect(() => {
+    listenJiraEpics();
+    listenJiraStories();
+  }, [listenJiraEpics, listenJiraStories]);
+
   return (
     <Layout className="Room__Layout">
       <Content className="Room__Content">
@@ -100,6 +113,9 @@ const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
             handleSkipStory={skipStory}
             handleEndVoting={endVoting}
             summary={summary}
+            handleGetEpics={getJiraEpics}
+            handleGetStories={getJiraStories}
+            epicsList={epicsList}
           />
         )}
       </Sider>

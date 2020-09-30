@@ -1,4 +1,4 @@
-const PREFIX = 'Scrumpoker';
+const PREFIX = 'App';
 
 export const LOADING = `${PREFIX}/LOADING`;
 export const BOOTSTRAP_DONE = `${PREFIX}/BOOTSTRAP_DONE`;
@@ -10,3 +10,5 @@ export const SET_CURRENT_USER = `${PREFIX}/SET_CURRENT_USER`;
 export const SET_VOTING_ENDED = `${PREFIX}/SET_VOTING_ENDED`;
 export const SET_SUMMARY = `${PREFIX}/SET_SUMMARY`;
 export const RESET_APP = `${PREFIX}/RESET_APP`;
+
+export const GET_JIRA_EPICS = `${PREFIX}/GET_JIRA_EPICS`;
