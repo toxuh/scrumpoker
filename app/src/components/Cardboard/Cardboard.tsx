@@ -1,13 +1,10 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 import { Card, Col, Popover, Row, Typography } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
 import { CARDS_VALUES } from '../../constants';
 
 import { StoryType } from '../../types';
-
-import messages from './messages';
 
 import './Cardboard.css';
 
@@ -26,14 +23,10 @@ const Cardboard: React.FC<CardboardProps> = ({
   userVote,
   onCardClick,
 }) => {
-  const intl = useIntl();
-
   return (
     <div className="Cardboard">
       <Title level={3}>
-        {currentStory
-          ? currentStory.name
-          : intl.formatMessage(messages.noActiveStory)}
+        {currentStory ? currentStory.name : ''}
         {currentStory && currentStory.description && (
           <Popover
             className="CardBoard__StoryDescription"

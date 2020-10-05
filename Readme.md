@@ -23,14 +23,10 @@ Start application:
 ## Roadmap
 
 ### Version 1. Base
-* flip cards on button press (moderator)
-* timer of vote in app
-* vote time in Voting model
-* give moderator role to user
 * ~~all state management to Redux~~
 * ~~localUserId to redux~~
 * ~~some kind of api~~
-* fix: reset on voting end
+* ~~fix: reset on voting end~~
 * ~~stop voting when all connected users voted~~
 * ~~share results on vote stop~~
 * ~~get story points based on users votes~~
@@ -40,6 +36,10 @@ Start application:
 * ~~multiple add stories~~
 * ~~give moderator role to self~~
 * ~~use react-redux~~
+* flip cards on button press (moderator)
+* give moderator role to user
+* timer of vote in app
+* vote time in Voting model
 
 ### Version 2. Jira integration
 * ~~get epics list~~

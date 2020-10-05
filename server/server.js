@@ -226,7 +226,10 @@ const onConnect = (socket) => {
       },
     });
 
+    const tasks = await Tasks.find();
+
     io.emit(requests.APP_RESET);
+    io.emit(requests.STORIES_LIST, sendNotDeletedTasks(tasks));
   });
 
   socket.on(requests.GET_EPICS_LIST, async () => {

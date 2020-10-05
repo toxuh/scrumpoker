@@ -72,7 +72,13 @@ const appReducer = (state = initialState, action: ReduxActionType) =>
       }
 
       case types.RESET_APP: {
-        return initialState;
+        return {
+          ...initialState,
+          currentUser: draft.currentUser,
+          localUserId: draft.localUserId,
+          loading: draft.loading,
+          usersList: draft.usersList,
+        };
       }
     }
   });
