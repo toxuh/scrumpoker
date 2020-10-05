@@ -1,0 +1,6 @@
+.JiraListModal {}
+
+.JiraListModal .ant-modal-body {
+  height: 400px;
+  overflow: auto;
+}

@@ -27,7 +27,7 @@ Start application:
 * timer of vote in app
 * vote time in Voting model
 * give moderator role to user
-* all state management to Redux
+* ~~all state management to Redux~~
 * localUserId to redux
 * ~~some kind of api~~
 * fix: reset on voting end (now page reloads, this is bad)
@@ -45,7 +45,7 @@ Start application:
 * ~~get epics list~~
 * ~~check epics to import~~
 * ~~import epic issues to your db~~
-* set storypoints to jira issue after voting ended
+* ~~set storypoints to jira issue after voting ended~~
 
 ### Version 3. Multiuser
 * Register screen

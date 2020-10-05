@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Checkbox, List, Modal, Spin } from 'antd';
+import { Button, Checkbox, List, Modal } from 'antd';
+
+import Loading from '../Loading/Loading';
 
 import { JiraEpicType } from '../../types';
 
 import messages from './messages';
+
+import './JiraListModal.css';
 
 type JiraListModalProps = {
   showModal: boolean;
@@ -33,14 +37,18 @@ const JiraListModal: React.FC<JiraListModalProps> = ({
 
   return (
     <Modal
-      bodyStyle={{ height: '400px', overflow: 'auto' }}
+      className="JiraListModal"
       visible={showModal}
       title={intl.formatMessage(messages.header)}
+      onCancel={() => toggleModal(false)}
       footer={[
         <Button
           key="submit"
           type="primary"
-          onClick={() => handleGetStories(selected)}
+          onClick={() => {
+            handleGetStories(selected);
+            toggleModal(false);
+          }}
         >
           {intl.formatMessage(messages.import)}
         </Button>,
@@ -69,7 +77,7 @@ const JiraListModal: React.FC<JiraListModalProps> = ({
           )}
         />
       ) : (
-        <Spin />
+        <Loading />
       )}
     </Modal>
   );

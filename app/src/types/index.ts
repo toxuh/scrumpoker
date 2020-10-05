@@ -12,6 +12,9 @@ export type StoryType = {
   points: number | null;
   isActive: boolean;
   isDeleted: boolean;
+  jiraId?: string;
+  jiraKey?: string;
+  jiraLink?: string;
 };
 
 export type VoteType = {

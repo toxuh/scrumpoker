@@ -3,11 +3,15 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   noStories: {
     id: 'Room.TasksList.noStories',
-    defaultMessage: "The're no stories yet",
+    defaultMessage: 'There no stories yet',
   },
   addStory: {
     id: 'Room.TasksList.addStory',
     defaultMessage: 'Add story',
+  },
+  importStories: {
+    id: 'Room.TasksList.importStories',
+    defaultMessage: 'Import stories',
   },
   newStory: {
     id: 'Room.TasksList.newStory',

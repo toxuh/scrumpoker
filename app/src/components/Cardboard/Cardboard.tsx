@@ -1,15 +1,18 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Card, Col, Row, Typography } from 'antd';
+import { Card, Col, Popover, Row, Typography } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 import { CARDS_VALUES } from '../../constants';
+
+import { StoryType } from '../../types';
 
 import messages from './messages';
 
 import './Cardboard.css';
 
 type CardboardProps = {
-  storyTitle?: string;
+  currentStory?: StoryType;
   isActive: boolean;
   userVote: string | boolean;
   onCardClick: (point: string) => void;
@@ -18,7 +21,7 @@ type CardboardProps = {
 const { Title } = Typography;
 
 const Cardboard: React.FC<CardboardProps> = ({
-  storyTitle,
+  currentStory,
   isActive,
   userVote,
   onCardClick,
@@ -28,7 +31,18 @@ const Cardboard: React.FC<CardboardProps> = ({
   return (
     <div className="Cardboard">
       <Title level={3}>
-        {storyTitle || intl.formatMessage(messages.noActiveStory)}
+        {currentStory
+          ? currentStory.name
+          : intl.formatMessage(messages.noActiveStory)}
+        {currentStory && currentStory.description && (
+          <Popover
+            className="CardBoard__StoryDescription"
+            content={currentStory.description}
+            trigger="click"
+          >
+            <InfoCircleOutlined />
+          </Popover>
+        )}
       </Title>
       <div className="Cardboard__Holder">
         {!isActive && <div className="Cardboard__Blocker" />}

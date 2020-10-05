@@ -9,9 +9,7 @@ import {
   SyncOutlined,
 } from '@ant-design/icons';
 
-import { JiraEpicType, StoryType } from '../../types';
-
-import JiraListModal from '../JiraListModal/JiraListModal';
+import { StoryType } from '../../types';
 
 import messages from './messages';
 
@@ -26,9 +24,6 @@ type ButtonsProps = {
   handleSkipStory: (taskId: string | undefined) => void;
   handleEndVoting: (sum: { taskId: string; points: number }) => void;
   summary: number;
-  handleGetEpics: () => void;
-  handleGetStories: (list: string[]) => void;
-  epicsList: JiraEpicType[];
 };
 
 const { confirm } = Modal;
@@ -41,13 +36,8 @@ const Buttons: React.FC<ButtonsProps> = ({
   handleSkipStory,
   handleEndVoting,
   summary,
-  handleGetEpics,
-  handleGetStories,
-  epicsList,
 }) => {
   const intl = useIntl();
-
-  const [jiraList, setJiraList] = useState(false);
 
   const [numInput, setNumInput] = useState(summary);
 
@@ -68,7 +58,7 @@ const Buttons: React.FC<ButtonsProps> = ({
     },
   };
 
-  console.log(1);
+  console.log('Buttons');
 
   return (
     <Row className="Buttons">
@@ -129,23 +119,7 @@ const Buttons: React.FC<ButtonsProps> = ({
         >
           {intl.formatMessage(messages.skipStory)}
         </Button>
-        <Button
-          type="primary"
-          size="large"
-          onClick={() => {
-            handleGetEpics();
-            setJiraList(true);
-          }}
-        >
-          Get epics
-        </Button>
       </Col>
-      <JiraListModal
-        showModal={jiraList}
-        toggleModal={setJiraList}
-        list={epicsList}
-        handleGetStories={handleGetStories}
-      />
     </Row>
   );
 };

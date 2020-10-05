@@ -11,6 +11,20 @@
   padding-left: 20px;
 }
 
+.StoriesList__Points {
+  margin-left: 10px !important;
+}
+
+.StoriesList__Points > sup {
+  background-color: #1890ff;
+}
+
+.StoriesList__Skipped {
+  color: #aaa;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
 .ant-menu-item .ant-badge-count {
   height: 16px !important;
   min-width: 16px !important;

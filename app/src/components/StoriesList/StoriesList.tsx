@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, List } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { Badge, Button, List } from 'antd';
+import { DeleteOutlined, LinkOutlined } from '@ant-design/icons';
 
 import AddStoryModal from './AddStoryModal';
+import JiraListModal from '../JiraListModal/JiraListModal';
 import Menu from './Menu';
 
-import { StoryType } from '../../types';
+import { JiraEpicType, StoryType } from '../../types';
 
 import messages from './messages';
 
@@ -19,6 +20,9 @@ type StoriesListProps = {
   handleAddStory: (story: { name: string; description: string }) => void;
   handleRemoveStory: (storyId: string) => void;
   isUserModerator: boolean;
+  handleGetEpics: () => void;
+  handleGetStories: (list: string[]) => void;
+  epicsList: JiraEpicType[];
 };
 
 const StoriesList: React.FC<StoriesListProps> = ({
@@ -28,10 +32,15 @@ const StoriesList: React.FC<StoriesListProps> = ({
   handleAddStory,
   handleRemoveStory,
   isUserModerator,
+  epicsList,
+  handleGetStories,
+  handleGetEpics,
 }) => {
   const intl = useIntl();
 
-  const [showModal, toggleModal] = useState(false);
+  const [addModal, setAddModal] = useState(false);
+  const [importModal, setImportModal] = useState(false);
+
   const [activeMenuItem, setActiveMenuItem] = useState('active');
 
   const getStoriesList = () => {
@@ -49,28 +58,51 @@ const StoriesList: React.FC<StoriesListProps> = ({
       <Menu
         activeMenuItem={activeMenuItem}
         setActiveMenuItem={setActiveMenuItem}
-        toggleModal={toggleModal}
+        setAddModal={setAddModal}
+        setImportModal={setImportModal}
         activeStoriesLength={activeStories.length}
         closedStoriesLength={closedStories.length}
         allStoriesLength={allStories.length}
         isUserModerator={isUserModerator}
+        handleGetEpics={handleGetEpics}
+        handleGetStories={handleGetStories}
+        epicsList={epicsList}
       />
       {Boolean(allStories.length) ? (
         <List
           className="StoriesList__List"
           dataSource={getStoriesList()}
+          locale={{ emptyText: intl.formatMessage(messages.noStories) }}
           renderItem={(story) => (
             <List.Item key={story._id}>
               <List.Item.Meta
                 title={story.name}
                 description={story.description}
               />
-              {!story.isActive && (
-                <span>
-                  {story.points || intl.formatMessage(messages.skipped)}
-                </span>
+              {story.jiraKey && (
+                <a
+                  href={`https://marfateam.atlassian.net/browse/${story.jiraKey}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <LinkOutlined />
+                </a>
               )}
-              {isUserModerator && (
+              {!story.isActive && (
+                <>
+                  {story.points ? (
+                    <Badge
+                      className="StoriesList__Points"
+                      count={story.points}
+                    />
+                  ) : (
+                    <span className="StoriesList__Skipped">
+                      {intl.formatMessage(messages.skipped)}
+                    </span>
+                  )}
+                </>
+              )}
+              {isUserModerator && activeMenuItem === 'active' && (
                 <Button
                   icon={<DeleteOutlined />}
                   type="link"
@@ -86,9 +118,15 @@ const StoriesList: React.FC<StoriesListProps> = ({
         </p>
       )}
       <AddStoryModal
-        toggleModal={toggleModal}
+        toggleModal={setAddModal}
         handleAddStory={handleAddStory}
-        showModal={showModal}
+        showModal={addModal}
+      />
+      <JiraListModal
+        showModal={importModal}
+        toggleModal={setImportModal}
+        list={epicsList}
+        handleGetStories={handleGetStories}
       />
     </div>
   );

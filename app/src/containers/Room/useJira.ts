@@ -34,21 +34,11 @@ const useJira = () => {
     });
   }, [dispatch]);
 
-  const listenJiraStories = useCallback(() => {
-    handleSocketListener({
-      type: 'jira-stories-list',
-      callback: (list: []) => {
-        console.log(list);
-      },
-    });
-  }, [dispatch]);
-
   return {
     epicsList,
     getJiraEpics,
     getJiraStories,
     listenJiraEpics,
-    listenJiraStories,
   };
 };
 

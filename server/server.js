@@ -20,11 +20,21 @@ mongoose.connect(
 
 app.use(express.json());
 
-const makeRequest = async ({ type, query }) => {
-  const endpoint = type === "search" ? "/search?jql=" : "/issue/";
-
+const makePutRequest = async (key, body) => {
   try {
-    return await axios.get(`${process.env.JIRA_API_URL}${endpoint}${query}`, {
+    return await axios.put(`${process.env.JIRA_API_URL}/issue/${key}`, body, {
+      headers: {
+        Authorization: `Basic ${process.env.JIRA_AUTH_TOKEN}`,
+      },
+    });
+  } catch (e) {
+    console.error(e.response);
+  }
+};
+
+const makeGetRequest = async (query) => {
+  try {
+    return await axios.get(`${process.env.JIRA_API_URL}/search?jql=${query}`, {
       headers: {
         Authorization: `Basic ${process.env.JIRA_AUTH_TOKEN}`,
       },
@@ -208,21 +218,25 @@ const onConnect = (socket) => {
   });
 
   socket.on("end-voting", async ({ taskId, points }) => {
-    await Tasks.findOneAndUpdate(
+    const task = await Tasks.findOneAndUpdate(
       { _id: taskId },
       { points, isActive: false },
       { new: true }
     );
 
+    await makePutRequest(task.jiraKey, {
+      fields: {
+        customfield_10026: task.points,
+      },
+    });
+
     io.emit("reset");
   });
 
   socket.on("jira-get-epics", async () => {
-    const epics = await makeRequest({
-      type: "search",
-      query:
-        "project%3D%22Marfa%20CAT%22%20AND%20issuetype%3D%22Epic%22&fields=summary",
-    });
+    const epics = await makeGetRequest(
+      "project%3D%22Marfa%20CAT%22%20AND%20issuetype%3D%22Epic%22&fields=summary"
+    );
 
     socket.emit(
       "jira-epics-list",
@@ -237,10 +251,9 @@ const onConnect = (socket) => {
   socket.on("jira-get-stories", async (list) => {
     const issuesRaw = await Promise.all(
       list.map(async (epic) => {
-        const epicDetails = await makeRequest({
-          type: "search",
-          query: `%22Epic%20Link%22%3D${epic}&fields=summary,description`,
-        });
+        const epicDetails = await makeGetRequest(
+          `%22Epic%20Link%22%3D${epic}&fields=summary,description`
+        );
 
         return epicDetails.data.issues.map((issue) => {
           const obj = {
@@ -258,12 +271,13 @@ const onConnect = (socket) => {
 
     const issues = issuesRaw.flat();
 
-    issues.forEach(async ({ name, description, id, key }) => {
+    issues.forEach(async ({ name, description, id, key, link }) => {
       const task = new Tasks({
         name,
         description,
         jiraKey: key,
         jiraId: id,
+        jiraLink: link,
       });
 
       try {

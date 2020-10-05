@@ -30,6 +30,9 @@ const taskSchema = new mongoose.Schema({
   jiraId: {
     type: String,
   },
+  jiraLink: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Tasks", taskSchema);

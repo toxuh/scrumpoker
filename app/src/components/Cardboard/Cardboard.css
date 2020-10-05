@@ -26,3 +26,11 @@
   color: #fff;
   background: #62a5d9;
 }
+
+.Cardboard .CardBoard__StoryDescription {
+  color: #1890ff;
+  font-size: 18px;
+  margin-left: 10px;
+  position: relative;
+  top: -1px;
+}

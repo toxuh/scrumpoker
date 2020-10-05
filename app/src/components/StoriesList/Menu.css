@@ -2,8 +2,7 @@
   margin-bottom: 10px !important;
 }
 
-.AddStoryButton {
-  position: absolute !important;
-  right: 0;
-  top: 7px;
+.Menu__Buttons {
+  text-align: right;
+  line-height: 45px;
 }

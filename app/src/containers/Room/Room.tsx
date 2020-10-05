@@ -25,7 +25,6 @@ const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
     getJiraEpics,
     getJiraStories,
     listenJiraEpics,
-    listenJiraStories,
   } = useJira();
   const {
     clearVotes,
@@ -71,14 +70,13 @@ const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
 
   useEffect(() => {
     listenJiraEpics();
-    listenJiraStories();
-  }, [listenJiraEpics, listenJiraStories]);
+  }, [listenJiraEpics]);
 
   return (
     <Layout className="Room__Layout">
       <Content className="Room__Content">
         <Cardboard
-          storyTitle={currentStory?.name}
+          currentStory={currentStory}
           isActive={Boolean(currentStory)}
           userVote={userVote}
           onCardClick={(point) =>
@@ -95,6 +93,9 @@ const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
           handleAddStory={addStory}
           handleRemoveStory={removeStory}
           isUserModerator={isCurrentUserModerator}
+          handleGetEpics={getJiraEpics}
+          handleGetStories={getJiraStories}
+          epicsList={epicsList}
         />
       </Content>
       <Sider theme="light" className="Room__Sidebar" width={350}>
@@ -113,9 +114,6 @@ const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
             handleSkipStory={skipStory}
             handleEndVoting={endVoting}
             summary={summary}
-            handleGetEpics={getJiraEpics}
-            handleGetStories={getJiraStories}
-            epicsList={epicsList}
           />
         )}
       </Sider>

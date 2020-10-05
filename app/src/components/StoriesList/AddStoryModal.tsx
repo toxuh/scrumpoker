@@ -46,6 +46,7 @@ const AddStoryModal: React.FC<AddStoryModalProps> = ({
     <Modal
       visible={showModal}
       title={intl.formatMessage(messages.newStory)}
+      onCancel={onCancel}
       footer={[
         <Button
           key="submitOne"
