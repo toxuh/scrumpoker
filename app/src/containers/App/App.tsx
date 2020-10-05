@@ -58,11 +58,15 @@ function App() {
     bootstrap();
   });
 
-  useHotkeys('ctrl+m', () => {
-    if (localUserId) {
-      moderatorRole(localUserId);
-    }
-  });
+  useHotkeys(
+    'ctrl+m',
+    () => {
+      if (localUserId) {
+        moderatorRole(localUserId);
+      }
+    },
+    [localUserId],
+  );
 
   if (isLoading && localUserId) {
     return <Loading />;

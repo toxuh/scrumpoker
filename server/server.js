@@ -6,6 +6,8 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
+const requests = require("./constants/requests");
+
 const Users = require("./models/User");
 const Tasks = require("./models/Task");
 const Votes = require("./models/Voting");
@@ -69,7 +71,7 @@ const flattenVotesList = (array) => {
 const connectedUsers = [];
 
 const onConnect = (socket) => {
-  socket.on("create-user", async (userName) => {
+  socket.on(requests.CREATE_USER, async (userName) => {
     const user = new Users({
       name: userName,
     });
@@ -77,29 +79,23 @@ const onConnect = (socket) => {
     try {
       const savedUser = await user.save();
 
-      socket.emit("user-saved", savedUser);
+      socket.emit(requests.USER_CREATED, savedUser);
     } catch (e) {
-      socket.emit("user-saved", { error: e });
+      socket.emit(requests.USER_CREATED, { error: e });
     }
   });
 
-  socket.on("get-user-name", async (userId) => {
-    const user = await Users.findOne({ _id: userId });
-
-    socket.emit("user-name", user);
-  });
-
-  socket.on("connect-user", async (userId) => {
+  socket.on(requests.CONNECT_USER, async (userId) => {
     const user = await Users.findOne({ _id: userId });
 
     if (!Boolean(connectedUsers.filter((user) => user._id == userId).length)) {
       connectedUsers.push(user);
     }
 
-    io.emit("users-connected", connectedUsers);
+    io.emit(requests.USER_CONNECTED, connectedUsers);
   });
 
-  socket.on("moderator-role", async (userId) => {
+  socket.on(requests.SET_MODERATOR_ROLE, async (userId) => {
     const user = await Users.findOneAndUpdate(
       { _id: userId },
       { role: "moderator" },
@@ -110,24 +106,24 @@ const onConnect = (socket) => {
 
     connectedUsers[userIndex].role = "moderator";
 
-    io.emit("users-connected", connectedUsers);
+    io.emit(requests.USER_CONNECTED, connectedUsers);
   });
 
-  socket.on("disconnect-user", async (userId) => {
+  socket.on(requests.DISCONNECT_USER, async (userId) => {
     const userIndex = connectedUsers.findIndex((user) => user._id == userId);
 
     connectedUsers.splice(userIndex, 1);
 
-    io.emit("users-connected", connectedUsers);
+    io.emit(requests.USER_CONNECTED, connectedUsers);
   });
 
-  socket.on("get-stories", async () => {
+  socket.on(requests.GET_STORIES_LIST, async () => {
     const tasks = await Tasks.find();
 
-    io.emit("tasks-list", sendNotDeletedTasks(tasks));
+    io.emit(requests.STORIES_LIST, sendNotDeletedTasks(tasks));
   });
 
-  socket.on("new-story", async ({ name, description }) => {
+  socket.on(requests.CREATE_STORY, async ({ name, description }) => {
     const task = new Tasks({
       name,
       description,
@@ -138,13 +134,13 @@ const onConnect = (socket) => {
 
       const tasks = await Tasks.find();
 
-      io.emit("tasks-list", sendNotDeletedTasks(tasks));
+      io.emit(requests.STORIES_LIST, sendNotDeletedTasks(tasks));
     } catch (e) {
-      io.emit("new-task-error", e);
+      io.emit(requests.STORIES_LIST, e);
     }
   });
 
-  socket.on("remove-story", async (taskId) => {
+  socket.on(requests.DELETE_STORY, async (taskId) => {
     await Tasks.findOneAndUpdate(
       { _id: taskId },
       { isDeleted: true },
@@ -153,10 +149,10 @@ const onConnect = (socket) => {
 
     const tasks = await Tasks.find();
 
-    io.emit("tasks-list", sendNotDeletedTasks(tasks));
+    io.emit(requests.STORIES_LIST, sendNotDeletedTasks(tasks));
   });
 
-  socket.on("vote", async ({ storyId, userId, points }) => {
+  socket.on(requests.SET_VOTE, async ({ storyId, userId, points }) => {
     await Votes.findOne({ storyId }, async (err, doc) => {
       if (err) {
         throw new Error(err);
@@ -171,26 +167,26 @@ const onConnect = (socket) => {
         const savedVote = await vote.save();
 
         if (savedVote.voters.length === connectedUsers.length) {
-          io.emit("votes-list", savedVote.voters);
-          io.emit("end-vote", true);
+          io.emit(requests.GET_VOTES_LIST, savedVote.voters);
+          io.emit(requests.VOTE_ENDED, true);
         } else {
-          io.emit("votes-list", flattenVotesList(savedVote.voters));
+          io.emit(requests.GET_VOTES_LIST, flattenVotesList(savedVote.voters));
         }
       } else {
         doc.voters = editOrPushVote(doc.voters, { userId, points });
         await doc.save();
 
         if (doc.voters.length === connectedUsers.length) {
-          io.emit("votes-list", doc.voters);
-          io.emit("end-vote", true);
+          io.emit(requests.GET_VOTES_LIST, doc.voters);
+          io.emit(requests.VOTE_ENDED, true);
         } else {
-          io.emit("votes-list", flattenVotesList(doc.voters));
+          io.emit(requests.GET_VOTES_LIST, flattenVotesList(doc.voters));
         }
       }
     });
   });
 
-  socket.on("clear-votes", async ({ storyId }) => {
+  socket.on(requests.CLEAR_VOTE, async ({ storyId }) => {
     await Votes.findOne({ storyId }, async (err, doc) => {
       if (err) {
         throw new Error(err);
@@ -200,12 +196,12 @@ const onConnect = (socket) => {
 
       await doc.save();
 
-      io.emit("votes-list", doc.voters);
-      io.emit("end-vote", false);
+      io.emit(requests.GET_VOTES_LIST, doc.voters);
+      io.emit(requests.VOTE_ENDED, false);
     });
   });
 
-  socket.on("skip-story", async (taskId) => {
+  socket.on(requests.SKIP_STORY, async (taskId) => {
     await Tasks.findOneAndUpdate(
       { _id: taskId },
       { isActive: false, points: null },
@@ -214,10 +210,10 @@ const onConnect = (socket) => {
 
     const tasks = await Tasks.find();
 
-    io.emit("tasks-list", sendNotDeletedTasks(tasks));
+    io.emit(requests.STORIES_LIST, sendNotDeletedTasks(tasks));
   });
 
-  socket.on("end-voting", async ({ taskId, points }) => {
+  socket.on(requests.END_VOTE, async ({ taskId, points }) => {
     const task = await Tasks.findOneAndUpdate(
       { _id: taskId },
       { points, isActive: false },
@@ -230,16 +226,16 @@ const onConnect = (socket) => {
       },
     });
 
-    io.emit("reset");
+    io.emit(requests.APP_RESET);
   });
 
-  socket.on("jira-get-epics", async () => {
+  socket.on(requests.GET_EPICS_LIST, async () => {
     const epics = await makeGetRequest(
       "project%3D%22Marfa%20CAT%22%20AND%20issuetype%3D%22Epic%22&fields=summary"
     );
 
     socket.emit(
-      "jira-epics-list",
+      requests.EPICS_LIST,
       epics.data.issues.map((epic) => ({
         id: epic.id,
         key: epic.key,
@@ -248,7 +244,7 @@ const onConnect = (socket) => {
     );
   });
 
-  socket.on("jira-get-stories", async (list) => {
+  socket.on(requests.GET_ISSUES_LIST, async (list) => {
     const issuesRaw = await Promise.all(
       list.map(async (epic) => {
         const epicDetails = await makeGetRequest(
@@ -285,9 +281,9 @@ const onConnect = (socket) => {
 
         const tasks = await Tasks.find();
 
-        io.emit("tasks-list", sendNotDeletedTasks(tasks));
+        io.emit(requests.STORIES_LIST, sendNotDeletedTasks(tasks));
       } catch (e) {
-        io.emit("new-task-error", e);
+        io.emit(requests.STORIES_LIST, e);
       }
     });
   });

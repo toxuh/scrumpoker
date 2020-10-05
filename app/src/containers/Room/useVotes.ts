@@ -12,6 +12,7 @@ import {
 } from '../App/selectors';
 
 import { handleSocketRequest } from '../../api';
+import { CLEAR_VOTE, END_VOTE, SET_VOTE } from '../../constants/requests';
 
 const useVotes = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const useVotes = () => {
 
   const vote = useCallback((payload) => {
     handleSocketRequest({
-      type: 'vote',
+      type: SET_VOTE,
       payload,
     });
   }, []);
@@ -30,7 +31,7 @@ const useVotes = () => {
   const clearVotes = useCallback(
     (payload) => {
       handleSocketRequest({
-        type: 'clear-votes',
+        type: CLEAR_VOTE,
         payload,
       });
       dispatch(setVotingEnded(false));
@@ -40,7 +41,7 @@ const useVotes = () => {
 
   const endVoting = useCallback((payload) => {
     handleSocketRequest({
-      type: 'end-voting',
+      type: END_VOTE,
       payload,
     });
   }, []);

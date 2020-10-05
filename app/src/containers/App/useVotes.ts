@@ -5,6 +5,8 @@ import { setVotesList, setVotingEnded, setSummary } from './actions';
 import { summarySelector } from './selectors';
 
 import { handleSocketListener } from '../../api';
+import { GET_VOTES_LIST, VOTE_ENDED } from '../../constants/requests';
+
 import { VoteType } from '../../types';
 
 const useVotes = () => {
@@ -14,7 +16,7 @@ const useVotes = () => {
 
   const listenVotes = useCallback(() => {
     handleSocketListener({
-      type: 'votes-list',
+      type: GET_VOTES_LIST,
       callback: (votes: VoteType[]) => {
         const points = votes.map((vote) => Number(vote.points) || 0);
         const rawVoteResult = points.reduce((acc, a): number => {
@@ -29,7 +31,7 @@ const useVotes = () => {
 
   const listenEndVoting = useCallback(() => {
     handleSocketListener({
-      type: 'end-vote',
+      type: VOTE_ENDED,
       callback: (condition: boolean) => {
         dispatch(setVotingEnded(condition));
       },

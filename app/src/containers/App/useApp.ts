@@ -9,6 +9,7 @@ import {
 } from './selectors';
 
 import { handleSocketListener } from '../../api';
+import { APP_RESET } from '../../constants/requests';
 
 const useApp = () => {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const useApp = () => {
 
   const listenReload = useCallback(() => {
     handleSocketListener({
-      type: 'reset',
+      type: APP_RESET,
       callback: () => {
         dispatch(resetApp());
       },

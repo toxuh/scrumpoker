@@ -9,6 +9,11 @@ import {
 } from '../App/selectors';
 
 import { handleSocketRequest } from '../../api';
+import {
+  CREATE_STORY,
+  DELETE_STORY,
+  SKIP_STORY,
+} from '../../constants/requests';
 
 const useStories = () => {
   const allStories = useSelector(allStoriesListSelector);
@@ -18,21 +23,21 @@ const useStories = () => {
 
   const addStory = useCallback((payload) => {
     handleSocketRequest({
-      type: 'new-story',
+      type: CREATE_STORY,
       payload,
     });
   }, []);
 
   const removeStory = useCallback((payload) => {
     handleSocketRequest({
-      type: 'remove-story',
+      type: DELETE_STORY,
       payload,
     });
   }, []);
 
   const skipStory = useCallback((payload) => {
     handleSocketRequest({
-      type: 'skip-story',
+      type: SKIP_STORY,
       payload,
     });
   }, []);

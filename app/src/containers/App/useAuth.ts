@@ -7,6 +7,7 @@ import { currentUserSelector } from './selectors';
 import { handleSocketListener, handleSocketRequest } from '../../api';
 import { UserType } from '../../types';
 import { LS_KEY } from '../../constants';
+import { CREATE_USER, USER_CREATED } from '../../constants/requests';
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -15,14 +16,14 @@ const useAuth = () => {
 
   const registerUser = useCallback((name: string) => {
     handleSocketRequest({
-      type: 'create-user',
+      type: CREATE_USER,
       payload: name,
     });
   }, []);
 
   const listenUserRegistered = useCallback(() => {
     handleSocketListener({
-      type: 'user-saved',
+      type: USER_CREATED,
       callback: (user: UserType) => {
         localStorage.setItem(LS_KEY, user._id);
         dispatch(setCurrentUser(user));
