@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setCurrentUser } from './actions';
+import { setCurrentUser, setLocalUserId } from './actions';
 import { currentUserSelector } from './selectors';
 
 import { handleSocketListener, handleSocketRequest } from '../../api';
@@ -26,6 +26,7 @@ const useAuth = () => {
       callback: (user: UserType) => {
         localStorage.setItem(LS_KEY, user._id);
         dispatch(setCurrentUser(user));
+        dispatch(setLocalUserId(user._id));
       },
     });
   }, [dispatch]);

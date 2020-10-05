@@ -17,6 +17,11 @@ export const currentUserSelector = createSelector(
   (app) => app.currentUser as UserType,
 );
 
+export const localUserIdSelector = createSelector(
+  appSelector,
+  (app) => app.localUserId,
+);
+
 export const votesListSelector = createSelector(
   appSelector,
   (app) => app.votesList,

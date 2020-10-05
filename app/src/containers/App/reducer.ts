@@ -6,6 +6,7 @@ import * as types from './types';
 
 const initialState: AppStateType = {
   currentUser: false,
+  localUserId: undefined,
   loading: true,
   storiesList: [],
   usersList: [],
@@ -42,6 +43,11 @@ const appReducer = (state = initialState, action: ReduxActionType) =>
 
       case types.SET_CURRENT_USER: {
         draft.currentUser = payload as UserType;
+        break;
+      }
+
+      case types.SET_LOCAL_USER_ID: {
+        draft.localUserId = payload as string;
         break;
       }
 

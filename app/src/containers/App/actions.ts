@@ -29,6 +29,11 @@ export const setCurrentUser = (payload: UserType) => ({
   payload,
 });
 
+export const setLocalUserId = (payload: string) => ({
+  type: types.SET_LOCAL_USER_ID,
+  payload,
+});
+
 export const setVotesList = (payload: VoteType[]) => ({
   type: types.SET_VOTES_LIST,
   payload,

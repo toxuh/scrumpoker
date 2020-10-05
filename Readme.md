@@ -28,9 +28,9 @@ Start application:
 * vote time in Voting model
 * give moderator role to user
 * ~~all state management to Redux~~
-* localUserId to redux
+* ~~localUserId to redux~~
 * ~~some kind of api~~
-* fix: reset on voting end (now page reloads, this is bad)
+* fix: reset on voting end
 * ~~stop voting when all connected users voted~~
 * ~~share results on vote stop~~
 * ~~get story points based on users votes~~

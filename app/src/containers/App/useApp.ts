@@ -1,8 +1,12 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { loading, resetApp } from './actions';
-import { loadingSelector, localUserId } from './selectors';
+import { loading, resetApp, setLocalUserId } from './actions';
+import {
+  loadingSelector,
+  localUserId as lsId,
+  localUserIdSelector,
+} from './selectors';
 
 import { handleSocketListener } from '../../api';
 
@@ -10,6 +14,13 @@ const useApp = () => {
   const dispatch = useDispatch();
 
   const isLoading = useSelector(loadingSelector);
+  const localUserId = useSelector(localUserIdSelector);
+
+  const bootstrap = useCallback(() => {
+    if (lsId) {
+      dispatch(setLocalUserId(lsId));
+    }
+  }, [dispatch]);
 
   const listenReload = useCallback(() => {
     handleSocketListener({
@@ -24,7 +35,7 @@ const useApp = () => {
     dispatch(loading());
   }, [dispatch]);
 
-  return { isLoading, listenReload, localUserId, setLoading };
+  return { bootstrap, isLoading, listenReload, localUserId, setLoading };
 };
 
 export default useApp;

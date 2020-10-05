@@ -2,20 +2,19 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setCurrentUser, setUsersList } from './actions';
-import { localUserId } from './selectors';
 
 import { handleSocketListener, handleSocketRequest } from '../../api';
 import { UserType } from '../../types';
 
-const useUsers = () => {
+const useUsers = (localUserId?: string) => {
   const dispatch = useDispatch();
 
-  const connectUser = useCallback((localUserId) => {
+  const connectUser = useCallback(() => {
     handleSocketRequest({
       type: 'connect-user',
       payload: localUserId,
     });
-  }, []);
+  }, [localUserId]);
 
   const listenUsers = useCallback(() => {
     handleSocketListener({
@@ -25,11 +24,14 @@ const useUsers = () => {
           (user) => user._id === localUserId,
         ) as UserType;
 
+        if (currentUser) {
+          dispatch(setCurrentUser(currentUser));
+        }
+
         dispatch(setUsersList(users));
-        dispatch(setCurrentUser(currentUser));
       },
     });
-  }, [dispatch]);
+  }, [dispatch, localUserId]);
 
   const disconnectUser = useCallback((localUserId) => {
     handleSocketRequest({ type: 'disconnect-user', payload: localUserId });

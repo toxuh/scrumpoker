@@ -35,6 +35,7 @@ export type ReduxActionType = {
 
 export type AppStateType = {
   loading: boolean;
+  localUserId?: string;
   currentUser: UserType | boolean;
   usersList: UserType[];
   storiesList: StoryType[];
