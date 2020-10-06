@@ -4,7 +4,7 @@ import { Button, Form, Input, Modal } from 'antd';
 
 import messages from './messages';
 
-type AddStoryModalProps = {
+export type AddStoryModalProps = {
   showModal: boolean;
   handleAddStory: (story: { name: string; description: string }) => void;
   toggleModal: (opened: boolean) => void;

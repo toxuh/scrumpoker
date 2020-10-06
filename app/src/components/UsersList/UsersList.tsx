@@ -9,7 +9,7 @@ import messages from './messages';
 
 import './UsersList.css';
 
-type UsersListProps = {
+export type UsersListProps = {
   isUserModerator: boolean;
   users: UserType[];
   votes: VoteType[];

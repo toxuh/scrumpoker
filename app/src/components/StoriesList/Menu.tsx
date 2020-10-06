@@ -15,7 +15,7 @@ import messages from './messages';
 
 import './Menu.css';
 
-type MenuProps = {
+export type MenuProps = {
   activeMenuItem: string;
   setActiveMenuItem: (key: string) => void;
   setAddModal: (opened: boolean) => void;

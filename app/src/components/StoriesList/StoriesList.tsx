@@ -13,7 +13,7 @@ import messages from './messages';
 
 import './StoriesList.css';
 
-type StoriesListProps = {
+export type StoriesListProps = {
   allStories: StoryType[];
   activeStories: StoryType[];
   closedStories: StoryType[];

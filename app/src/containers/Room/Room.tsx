@@ -12,14 +12,14 @@ import { UserType } from '../../types';
 
 import './Room.css';
 
-type RoomTypes = {
+export type RoomProps = {
   currentUser: UserType;
   summary: number;
 };
 
 const { Content, Sider } = Layout;
 
-const Room: React.FC<RoomTypes> = ({ currentUser, summary }) => {
+const Room: React.FC<RoomProps> = ({ currentUser, summary }) => {
   const {
     epicsList,
     getJiraEpics,

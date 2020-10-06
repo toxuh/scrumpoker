@@ -16,7 +16,7 @@ import { handleSocketDisconnect } from '../../api';
 
 import './App.css';
 
-function App() {
+const App = () => {
   const { bootstrap, isLoading, listenReload, localUserId } = useApp();
   const { currentUser, listenUserRegistered, registerUser } = useAuth();
   const { getStories, listenStoriesList } = useStories();
@@ -81,6 +81,6 @@ function App() {
       <Room currentUser={currentUser} summary={summary} />
     </div>
   );
-}
+};
 
 export default App;
