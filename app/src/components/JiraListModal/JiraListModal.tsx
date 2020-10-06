@@ -10,7 +10,7 @@ import messages from './messages';
 
 import './JiraListModal.css';
 
-type JiraListModalProps = {
+export type JiraListModalProps = {
   showModal: boolean;
   toggleModal: (opened: boolean) => void;
   list: JiraEpicType[];

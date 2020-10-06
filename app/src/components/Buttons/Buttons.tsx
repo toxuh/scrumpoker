@@ -15,7 +15,7 @@ import messages from './messages';
 
 import './Buttons.css';
 
-type ButtonsProps = {
+export type ButtonsProps = {
   activeStory?: StoryType;
   noVotes: boolean;
   storyPoints?: string;
@@ -57,8 +57,6 @@ const Buttons: React.FC<ButtonsProps> = ({
       handleClearVotes();
     },
   };
-
-  console.log('Buttons');
 
   return (
     <Row className="Buttons">

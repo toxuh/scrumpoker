@@ -42,7 +42,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "extract-messages": "extract-messages -l=en,ru -o src/i18n/translations --flat true \"src/**/messages.ts\""
+    "test": "react-scripts test",
+    "test:all": "react-scripts test --watchAll=false",
+    "em": "extract-messages -l=en,ru -o src/i18n/translations --flat true \"src/**/messages.ts\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,6 +66,7 @@
     "@testing-library/react": "^10.4.7",
     "@testing-library/user-event": "^12.0.17",
     "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^26.0.8",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
@@ -90,5 +93,20 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "extract-react-intl-messages": "^4.1.1",
     "prettier": "^2.0.5"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.stories.{ts,tsx}",
+      "!src/**/constants.ts",
+      "!src/**/messages.ts",
+      "!src/**/index.{ts,tsx}",
+      "!src/index.tsx",
+      "!src/react-app-env.d.ts",
+      "!src/serviceWorker.ts"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

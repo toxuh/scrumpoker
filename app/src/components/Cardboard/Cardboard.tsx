@@ -8,7 +8,7 @@ import { StoryType } from '../../types';
 
 import './Cardboard.css';
 
-type CardboardProps = {
+export type CardboardProps = {
   currentStory?: StoryType;
   isActive: boolean;
   userVote: string | boolean;
