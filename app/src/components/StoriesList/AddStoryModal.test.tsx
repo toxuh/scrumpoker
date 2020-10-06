@@ -9,7 +9,7 @@ const props: AddStoryModalProps = {
   toggleModal: jest.fn(),
 };
 
-describe('components/Loading', () => {
+describe('components/StoriesList/AddStoryModal', () => {
   it('renders', () => {
     expect.assertions(1);
 

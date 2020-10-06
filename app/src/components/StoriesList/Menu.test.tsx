@@ -17,7 +17,7 @@ const props: MenuProps = {
   epicsList: [],
 };
 
-describe('components/Loading', () => {
+describe('components/StoriesList/Menu', () => {
   it('renders', () => {
     expect.assertions(1);
 

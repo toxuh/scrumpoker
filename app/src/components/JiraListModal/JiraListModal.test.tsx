@@ -10,7 +10,7 @@ const props: JiraListModalProps = {
   handleGetStories: jest.fn(),
 };
 
-describe('components/JiraListModal', () => {
+describe('components/JiraListModal/JiraListModal', () => {
   it('renders', () => {
     expect.assertions(1);
 

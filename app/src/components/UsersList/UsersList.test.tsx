@@ -10,7 +10,7 @@ const props: UsersListProps = {
   voteEnded: false,
 };
 
-describe('components/Loading', () => {
+describe('components/UsersList/UsersList', () => {
   it('renders', () => {
     expect.assertions(1);
 

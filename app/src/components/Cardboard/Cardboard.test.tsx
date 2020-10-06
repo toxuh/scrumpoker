@@ -18,7 +18,7 @@ const props: CardboardProps = {
   onCardClick: jest.fn(),
 };
 
-describe('components/Cardboard', () => {
+describe('components/Cardboard/Cardboard', () => {
   it('renders', () => {
     expect.assertions(1);
 

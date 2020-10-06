@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import Loading from './Loading';
 
-describe('components/Loading', () => {
+describe('components/Loading/Loading', () => {
   it('renders', () => {
     expect.assertions(1);
 

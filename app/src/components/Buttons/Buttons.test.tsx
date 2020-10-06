@@ -21,7 +21,7 @@ const props: ButtonsProps = {
   summary: 0,
 };
 
-describe('components/Buttons', () => {
+describe('components/Buttons/Buttons', () => {
   it('renders', () => {
     expect.assertions(1);
 

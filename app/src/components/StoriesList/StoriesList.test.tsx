@@ -15,7 +15,7 @@ const props: StoriesListProps = {
   epicsList: [],
 };
 
-describe('components/Loading', () => {
+describe('components/StoriesList/StoriesList', () => {
   it('renders', () => {
     expect.assertions(1);
 
