@@ -24,11 +24,15 @@ app.use(express.json());
 
 const makePutRequest = async (key, body) => {
   try {
-    return await axios.put(`${process.env.JIRA_API_URL}/issue/${key}`, body, {
-      headers: {
-        Authorization: `Basic ${process.env.JIRA_AUTH_TOKEN}`,
-      },
-    });
+    return await axios.put(
+      `${process.env.JIRA_API_URL}${process.env.JIRA_ISSUE_ENDPOINT}${key}`,
+      body,
+      {
+        headers: {
+          Authorization: `Basic ${process.env.JIRA_AUTH_TOKEN}`,
+        },
+      }
+    );
   } catch (e) {
     console.error(e.response);
   }
@@ -36,11 +40,14 @@ const makePutRequest = async (key, body) => {
 
 const makeGetRequest = async (query) => {
   try {
-    return await axios.get(`${process.env.JIRA_API_URL}/search?jql=${query}`, {
-      headers: {
-        Authorization: `Basic ${process.env.JIRA_AUTH_TOKEN}`,
-      },
-    });
+    return await axios.get(
+      `${process.env.JIRA_API_URL}${process.env.JIRA_SEARCH_ENDPOINT}${query}`,
+      {
+        headers: {
+          Authorization: `Basic ${process.env.JIRA_AUTH_TOKEN}`,
+        },
+      }
+    );
   } catch (e) {
     console.error(e);
   }
@@ -222,7 +229,7 @@ const onConnect = (socket) => {
 
     await makePutRequest(task.jiraKey, {
       fields: {
-        customfield_10026: task.points,
+        [process.env.JIRA_STORYPOINTS_FIELD]: task.points,
       },
     });
 
